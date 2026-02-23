@@ -6,7 +6,7 @@
                 <p class="text">Join our mailing list to be the first to know about new and exciting treatments,
                     promotions
                     and offers
-                    from Beauty Bliss!</p>
+                    from Snows Nails!</p>
             </div>
             <div class="row subscribe-form">
                 <form id="subscribeForm" class="text">
@@ -77,7 +77,7 @@
             <div class="col-lg-4 footer-contact">
                 <h3 class="sub-heading">CONTACT US</h3>
                 <p class="text">
-                    <span>Beauty Bliss</span>
+                    <span>Snows Nails</span>
                     <span>22 Lowestoft Road</span>
                     <span>Carlton Colville NR33 8JD</span>
                     <span>Phone: 01502 539051</span>

@@ -9,7 +9,7 @@ include 'header.php';
             <h1 class="heading">Book with us!</h1>
             <p class="form-desc display-none">
                 <span>Experience the Ultimate in Beauty and Relaxation!</span>
-                <span>At Beauty Bliss Therapies, we offer a wide range of luxurious treatments designed to enhance your
+                <span>At Snows Nails Therapies, we offer a wide range of luxurious treatments designed to enhance your
                     natural beauty and rejuvenate your spirit. Whether you're looking for a stunning manicure,
                     soothing facial, or relaxing massage, we have the perfect service to meet your needs. Book your
                     appointment today and discover the blissful difference!</span>

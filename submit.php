@@ -74,7 +74,7 @@ include 'header.php';
                     <div class="card-body review-body">
                         <p class="reviewer">Jane Doe</p>
                         <h2 class="card-title">Excellent Service!</h2>
-                        <p class="card-text">"I had an amazing experience at Beauty Bliss. The staff were friendly and
+                        <p class="card-text">"I had an amazing experience at Snows Nails. The staff were friendly and
                             professional, and the treatments were top-notch. Highly recommend!"</p>
                         <h3 class="rating">★★★★★</h3>
                     </div>
@@ -93,7 +93,7 @@ include 'header.php';
                         <p class="reviewer">Emily Johnson</p>
                         <h2 class="card-title">Great Results</h2>
                         <p class="card-text">"I am so happy with the results of my facial treatment. My skin feels
-                            rejuvenated and looks fantastic. Thank you, Beauty Bliss!"</p>
+                            rejuvenated and looks fantastic. Thank you, Snows Nails!"</p>
                         <h3 class="rating">★★★★★</h3>
                     </div>
                 </div>
@@ -101,7 +101,7 @@ include 'header.php';
                     <div class="card-body review-body">
                         <p class="reviewer">Sarah Brown</p>
                         <h2 class="card-title">Highly Professional</h2>
-                        <p class="card-text">"The team at Beauty Bliss is highly professional and attentive. They really
+                        <p class="card-text">"The team at Snows Nails is highly professional and attentive. They really
                             listen to your needs and provide excellent service. I couldn't be happier!"</p>
                         <h3 class="rating">★★★★★</h3>
                     </div>
