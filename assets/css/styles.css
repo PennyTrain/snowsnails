@@ -739,10 +739,27 @@ footer h3 {
   .service-container {
     padding: 0.5rem;
   }
+    .user-container {
+    padding: 0.5rem;
+  }
 }
 
 @media (max-width: 470px) {
   .display-none-sm {
     display: none;
   }
+}
+
+.login {
+  font-size: 2rem;
+  padding: 3rem;
+}
+
+.user-container {
+  margin: 4rem auto;   /* auto left/right centers it */
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.72);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;   /* better than 50% for forms */
 }
