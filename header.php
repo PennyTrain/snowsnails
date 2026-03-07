@@ -54,7 +54,7 @@
                     </ul>
                 </div>
                 <div>
-                    <i class="fa-regular fa-circle-user login"></i>
+                    <a class="dropdown-item link" href="/tutorial/user_form.php"><i class="fa-regular fa-circle-user login"></i></a>
                 </div>
             </div>
         </nav>

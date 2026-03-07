@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Form submission handling
-    const form = document.querySelector("form");
+    const form = document.getElementById("bookingForm");
     if (form) {
         form.addEventListener("submit", function (event) {
             event.preventDefault();

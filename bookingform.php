@@ -14,7 +14,7 @@ include 'header.php';
                     soothing facial, or relaxing massage, we have the perfect service to meet your needs. Book your
                     appointment today and discover the blissful difference!</span>
             </p>
-            <form class="col-lg-6 form-container">
+            <form class="col-lg-6 form-container" id="bookingform">
                 <label for="bookfirstname" class="form-label">First Name:</label>
                 <input type="text" id="bookfirstname" name="firstname" class="form-control" aria-label="First Name"
                     required>
