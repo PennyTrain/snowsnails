@@ -1,0 +1,143 @@
+<?php
+session_start();
+require_once '../db.php';
+
+// ===== REGISTER =====
+if (isset($_POST['register'])) {
+
+    $first_name = trim($_POST['first_name'] ?? '');
+    $last_name  = trim($_POST['last_name'] ?? '');
+    $email      = trim($_POST['email'] ?? '');
+    $phone      = trim($_POST['phone'] ?? '');
+    $password   = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    // basic validation
+    if ($first_name === '' || $last_name === '' || $email === '' || $password === '' || $confirm_password === '') {
+        $_SESSION['register_error'] = 'Please fill in all required fields.';
+        header("Location: register.php");
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['register_error'] = 'Please enter a valid email address.';
+        header("Location: register.php");
+        exit();
+    }
+
+    // passwords must match
+    if ($password !== $confirm_password) {
+        $_SESSION['register_error'] = 'Passwords do not match!';
+        header("Location: register.php");
+        exit();
+    }
+
+    // enforce minimum length server-side too
+    if (strlen($password) < 8) {
+        $_SESSION['register_error'] = 'Password must be at least 8 characters.';
+        header("Location: register.php");
+        exit();
+    }
+
+    // check if email already exists
+    $check = $conn->prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
+    $check->bind_param("s", $email);
+    $check->execute();
+    $check->store_result();
+
+    if ($check->num_rows > 0) {
+        $check->close();
+        $_SESSION['register_error'] = 'Email is already registered!';
+        header("Location: register.php");
+        exit();
+    }
+    $check->close();
+
+    // Hash AFTER validation
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // insert user into db
+    $insert = $conn->prepare("
+        INSERT INTO users (first_name, last_name, email, phone, password)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+    $insert->bind_param("sssss", $first_name, $last_name, $email, $phone, $hashed_password);
+
+    if (!$insert->execute()) {
+        if ($conn->errno == 1062) {
+            $_SESSION['register_error'] = 'Email is already registered!';
+            $insert->close();
+            header("Location: register.php");
+            exit();
+        }
+
+        // Other DB errors
+        $err = $conn->error;
+        $insert->close();
+        die("Database error (register): " . $err);
+    }
+
+    $insert->close();
+
+    // automatic login after successful registration
+    $_SESSION['name'] = $first_name;
+    $_SESSION['email'] = $email;
+
+    header("Location: account.php");
+    exit();
+}
+
+
+// ===== LOGIN =====
+if (isset($_POST['login'])) {
+
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($email === '' || $password === '') {
+        $_SESSION['login_error'] = 'Please enter your email and password.';
+        header("Location: login.php");
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['login_error'] = 'Please enter a valid email address.';
+        header("Location: login.php");
+        exit();
+    }
+
+    // get the user by email
+    $stmt = $conn->prepare("SELECT first_name, email, password FROM users WHERE email = ? LIMIT 1");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows !== 1) {
+        $stmt->close();
+        $_SESSION['login_error'] = 'Incorrect email or password';
+        header("Location: login.php");
+        exit();
+    }
+
+    $stmt->bind_result($first_name, $db_email, $db_hash);
+    $stmt->fetch();
+    $stmt->close();
+
+    if (!password_verify($password, $db_hash)) {
+        $_SESSION['login_error'] = 'Incorrect email or password';
+        header("Location: login.php");
+        exit();
+    }
+
+    // Success
+    $_SESSION['name'] = $first_name;
+    $_SESSION['email'] = $db_email;
+
+    header("Location: account.php");
+    exit();
+}
+
+
+// If someone hits this file directly without POST:
+header("Location: login.php");
+exit();

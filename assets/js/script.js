@@ -53,14 +53,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-function showForm(formID) {
-    // Hide all containers
-    document.querySelectorAll(".user-container").forEach(container => {
-        container.classList.remove("active");
-    });
+// function showForm(formID) {
+//     // Hide all containers
+//     document.querySelectorAll(".user-container").forEach(container => {
+//         container.classList.remove("active");
+//     });
 
-    // Show selected container
-    document.getElementById(formID)
-        .closest(".user-container")
-        .classList.add("active");
-}
+//     // Show selected container
+//     document.getElementById(formID)
+//         .closest(".user-container")
+//         .classList.add("active");
+// }
