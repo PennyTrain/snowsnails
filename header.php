@@ -1,3 +1,15 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
+<!-- to avoid this error at the top 
+timezone_openNotice: session_start(): Ignoring session_start() 
+because a session is already active in C:\Users\trapen\OneDrive
+- Watlow\Documents\Chi Uni\Year 2\Semester 2\DAB502\snowsnails\
+header.php on line 2 -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,11 +63,39 @@
                                 <li><a class="dropdown-item link" href="/treatments.php">Body Treatments</a></li>
                             </ul>
                         </li>
+<?php if (isset($_SESSION['email'])): ?>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle link" href="#" id="dropdown05"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <?= htmlspecialchars($_SESSION['name']); ?>
+        </a>
+
+        <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
+            <li><a class="dropdown-item link" href="/nails.php">Nails</a></li>
+            <li><a class="dropdown-item link" href="/lashes.php">Lashes</a></li>
+            <li><a class="dropdown-item link" href="/treatments.php">Body Treatments</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item link" href="/users/logout.php">Logout</a></li>
+        </ul>
+    </li>
+
+<?php else: ?>
+
+    <li class="nav-item">
+        <a class="nav-link link" href="/users/login.php">Login</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link link" href="/users/register.php">Register</a>
+    </li>
+
+<?php endif; ?>
                     </ul>
                 </div>
-                <div>
+                <!-- <div>
                     <a class="dropdown-item link" href="/users/login.php"><i class="fa-regular fa-circle-user login"></i></a>
-                </div>
+                </div> -->
             </div>
         </nav>
     </header>
