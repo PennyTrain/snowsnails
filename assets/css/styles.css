@@ -141,17 +141,17 @@ q:after {
    THEME (pink removed)
    ========================= */
 :root {
-  --primary: #505f61;        /* logo/nav */
-  --primary-dark: #2f3a3b;   /* footer/strong */
-  --primary-light: #e7ecec;  /* soft panels */
+  --primary: #505f61; /* logo/nav */
+  --primary-dark: #2f3a3b; /* footer/strong */
+  --primary-light: #e7ecec; /* soft panels */
 
-  --bg: #f6f8f8;             /* base background */
-  --surface: #ffffff;        /* cards/panels */
+  --bg: #f6f8f8; /* base background */
+  --surface: #ffffff; /* cards/panels */
 
   --text: #1f2425;
   --muted: #5f6b6d;
 
-  --accent: #d4a017;         /* hover/buttons highlight */
+  --accent: #d4a017; /* hover/buttons highlight */
   --accent-dark: #b98912;
 
   --border: #c9d1d1;
@@ -168,8 +168,16 @@ body {
     from(var(--primary-light)),
     to(var(--primary-dark))
   );
-  background: -o-linear-gradient(top, var(--primary-light), var(--primary-dark));
-  background: linear-gradient(to bottom, var(--primary-light), var(--primary-dark));
+  background: -o-linear-gradient(
+    top,
+    var(--primary-light),
+    var(--primary-dark)
+  );
+  background: linear-gradient(
+    to bottom,
+    var(--primary-light),
+    var(--primary-dark)
+  );
   font-size: 20px;
   font-family: "Poppins", sans-serif;
   color: var(--text);
@@ -333,7 +341,9 @@ nav,
   transition: -webkit-transform 0.3s ease;
   -o-transition: transform 0.3s ease;
   transition: transform 0.3s ease;
-  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
   margin: 1rem;
   text-align: center;
   width: 18rem;
@@ -704,6 +714,56 @@ footer h3 {
   color: #fff;
 }
 
+/* =========================================
+   Footer Social Section
+   ========================================= */
+
+/* Wrapper section for footer social icons */
+.footer-social {
+  margin: 25px 0;
+  text-align: center;
+}
+
+/* UL container holding all icons */
+.footer-social-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual list item */
+.footer-social-item {
+  display: inline-block;
+}
+
+/* Clickable social icon button */
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* The actual FontAwesome icon */
+.footer-social-icon {
+  font-size: 1.5rem;
+}
+
+/* Hover effect */
+.footer-social-link:hover {
+  background-color: #d4a373; /* Accent colour */
+  transform: translateY(-4px);
+}
+
 @media (max-width: 992px) {
   .no-image {
     display: none;
@@ -739,7 +799,7 @@ footer h3 {
   .service-container {
     padding: 0.5rem;
   }
-    .user-container {
+  .user-container {
     padding: 0.5rem;
   }
 }
@@ -756,12 +816,12 @@ footer h3 {
 }
 
 .user-container {
-  margin: 4rem auto;   /* auto left/right centers it */
+  margin: 4rem auto; /* auto left/right centers it */
   padding: 2rem;
   background-color: rgba(255, 255, 255, 0.72);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;   /* better than 50% for forms */
+  max-width: 600px; /* better than 50% for forms */
 }
 
 /* ERROR MESSAGE STYLING */
@@ -774,4 +834,50 @@ footer h3 {
   color: #a42834;
   text-align: center;
   margin-bottom: 20px;
+}
+
+/* =========================================
+ Error Page Styling
+   ========================================= */
+
+.error-page {
+  text-align: center;
+}
+
+.error-code {
+  font-size: 6rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.error-text {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.error-image-wrapper {
+  margin: 2rem 0;
+}
+
+.error-image {
+
+  width: 100%;
+  height: auto;
+}
+
+.error-button {
+  display: inline-block;
+  background-color: var(--accent);
+  color: #1b1b1b;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.error-button:hover {
+  background-color: var(--accent-dark);
+  color: #111;
 }
