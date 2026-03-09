@@ -7,7 +7,7 @@ include "../header.php";
     <h1 class="heading error-code">403</h1>
 
     <p class="text error-text">
-        Oops! The page you’re looking for doesn’t exist.
+        Oops! You are FORBIDDEN from going here!
     </p>
 
     <div class="error-image-wrapper">

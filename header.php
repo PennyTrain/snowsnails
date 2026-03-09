@@ -2,6 +2,18 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+if (isset($_SESSION["LAST_ACTIVITY"])) {
+    if (time() - $_SESSION["LAST_ACTIVITY"] > 1800) {
+        // 1800 = 30 mins
+        session_unset();
+        session_destroy();
+        header("Location: /users/login.php?timeout=1");
+        exit();
+    }
+}
+
+$_SESSION["LAST_ACTIVITY"] = time();
 ?>
 
 <!-- to avoid this error at the top 
@@ -9,6 +21,13 @@ timezone_openNotice: session_start(): Ignoring session_start()
 because a session is already active in C:\Users\trapen\OneDrive
 - Watlow\Documents\Chi Uni\Year 2\Semester 2\DAB502\snowsnails\
 header.php on line 2 -->
+
+<!-- https://ihaveapc.com/2025/09/why-logging-out-is-safer-than-just-closing-your-browser/
+
+A user session refers to the time span during which a user interacts with a website, 
+maintained through mechanisms that identify and authenticate the user across various requests. 
+Think of it like a continuous chat thread—once established, it keeps the conversation going 
+unless explicitly ended or interrupted. -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +71,7 @@ header.php on line 2 -->
                             <a class="nav-link active link" aria-current="page" href="/index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link" href="/bookingform.php">Contact Us</a>
+                            <a class="nav-link link" href="/bookings/booking.php">Contact Us</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle link" href="#" id="dropdown05" data-bs-toggle="dropdown"
@@ -63,18 +82,17 @@ header.php on line 2 -->
                                 <li><a class="dropdown-item link" href="/treatments.php">Body Treatments</a></li>
                             </ul>
                         </li>
-<?php if (isset($_SESSION['email'])): ?>
+<?php if (isset($_SESSION["email"])): ?>
 
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle link" href="#" id="dropdown05"
            data-bs-toggle="dropdown" aria-expanded="false">
-            <?= htmlspecialchars($_SESSION['name']); ?>
+            <?= htmlspecialchars($_SESSION["name"]) ?>
         </a>
 
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
-            <li><a class="dropdown-item link" href="/nails.php">Nails</a></li>
-            <li><a class="dropdown-item link" href="/lashes.php">Lashes</a></li>
-            <li><a class="dropdown-item link" href="/treatments.php">Body Treatments</a></li>
+            <li><a class="dropdown-item link" href="/nails.php">Account</a></li>
+            <li><a class="dropdown-item link" href="/lashes.php">Bookings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item link" href="/users/logout.php">Logout</a></li>
         </ul>
@@ -91,7 +109,7 @@ header.php on line 2 -->
     </li>
 
 <?php endif; ?>
-                    </ul>
+</ul>
                 </div>
                 <!-- <div>
                     <a class="dropdown-item link" href="/users/login.php"><i class="fa-regular fa-circle-user login"></i></a>

@@ -1,7 +1,5 @@
- <?php
-// Include the header file
-include 'header.php';
-?>
+ <?php // Include the header file
+ include "../header.php"; ?>
     <!-- CONTENT -->
     <main class="container">
         <!-- FORM -->
@@ -29,14 +27,45 @@ include 'header.php';
                 <label for="phone" class="form-label">Phone Number:</label>
                 <input type="tel" id="phone" name="phone" class="form-control" aria-label="Phone Number">
 
-                <label for="appointment_type" class="form-label">Appointment Type:</label>
-                <select id="appointment_type" name="appointment_type" class="form-control" aria-label="Appointment Type"
-                    required>
-                    <option value="" disabled selected>Select an option</option>
-                    <option value="Lashes">Lashes</option>
-                    <option value="Nails">Nails</option>
-                    <option value="Treatment">Body-treatment</option>
-                </select>
+<label for="appointment_type" class="form-label">Appointment Type:</label>
+
+<select id="appointment_type"
+        name="appointment_type"
+        class="form-control"
+        aria-label="Appointment Type"
+        required>
+
+    <option value="" disabled selected>Select an option</option>
+
+    <optgroup label="Nails">
+        <option value="BIAB">BIAB</option>
+        <option value="Infills">Infills</option>
+        <option value="Acrylic">Acrylic</option>
+        <option value="Gel">Gel</option>
+        <option value="Pedicure">Pedicure</option>
+        <option value="Manicure">Manicure</option>
+    </optgroup>
+
+    <optgroup label="Lashes">
+        <option value="Lash Infill">Infill</option>
+        <option value="Full Set">Full Set</option>
+        <option value="Classics">Classics</option>
+        <option value="Russians">Russians</option>
+    </optgroup>
+
+    <optgroup label="Body Treatments">
+        <option value="Massage">Massage</option>
+        <option value="Facial">Facial</option>
+    </optgroup>
+
+    <optgroup label="Brows">
+        <option value="Threading">Threading</option>
+        <option value="Plucking">Plucking</option>
+        <option value="Shaping">Shaping</option>
+        <option value="Laminating">Laminating</option>
+    </optgroup>
+
+</select>
 
                 <label for="appointment_date" class="form-label">Appointment Date:</label>
                 <input type="date" id="appointment_date" name="appointment_date" class="form-control"
@@ -60,7 +89,6 @@ include 'header.php';
                 We reserve the right to refuse to rebook your appointment if you fail to comply with our policy. </p>
         </div>
     </main>
- <?php
-// Include the footer file
-include 'footer.php';
+ <?php // Include the footer file
+ include "../footer.php";
 ?>

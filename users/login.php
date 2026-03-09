@@ -2,20 +2,23 @@
 session_start();
 
 // If already logged in, don’t show login again
-if (isset($_SESSION['email'])) {
+
+if (isset($_SESSION["email"])) {
     header("Location: account.php");
     exit();
 }
 
-include '../header.php';
+include "../header.php";
 ?>
 
 <section class="user-container">
     <h1 class="heading">Welcome Back</h1>
 
-    <?php if (!empty($_SESSION['login_error'])): ?>
-        <p class="error-message"><?= htmlspecialchars($_SESSION['login_error']) ?></p>
-        <?php unset($_SESSION['login_error']); ?>
+    <?php if (!empty($_SESSION["login_error"])): ?>
+        <p class="error-message"><?= htmlspecialchars(
+            $_SESSION["login_error"],
+        ) ?></p>
+        <?php unset($_SESSION["login_error"]); ?>
     <?php endif; ?>
 
     <form action="login_register.php" method="post" class="form-container">
@@ -36,6 +39,6 @@ include '../header.php';
     </form>
 </section>
 
-<?php include '../footer.php'; ?>
+<?php include "../footer.php"; ?>
 
 <!-- https://www.youtube.com/watch?v=LiomRvK7AM8 -->

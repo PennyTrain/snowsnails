@@ -83,6 +83,35 @@
                     <span>Phone: 01502 539051</span>
                 </p>
             </div>
+            <section class="footer-social">
+    <ul class="footer-social-list">
+
+        <li class="footer-social-item">
+            <a class="link" 
+               href="https://www.instagram.com/snownails_bognor_regis?igsh=MXh3ZDlhbXlrM2pqMw=="
+               target="_blank" aria-label="Instagram">
+                <i class="fa-brands fa-instagram footer-social-icon"></i>
+            </a>
+        </li>
+
+        <li class="footer-social-item">
+            <a class="link" 
+               href="https://www.facebook.com/share/17xjCHRv9W/?mibextid=wwXIfr"
+               target="_blank" aria-label="Facebook">
+                <i class="fa-brands fa-facebook-f footer-social-icon"></i>
+            </a>
+        </li>
+
+        <li class="footer-social-item">
+            <a class="link" 
+               href="https://www.tiktok.com/@snownail?_r=1&_t=ZT-94WDSdqtvvp"
+               target="_blank" aria-label="TikTok">
+                <i class="fa-brands fa-tiktok footer-social-icon"></i>
+            </a>
+        </li>
+
+    </ul>
+</section>
         </div>
     </footer>
     <!-- The Link for all The Font Awesome Icons -->

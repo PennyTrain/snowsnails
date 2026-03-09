@@ -1,40 +1,45 @@
 <?php
 session_start();
-require_once '../db.php';
+require_once "../db.php";
 
 // ===== REGISTER =====
-if (isset($_POST['register'])) {
-
-    $first_name = trim($_POST['first_name'] ?? '');
-    $last_name  = trim($_POST['last_name'] ?? '');
-    $email      = trim($_POST['email'] ?? '');
-    $phone      = trim($_POST['phone'] ?? '');
-    $password   = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
+if (isset($_POST["register"])) {
+    $first_name = trim($_POST["first_name"] ?? "");
+    $last_name = trim($_POST["last_name"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $phone = trim($_POST["phone"] ?? "");
+    $password = $_POST["password"] ?? "";
+    $confirm_password = $_POST["confirm_password"] ?? "";
 
     // basic validation
-    if ($first_name === '' || $last_name === '' || $email === '' || $password === '' || $confirm_password === '') {
-        $_SESSION['register_error'] = 'Please fill in all required fields.';
+    if (
+        $first_name === "" ||
+        $last_name === "" ||
+        $email === "" ||
+        $password === "" ||
+        $confirm_password === ""
+    ) {
+        $_SESSION["register_error"] = "Please fill in all required fields.";
         header("Location: register.php");
         exit();
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION['register_error'] = 'Please enter a valid email address.';
+        $_SESSION["register_error"] = "Please enter a valid email address.";
         header("Location: register.php");
         exit();
     }
 
     // passwords must match
     if ($password !== $confirm_password) {
-        $_SESSION['register_error'] = 'Passwords do not match!';
+        $_SESSION["register_error"] = "Passwords do not match!";
         header("Location: register.php");
         exit();
     }
 
     // enforce minimum length server-side too
     if (strlen($password) < 8) {
-        $_SESSION['register_error'] = 'Password must be at least 8 characters.';
+        $_SESSION["register_error"] = "Password must be at least 8 characters.";
         header("Location: register.php");
         exit();
     }
@@ -47,7 +52,7 @@ if (isset($_POST['register'])) {
 
     if ($check->num_rows > 0) {
         $check->close();
-        $_SESSION['register_error'] = 'Email is already registered!';
+        $_SESSION["register_error"] = "Email is already registered!";
         header("Location: register.php");
         exit();
     }
@@ -61,11 +66,18 @@ if (isset($_POST['register'])) {
         INSERT INTO users (first_name, last_name, email, phone, password)
         VALUES (?, ?, ?, ?, ?)
     ");
-    $insert->bind_param("sssss", $first_name, $last_name, $email, $phone, $hashed_password);
+    $insert->bind_param(
+        "sssss",
+        $first_name,
+        $last_name,
+        $email,
+        $phone,
+        $hashed_password,
+    );
 
     if (!$insert->execute()) {
         if ($conn->errno == 1062) {
-            $_SESSION['register_error'] = 'Email is already registered!';
+            $_SESSION["register_error"] = "Email is already registered!";
             $insert->close();
             header("Location: register.php");
             exit();
@@ -80,41 +92,41 @@ if (isset($_POST['register'])) {
     $insert->close();
 
     // automatic login after successful registration
-    $_SESSION['name'] = $first_name;
-    $_SESSION['email'] = $email;
+    $_SESSION["name"] = $first_name;
+    $_SESSION["email"] = $email;
 
     header("Location: account.php");
     exit();
 }
 
-
 // ===== LOGIN =====
-if (isset($_POST['login'])) {
+if (isset($_POST["login"])) {
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
 
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if ($email === '' || $password === '') {
-        $_SESSION['login_error'] = 'Please enter your email and password.';
+    if ($email === "" || $password === "") {
+        $_SESSION["login_error"] = "Please enter your email and password.";
         header("Location: login.php");
         exit();
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION['login_error'] = 'Please enter a valid email address.';
+        $_SESSION["login_error"] = "Please enter a valid email address.";
         header("Location: login.php");
         exit();
     }
 
     // get the user by email
-    $stmt = $conn->prepare("SELECT first_name, email, password FROM users WHERE email = ? LIMIT 1");
+    $stmt = $conn->prepare(
+        "SELECT first_name, email, password FROM users WHERE email = ? LIMIT 1",
+    );
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows !== 1) {
         $stmt->close();
-        $_SESSION['login_error'] = 'Incorrect email or password';
+        $_SESSION["login_error"] = "Incorrect email or password";
         header("Location: login.php");
         exit();
     }
@@ -124,19 +136,18 @@ if (isset($_POST['login'])) {
     $stmt->close();
 
     if (!password_verify($password, $db_hash)) {
-        $_SESSION['login_error'] = 'Incorrect email or password';
+        $_SESSION["login_error"] = "Incorrect email or password";
         header("Location: login.php");
         exit();
     }
 
     // Success
-    $_SESSION['name'] = $first_name;
-    $_SESSION['email'] = $db_email;
+    $_SESSION["name"] = $first_name;
+    $_SESSION["email"] = $db_email;
 
     header("Location: account.php");
     exit();
 }
-
 
 // If someone hits this file directly without POST:
 header("Location: login.php");

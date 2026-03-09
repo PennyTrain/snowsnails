@@ -7,7 +7,7 @@ include "../header.php";
     <h1 class="heading error-code">500</h1>
 
     <p class="text error-text">
-        Oops! The page you’re looking for doesn’t exist.
+        Oops! Server error! My problem.
     </p>
 
     <div class="error-image-wrapper">

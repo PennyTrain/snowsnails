@@ -1,7 +1,5 @@
- <?php
-// Include the header file
-include 'header.php';
-?>
+ <?php // Include the header file
+ include "header.php"; ?>
     <!-- CONTENT  -->
     <main class="container">
         <div class="row booked-message">
@@ -109,7 +107,6 @@ include 'header.php';
             </div>
         </section>
     </main>
- <?php
-// Include the footer file
-include 'footer.php';
+ <?php // Include the footer file
+ include "footer.php";
 ?>

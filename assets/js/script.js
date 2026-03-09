@@ -1,56 +1,60 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Form submission handling
-    const form = document.getElementById("bookingForm");
-    if (form) {
-        form.addEventListener("submit", function (event) {
-            event.preventDefault();
-            
-            const firstName = document.getElementById("bookfirstname").value;
-            const appointmentType = document.getElementById("appointment_type").value;
-            const appointmentDate = document.getElementById("appointment_date").value;
-            const today = new Date().toISOString().split("T")[0];
+  // Form submission handling
+  const form = document.getElementById("bookingForm");
+  if (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-            if (appointmentDate < today) {
-                alert("Please select a future date for your appointment.");
-                return; // Exit the function if the date is invalid
-            }
+      const firstName = document.getElementById("bookfirstname").value;
+      const appointmentType = document.getElementById("appointment_type").value;
+      const appointmentDate = document.getElementById("appointment_date").value;
+      const today = new Date().toISOString().split("T")[0];
 
-            localStorage.setItem("bookfirstName", firstName);
-            localStorage.setItem("appointmentType", appointmentType);
-            window.location.href = "submit.html";
-        });
-    }
+      if (appointmentDate < today) {
+        alert("Please select a future date for your appointment.");
+        return; // Exit the function if the date is invalid
+      }
 
-    // Subscription form handling
-    const subscribeForm = document.getElementById("subscribeForm");
-    if (localStorage.getItem("formSubmitted")) {
-        document.querySelector(".subscribe").innerHTML = '<div class="final-message"><i class="fa-solid fa-star"></i><p> Thank you for subscribing! </p><i class="fa-solid fa-star"></i></div>';
-    } else if (subscribeForm) {
-        subscribeForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-            document.querySelector(".subscribe").innerHTML = '<div class="final-message"><i class="fa-solid fa-star"></i><p> Thank you for subscribing! </p><i class="fa-solid fa-star"></i></div>';
-            localStorage.setItem("formSubmitted", "true");
-        });
-    }
-
-    // Accordion handling
-    document.querySelectorAll(".accordion-button").forEach(button => {
-        button.addEventListener("click", () => {
-            const accordionContent = button.nextElementSibling;
-            button.classList.toggle("active");
-            accordionContent.style.display = button.classList.contains("active") ? "block" : "none";
-        });
+      localStorage.setItem("bookfirstName", firstName);
+      localStorage.setItem("appointmentType", appointmentType);
+      window.location.href = "submit.html";
     });
+  }
 
-    // Display stored data
-    const displayNameElement = document.getElementById("display-name");
-    const displayAppointmentType = document.getElementById("display-appointment");
-    if (displayNameElement && displayAppointmentType) {
-        const firstName = localStorage.getItem("bookfirstName");
-        const appointmentType = localStorage.getItem("appointmentType");
-        displayNameElement.textContent = firstName;
-        displayAppointmentType.textContent = appointmentType;
-    }
+  // Subscription form handling
+  const subscribeForm = document.getElementById("subscribeForm");
+  if (localStorage.getItem("formSubmitted")) {
+    document.querySelector(".subscribe").innerHTML =
+      '<div class="final-message"><i class="fa-solid fa-star"></i><p> Thank you for subscribing! </p><i class="fa-solid fa-star"></i></div>';
+  } else if (subscribeForm) {
+    subscribeForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      document.querySelector(".subscribe").innerHTML =
+        '<div class="final-message"><i class="fa-solid fa-star"></i><p> Thank you for subscribing! </p><i class="fa-solid fa-star"></i></div>';
+      localStorage.setItem("formSubmitted", "true");
+    });
+  }
+
+  // Accordion handling
+  document.querySelectorAll(".accordion-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const accordionContent = button.nextElementSibling;
+      button.classList.toggle("active");
+      accordionContent.style.display = button.classList.contains("active")
+        ? "block"
+        : "none";
+    });
+  });
+
+  // Display stored data
+  const displayNameElement = document.getElementById("display-name");
+  const displayAppointmentType = document.getElementById("display-appointment");
+  if (displayNameElement && displayAppointmentType) {
+    const firstName = localStorage.getItem("bookfirstName");
+    const appointmentType = localStorage.getItem("appointmentType");
+    displayNameElement.textContent = firstName;
+    displayAppointmentType.textContent = appointmentType;
+  }
 });
 
 // function showForm(formID) {

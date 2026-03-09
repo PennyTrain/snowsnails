@@ -1,13 +1,14 @@
 <?php
 
 session_start();
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
+if (!isset($_SESSION["email"])) {
+    http_response_code(403);
+    include("../httpserrors/403.php"); // adjust path if needed
     exit();
 }
 
 // If user clicks YES
-if (isset($_POST['confirm_logout'])) {
+if (isset($_POST["confirm_logout"])) {
     session_unset();
     session_destroy();
     header("Location: login.php");
@@ -15,12 +16,12 @@ if (isset($_POST['confirm_logout'])) {
 }
 
 // If user clicks NO
-if (isset($_POST['cancel_logout'])) {
+if (isset($_POST["cancel_logout"])) {
     header("Location: account.php");
     exit();
 }
 
-include '../header.php';
+include "../header.php";
 ?>
 
 <div class="user-container">
@@ -37,7 +38,7 @@ include '../header.php';
     </form>
 </div>
 
-<?php include '../footer.php'; ?>
+<?php include "../footer.php"; ?>
 
 
 <!-- https://www.youtube.com/watch?v=LiomRvK7AM8 -->
