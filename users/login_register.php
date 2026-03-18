@@ -1,3 +1,8 @@
+<!-- https://stackoverflow.com/questions/60174/how-can-i-prevent-sql-injection-in-php
+https://www.geeksforgeeks.org/php/how-to-validate-and-sanitize-user-input-with-php/
+https://www.geeksforgeeks.org/php/how-to-prevent-sql-injection-in-php/ -->
+
+<!-- https://www.php.net/manual/en/function.filter-var.php -->
 <?php
 session_start();
 require_once "../db.php";
@@ -29,7 +34,7 @@ if (isset($_POST["register"])) {
         header("Location: register.php");
         exit();
     }
-
+    # NEED TO SALT
     // passwords must match
     if ($password !== $confirm_password) {
         $_SESSION["register_error"] = "Passwords do not match!";
@@ -152,3 +157,4 @@ if (isset($_POST["login"])) {
 // If someone hits this file directly without POST:
 header("Location: login.php");
 exit();
+

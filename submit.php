@@ -1,5 +1,6 @@
  <?php // Include the header file
- include "header.php"; ?>
+// Include the header file
+include "header.php"; ?>
     <!-- CONTENT  -->
     <main class="container">
         <div class="row booked-message">
@@ -108,5 +109,6 @@
         </section>
     </main>
  <?php // Include the footer file
- include "footer.php";
+
+include "footer.php";
 ?>

@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION["email"])) {
     http_response_code(403);
-    include("../httpserrors/403.php"); // adjust path if needed
+    include "../httpserrors/403.php"; // adjust path if needed
     exit();
 }
 

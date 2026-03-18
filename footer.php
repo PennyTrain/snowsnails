@@ -1,3 +1,6 @@
+    <?php if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    } ?>
     <!-- FOOTER -->
     <footer>
         <section class="subscribe display-none">
