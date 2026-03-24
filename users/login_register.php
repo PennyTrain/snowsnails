@@ -34,7 +34,7 @@ if (isset($_POST["register"])) {
         header("Location: register.php");
         exit();
     }
-    # NEED TO SALT
+
     // passwords must match
     if ($password !== $confirm_password) {
         $_SESSION["register_error"] = "Passwords do not match!";
@@ -49,59 +49,59 @@ if (isset($_POST["register"])) {
         exit();
     }
 
-    // check if email already exists
-    $check = $conn->prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
-    $check->bind_param("s", $email);
-    $check->execute();
-    $check->store_result();
+    try {
+        // check if email already exists
+        $check = $conn->prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
+        $check->execute([$email]);
 
-    if ($check->num_rows > 0) {
-        $check->close();
-        $_SESSION["register_error"] = "Email is already registered!";
-        header("Location: register.php");
-        exit();
-    }
-    $check->close();
-
-    // Hash AFTER validation
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // insert user into db
-    $insert = $conn->prepare("
-        INSERT INTO users (first_name, last_name, email, phone, password)
-        VALUES (?, ?, ?, ?, ?)
-    ");
-    $insert->bind_param(
-        "sssss",
-        $first_name,
-        $last_name,
-        $email,
-        $phone,
-        $hashed_password,
-    );
-
-    if (!$insert->execute()) {
-        if ($conn->errno == 1062) {
+        if ($check->fetch()) {
             $_SESSION["register_error"] = "Email is already registered!";
-            $insert->close();
+            header("Location: register.php");
+            exit();
+        }
+
+        // Hash AFTER validation
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+// Default role
+$role = 'customer';
+
+// If admin is creating user, allow custom role
+if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin") {
+    $role = $_POST["role"] ?? 'customer';
+}
+
+// insert user into db
+$insert = $conn->prepare("
+    INSERT INTO users (first_name, last_name, email, phone, password, role)
+    VALUES (?, ?, ?, ?, ?, ?)
+");
+
+$insert->execute([
+    $first_name,
+    $last_name,
+    $email,
+    $phone,
+    $hashed_password,
+    $role
+]);
+        // automatic login after successful registration
+        $_SESSION["name"] = $first_name;
+        $_SESSION["email"] = $email;
+
+        header("Location: account.php");
+        exit();
+    } catch (PDOException $e) {
+        // duplicate email / unique constraint
+        if ($e->getCode() == 23000) {
+            $_SESSION["register_error"] = "Email is already registered!";
             header("Location: register.php");
             exit();
         }
 
         // Other DB errors
-        $err = $conn->error;
-        $insert->close();
-        die("Database error (register): " . $err);
+        die("Database error (register): " . $e->getMessage());
     }
-
-    $insert->close();
-
-    // automatic login after successful registration
-    $_SESSION["name"] = $first_name;
-    $_SESSION["email"] = $email;
-
-    header("Location: account.php");
-    exit();
 }
 
 // ===== LOGIN =====
@@ -121,40 +121,41 @@ if (isset($_POST["login"])) {
         exit();
     }
 
-    // get the user by email
-    $stmt = $conn->prepare(
-        "SELECT first_name, email, password FROM users WHERE email = ? LIMIT 1",
-    );
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+    try {
+        // get the user by email
+        $stmt = $conn->prepare("
+            SELECT first_name, email, password, role
+            FROM users
+            WHERE email = ?
+            LIMIT 1
+        ");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
 
-    if ($stmt->num_rows !== 1) {
-        $stmt->close();
-        $_SESSION["login_error"] = "Incorrect email or password";
-        header("Location: login.php");
+        if (!$user) {
+            $_SESSION["login_error"] = "Incorrect email or password";
+            header("Location: login.php");
+            exit();
+        }
+
+        if (!password_verify($password, $user["password"])) {
+            $_SESSION["login_error"] = "Incorrect email or password";
+            header("Location: login.php");
+            exit();
+        }
+
+        // Success
+        $_SESSION["name"] = $user["first_name"];
+        $_SESSION["email"] = $user["email"];
+        $_SESSION["role"] = $user["role"];
+
+        header("Location: account.php");
         exit();
+    } catch (PDOException $e) {
+        die("Database error (login): " . $e->getMessage());
     }
-
-    $stmt->bind_result($first_name, $db_email, $db_hash);
-    $stmt->fetch();
-    $stmt->close();
-
-    if (!password_verify($password, $db_hash)) {
-        $_SESSION["login_error"] = "Incorrect email or password";
-        header("Location: login.php");
-        exit();
-    }
-
-    // Success
-    $_SESSION["name"] = $first_name;
-    $_SESSION["email"] = $db_email;
-
-    header("Location: account.php");
-    exit();
 }
 
 // If someone hits this file directly without POST:
 header("Location: login.php");
 exit();
-

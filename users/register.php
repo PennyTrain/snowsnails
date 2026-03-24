@@ -1,8 +1,10 @@
 <?php
 session_start();
 
-// If already logged in, don’t show register again
-if (isset($_SESSION["email"])) {
+$isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
+
+// If NOT admin, block access (or allow if you want dual use)
+if (!$isAdmin) {
     header("Location: account.php");
     exit();
 }
@@ -11,45 +13,50 @@ include "../header.php";
 ?>
 
 <section class="user-container">
-    <h1 class="heading">Create an Account</h1>
+    <h1 class="heading">
+        <?= $isAdmin ? "Create User" : "Create an Account" ?>
+    </h1>
 
     <?php if (!empty($_SESSION["register_error"])): ?>
-        <p class="error-message"><?= htmlspecialchars(
-            $_SESSION["register_error"],
-        ) ?></p>
+        <p class="error-message"><?= htmlspecialchars($_SESSION["register_error"]) ?></p>
         <?php unset($_SESSION["register_error"]); ?>
     <?php endif; ?>
 
     <form action="login_register.php" method="post" class="form-container">
 
-        <label for="first_name" class="form-label">First Name</label>
-        <input type="text" id="first_name" name="first_name" class="form-control" required>
+        <label>First Name</label>
+        <input type="text" name="first_name" class="form-control" required>
 
-        <label for="last_name" class="form-label">Last Name</label>
-        <input type="text" id="last_name" name="last_name" class="form-control" required>
+        <label>Last Name</label>
+        <input type="text" name="last_name" class="form-control" required>
 
-        <label for="register_email" class="form-label">Email</label>
-        <input type="email" id="register_email" name="email" class="form-control" required>
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required>
 
-        <label for="phone" class="form-label">Phone Number</label>
-        <input type="tel" id="phone" name="phone" class="form-control">
+        <label>Phone</label>
+        <input type="tel" name="phone" class="form-control">
 
-        <label for="register_password" class="form-label">Password</label>
-        <input type="password" id="register_password" name="password" class="form-control" required minlength="8">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required minlength="8">
 
-        <label for="confirm_password" class="form-label">Confirm Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="8">
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control" required minlength="8">
 
-        <button type="submit" name="register" class="button link">Register</button>
+        <?php if ($isAdmin): ?>
+            <!-- ADMIN ONLY FIELD -->
+            <label>User Role</label>
+            <select name="role" class="form-control">
+                <option value="customer">Customer</option>
+                <option value="employee">Employee</option>
+                <option value="admin">Admin</option>
+            </select>
+        <?php endif; ?>
 
-        <p class="text-center">
-            Already have an account?
-            <a href="login.php">Login</a>
-        </p>
+        <button type="submit" name="register" class="button link">
+            <?= $isAdmin ? "Create User" : "Register" ?>
+        </button>
 
     </form>
 </section>
 
 <?php include "../footer.php"; ?>
-
-<!-- https://www.youtube.com/watch?v=LiomRvK7AM8 -->

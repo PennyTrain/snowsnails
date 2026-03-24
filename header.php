@@ -87,14 +87,23 @@ unless explicitly ended or interrupted. -->
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle link" href="#" id="dropdown05"
            data-bs-toggle="dropdown" aria-expanded="false">
-            <?= htmlspecialchars($_SESSION["name"]) ?>
+            <?= htmlspecialchars($_SESSION["name"] ?? 'User') ?>
         </a>
 
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
+
             <li><a class="dropdown-item link" href="/nails.php">Account</a></li>
             <li><a class="dropdown-item link" href="/lashes.php">Bookings</a></li>
+
+            <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
+                <li><hr class="dropdown-divider"></li>
+
+                <li><a class="dropdown-item link" href="/users/register.php">Create User</a></li>
+            <?php endif; ?>
+
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item link" href="/users/logout.php">Logout</a></li>
+
         </ul>
     </li>
 
