@@ -89,7 +89,7 @@ $insert->execute([
         $_SESSION["name"] = $first_name;
         $_SESSION["email"] = $email;
 
-        header("Location: account.php");
+        header("Location: update_form.php");
         exit();
     } catch (PDOException $e) {
         // duplicate email / unique constraint
@@ -149,7 +149,7 @@ if (isset($_POST["login"])) {
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
 
-        header("Location: account.php");
+        header("Location: update_form.php");
         exit();
     } catch (PDOException $e) {
         die("Database error (login): " . $e->getMessage());

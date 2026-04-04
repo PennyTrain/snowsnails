@@ -92,8 +92,8 @@ unless explicitly ended or interrupted. -->
 
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
 
-            <li><a class="dropdown-item link" href="/nails.php">Account</a></li>
-            <li><a class="dropdown-item link" href="/lashes.php">Bookings</a></li>
+            <li><a class="dropdown-item link" href="/users/profile.php">Account</a></li>
+            <li><a class="dropdown-item link" href="/bookings/booking.php">Bookings</a></li>
 
             <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
                 <li><hr class="dropdown-divider"></li>

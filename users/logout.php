@@ -17,7 +17,7 @@ if (isset($_POST["confirm_logout"])) {
 
 // If user clicks NO
 if (isset($_POST["cancel_logout"])) {
-    header("Location: account.php");
+    header("Location: update_form.php");
     exit();
 }
 

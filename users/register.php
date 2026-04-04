@@ -2,13 +2,6 @@
 session_start();
 
 $isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
-
-// If NOT admin, block access (or allow if you want dual use)
-if (!$isAdmin) {
-    header("Location: account.php");
-    exit();
-}
-
 include "../header.php";
 ?>
 

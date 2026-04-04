@@ -4,7 +4,7 @@ session_start();
 // If already logged in, don’t show login again
 
 if (isset($_SESSION["email"])) {
-    header("Location: account.php");
+    header("Location: update_form.php");
     exit();
 }
 
