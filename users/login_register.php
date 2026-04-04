@@ -6,6 +6,7 @@ https://www.geeksforgeeks.org/php/how-to-prevent-sql-injection-in-php/ -->
 <?php
 session_start();
 require_once "../db.php";
+require_once "./auth_helpers.php";
 
 // ===== REGISTER =====
 if (isset($_POST["register"])) {
@@ -16,7 +17,6 @@ if (isset($_POST["register"])) {
     $password = $_POST["password"] ?? "";
     $confirm_password = $_POST["confirm_password"] ?? "";
 
-    // basic validation
     if (
         $first_name === "" ||
         $last_name === "" ||
@@ -29,28 +29,13 @@ if (isset($_POST["register"])) {
         exit();
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!validateEmail($email)) {
         $_SESSION["register_error"] = "Please enter a valid email address.";
         header("Location: register.php");
         exit();
     }
 
-    // passwords must match
-    if ($password !== $confirm_password) {
-        $_SESSION["register_error"] = "Passwords do not match!";
-        header("Location: register.php");
-        exit();
-    }
-
-    // enforce minimum length server-side too
-    if (strlen($password) < 8) {
-        $_SESSION["register_error"] = "Password must be at least 8 characters.";
-        header("Location: register.php");
-        exit();
-    }
-
     try {
-        // check if email already exists
         $check = $conn->prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
         $check->execute([$email]);
 
@@ -60,46 +45,45 @@ if (isset($_POST["register"])) {
             exit();
         }
 
-        // Hash AFTER validation
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_password = hashValidatedPassword($password, $confirm_password);
 
-// Default role
-$role = 'customer';
+        $role = 'customer';
 
-// If admin is creating user, allow custom role
-if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin") {
-    $role = $_POST["role"] ?? 'customer';
-}
+        if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin") {
+            $role = $_POST["role"] ?? 'customer';
+        }
 
-// insert user into db
-$insert = $conn->prepare("
-    INSERT INTO users (first_name, last_name, email, phone, password, role)
-    VALUES (?, ?, ?, ?, ?, ?)
-");
+        $insert = $conn->prepare("
+            INSERT INTO users (first_name, last_name, email, phone, password, role)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
 
-$insert->execute([
-    $first_name,
-    $last_name,
-    $email,
-    $phone,
-    $hashed_password,
-    $role
-]);
-        // automatic login after successful registration
+        $insert->execute([
+            $first_name,
+            $last_name,
+            $email,
+            $phone,
+            $hashed_password,
+            $role
+        ]);
+
         $_SESSION["name"] = $first_name;
         $_SESSION["email"] = $email;
+        $_SESSION["role"] = $role;
 
         header("Location: update_form.php");
         exit();
+    } catch (Exception $e) {
+        $_SESSION["register_error"] = $e->getMessage();
+        header("Location: register.php");
+        exit();
     } catch (PDOException $e) {
-        // duplicate email / unique constraint
         if ($e->getCode() == 23000) {
             $_SESSION["register_error"] = "Email is already registered!";
             header("Location: register.php");
             exit();
         }
 
-        // Other DB errors
         die("Database error (register): " . $e->getMessage());
     }
 }
@@ -115,14 +99,13 @@ if (isset($_POST["login"])) {
         exit();
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!validateEmail($email)) {
         $_SESSION["login_error"] = "Please enter a valid email address.";
         header("Location: login.php");
         exit();
     }
 
     try {
-        // get the user by email
         $stmt = $conn->prepare("
             SELECT first_name, email, password, role
             FROM users
@@ -132,19 +115,12 @@ if (isset($_POST["login"])) {
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
-        if (!$user) {
+        if (!$user || !password_verify($password, $user["password"])) {
             $_SESSION["login_error"] = "Incorrect email or password";
             header("Location: login.php");
             exit();
         }
 
-        if (!password_verify($password, $user["password"])) {
-            $_SESSION["login_error"] = "Incorrect email or password";
-            header("Location: login.php");
-            exit();
-        }
-
-        // Success
         $_SESSION["name"] = $user["first_name"];
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
@@ -156,6 +132,5 @@ if (isset($_POST["login"])) {
     }
 }
 
-// If someone hits this file directly without POST:
 header("Location: login.php");
 exit();

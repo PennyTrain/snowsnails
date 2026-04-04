@@ -32,61 +32,11 @@
             </div>
         </section>
         <div class="row footer-info">
-            <div class="col-lg-4 footer-times">
-                <h3 class="sub-heading">OPEN HOURS</h3>
-                <table class="open-hours-table">
-                    <tr>
-                        <th>Day</th>
-                        <th>Hours</th>
-                    </tr>
-                    <tr>
-                        <td>Monday</td>
-                        <td>9am - 5pm</td>
-                    </tr>
-                    <tr>
-                        <td>Tuesday</td>
-                        <td>9am - 5pm</td>
-                    </tr>
-                    <tr>
-                        <td>Wednesday</td>
-                        <td>9am - 7:30pm</td>
-                    </tr>
-                    <tr>
-                        <td>Thursday</td>
-                        <td>9am - 6pm</td>
-                    </tr>
-                    <tr>
-                        <td>Friday</td>
-                        <td>9am - 5pm</td>
-                    </tr>
-                    <tr>
-                        <td>Saturday</td>
-                        <td>9am - 3pm</td>
-                    </tr>
-                </table>
-            </div>
             <div class="col-lg-4 footer-news">
                 <h3 class="sub-heading">NEWS</h3>
                 <p class="text">
-                    <span>We are excited to announce we will soon be launching an exciting NEW skincare brand</span>
-                    <span>CRYSTAL CLEAR</span>
-                    <span>We will be holding a launch event</span>
-                    <span>Thursday 20th March @ 5.30pm</span>
-                    <span>Tickets will be very limited so please let us know if you would like to attend this event to
-                        see and</span>
-                    <span>learn all about this amazing treatment</span>
-                </p>
-            </div>
-            <div class="col-lg-4 footer-contact">
-                <h3 class="sub-heading">CONTACT US</h3>
-                <p class="text">
-                    <span>Snows Nails</span>
-                    <span>22 Lowestoft Road</span>
-                    <span>Carlton Colville NR33 8JD</span>
-                    <span>Phone: 01502 539051</span>
-                </p>
-            </div>
-            <section class="footer-social">
+                    <span>£5 Discount for all students and those with a blue light card!</span>
+                                <section class="footer-social">
     <ul class="footer-social-list">
 
         <li class="footer-social-item">
@@ -115,6 +65,60 @@
 
     </ul>
 </section>
+                    <!-- <span>CRYSTAL CLEAR</span>
+                    <span>We will be holding a launch event</span>
+                    <span>Thursday 20th March @ 5.30pm</span>
+                    <span>Tickets will be very limited so please let us know if you would like to attend this event to
+                        see and</span>
+                    <span>learn all about this amazing treatment</span> -->
+                </p>
+            </div>
+                        <div class="col-lg-4 footer-times">
+                <h3 class="sub-heading">OPEN HOURS</h3>
+                <table class="open-hours-table">
+                    <tr>
+                        <th>Day</th>
+                        <th>Hours</th>
+                    </tr>
+                    <tr>
+                        <td>Monday</td>
+                        <td>9:30am - 6pm</td>
+                    </tr>
+                    <tr>
+                        <td>Tuesday</td>
+                        <td>9:30am - 6pm</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>9:30am - 6pm</td>
+                    </tr>
+                    <tr>
+                        <td>Thursday</td>
+                        <td>9:30am - 6pm</td>
+                    </tr>
+                    <tr>    
+                        <td>Friday</td>
+                        <td>9:30am - 6pm</td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>9:30am - 6pm</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>Closed</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-4 footer-contact">
+                <h3 class="sub-heading">CONTACT US</h3>
+                <p class="text">
+                    <span>Snows Nails</span>
+                    <span>5 Lyon St West</span>
+                    <span>Bognor Regis PO211BY</span>
+                    <span>Phone: 07538599019</span>
+                </p>
+            </div>
         </div>
     </footer>
     <!-- The Link for all The Font Awesome Icons -->

@@ -1,22 +1,17 @@
 <?php
 session_start();
 require_once "../db.php";
+require_once "./auth_helpers.php";
 require __DIR__ . '/../vendor/autoload.php';
 
 use Cloudinary\Cloudinary;
 use Dotenv\Dotenv;
 
-// Auth check
-if (!isset($_SESSION["email"])) {
-    header("Location: login.php");
-    exit();
-}
+$user = getCurrentUser($conn);
 
-// Load env
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-// Cloudinary
 $cloudinary = new Cloudinary([
     'cloud' => [
         'cloud_name' => $_ENV['CLOUDINARY_CLOUD_NAME'],
@@ -26,47 +21,38 @@ $cloudinary = new Cloudinary([
     'url' => ['secure' => true]
 ]);
 
-// Get inputs
-$first_name = trim($_POST["first_name"]);
-$last_name = trim($_POST["last_name"]);
-$email = trim($_POST["email"]);
-$phone = trim($_POST["phone"]);
-
+$first_name = trim($_POST["first_name"] ?? "");
+$last_name = trim($_POST["last_name"] ?? "");
+$email = trim($_POST["email"] ?? "");
+$phone = trim($_POST["phone"] ?? "");
 $new_password = $_POST["new_password"] ?? "";
 $confirm_password = $_POST["confirm_password"] ?? "";
 
-// Get current user
 $stmt = $conn->prepare("SELECT password, img_url FROM users WHERE email = ?");
 $stmt->execute([$_SESSION["email"]]);
 $user = $stmt->fetch();
 
+if (!$user) {
+    die("User not found.");
+}
+
 $img_url = $user["img_url"];
 
-
-// ===== IMAGE UPLOAD =====
 if (!empty($_FILES["profile_image"]["tmp_name"])) {
     $upload = $cloudinary->uploadApi()->upload($_FILES["profile_image"]["tmp_name"]);
     $img_url = $upload['secure_url'];
 }
 
-
-// ===== PASSWORD UPDATE =====
-if (!empty($new_password)) {
-    if ($new_password !== $confirm_password) {
-        die("Passwords do not match");
+try {
+    if ($new_password !== "") {
+        $hashed_password = hashValidatedPassword($new_password, $confirm_password);
+    } else {
+        $hashed_password = $user["password"];
     }
-
-    if (strlen($new_password) < 8) {
-        die("Password too short");
-    }
-
-    $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-} else {
-    $hashed_password = $user["password"]; // keep old
+} catch (Exception $e) {
+    die($e->getMessage());
 }
 
-
-// ===== UPDATE USER =====
 $update = $conn->prepare("
     UPDATE users
     SET first_name = ?, last_name = ?, email = ?, phone = ?, password = ?, img_url = ?
@@ -83,7 +69,6 @@ $update->execute([
     $_SESSION["email"]
 ]);
 
-// update session
 $_SESSION["name"] = $first_name;
 $_SESSION["email"] = $email;
 
