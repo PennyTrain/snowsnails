@@ -57,9 +57,8 @@ unless explicitly ended or interrupted. -->
             <div class="container-fluid moving-nav">
                 <a class="navbar-brand link logo" href="/index.php">
                     <span class="never-display">Logo that goes to home page</span>
-                    <i class="fa-solid fa-b"></i>
-                    <i class="fa-brands fa-d-and-d"></i>
-                    <i class="fa-solid fa-b"></i></a>
+<img src="/assets/images/logo.png" alt="Snows Nails Logo" class="logo-img">
+</a>
                 <button class="navbar-toggler border link hamburger" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -77,9 +76,10 @@ unless explicitly ended or interrupted. -->
                             <a class="nav-link dropdown-toggle link" href="#" id="dropdown05" data-bs-toggle="dropdown"
                                 aria-expanded="false">What We Offer</a>
                             <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
-                                <li><a class="dropdown-item link" href="/nails.php">Nails</a></li>
-                                <li><a class="dropdown-item link" href="/lashes.php">Lashes</a></li>
-                                <li><a class="dropdown-item link" href="/treatments.php">Body Treatments</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=1">Nails</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=2">Lashes</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=3">Waxing</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=4">Body Treatments</a></li>
                             </ul>
                         </li>
 <?php if (isset($_SESSION["email"])): ?>

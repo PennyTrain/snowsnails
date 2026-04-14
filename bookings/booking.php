@@ -1,17 +1,20 @@
 <?php
 session_start();
 require_once "../db.php";
-if (!isset($_SESSION["email"])) {
-    http_response_code(403);
-    include "../httpserrors/403.php"; // adjust path if needed
-    exit();
-}
-
 // Get current user data
-$stmt = $conn->prepare("SELECT first_name, last_name, email, phone, img_url FROM users WHERE email = ?");
-$stmt->execute([$_SESSION["email"]]);
-$user = $stmt->fetch();
+$isLoggedIn = isset($_SESSION["email"]);
 
+$user = []; // default empty array
+
+if ($isLoggedIn) {
+    $stmt = $conn->prepare("
+        SELECT first_name, last_name, email, phone, img_url 
+        FROM users 
+        WHERE email = ?
+    ");
+    $stmt->execute([$_SESSION["email"]]);
+    $user = $stmt->fetch();
+}
 include "../header.php";
 ?>
 
@@ -29,18 +32,48 @@ include "../header.php";
             </p>
             <form class="form-container">
                 <label for="bookfirstname" class="form-label">First Name:</label>
-                <input type="text" id="bookfirstname" name="firstname" class="form-control" value="<?= htmlspecialchars($user["first_name"]) ?>" aria-label="First Name"
-                    required>
-
+<input 
+    type="text" 
+    id="bookfirstname" 
+    name="firstname" 
+    class="form-control"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"]) : '' ?>"
+    aria-label="First Name"
+    <?= $isLoggedIn ? 'required' : '' ?>
+>
                 <label for="booklastname" class="form-label">Last Name:</label>
-                <input type="text" id="booklastname" name="lastname" class="form-control" aria-label="Last Name" value="<?= htmlspecialchars($user["last_name"]) ?>"
-                    required>
-
+<input 
+    type="text" 
+    id="booklastname" 
+    name="lastname" 
+    class="form-control"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"]) : '' ?>"
+    aria-label="Last Name"
+    <?= $isLoggedIn ? 'required' : '' ?>
+>
                 <label for="bookemail" class="form-label">Email:</label>
-                <input type="email" id="bookemail" name="email" class="form-control" aria-label="Email" value="<?= htmlspecialchars($user["email"]) ?>" required>
+<input 
+    type="email" 
+    id="bookemail" 
+    name="email" 
+    class="form-control"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["email"]) : '' ?>"
+    aria-label="Email"
+    <?= $isLoggedIn ? 'required' : '' ?>
+>
+
 
                 <label for="phone" class="form-label">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" class="form-control" aria-label="Phone Number" value="<?= htmlspecialchars($user["phone"]) ?>" required>
+<input 
+    type="phone" 
+    id="bookphone" 
+    name="phone" 
+    class="form-control"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["phone"]) : '' ?>"
+    aria-label="Phone"
+    <?= $isLoggedIn ? 'required' : '' ?>
+>
+
 
                 <label for="appointment_type" class="form-label">Appointment Type:</label>
                 <select id="appointment_type" name="appointment_type" class="form-control" aria-label="Appointment Type"
@@ -69,7 +102,7 @@ include "../header.php";
             </div> -->
             <!-- CANELATION POLICY -->
             <p class="small-print">Can we politely remind everyone, we do require at least 24 hours notice to cancel or
-                change your appointment. Failure to do so will result in 50% of your treatment value fee being charged.
+                change your appointment.
                 We reserve the right to refuse to rebook your appointment if you fail to comply with our policy. </p>
         </div>
     </main>

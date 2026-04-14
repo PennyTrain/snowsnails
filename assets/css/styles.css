@@ -898,3 +898,11 @@ footer h3 {
     border: 3px solid #ddd;
     margin-bottom: 10px;
 }
+
+/* LOGO */
+
+.logo-img {
+  height: 70px; /* adjust as needed */
+  width: auto;
+  object-fit: contain;
+}
