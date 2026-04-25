@@ -36,15 +36,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Accordion handling
-  document.querySelectorAll(".accordion-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const accordionContent = button.nextElementSibling;
-      button.classList.toggle("active");
-      accordionContent.style.display = button.classList.contains("active")
-        ? "block"
-        : "none";
-    });
-  });
+  // document.querySelectorAll(".accordion-button").forEach((button) => {
+  //   button.addEventListener("click", () => {
+  //     const accordionContent = button.nextElementSibling;
+  //     button.classList.toggle("active");
+  //     accordionContent.style.display = button.classList.contains("active")
+  //       ? "block"
+  //       : "none";
+  //   });
+  // });
 
   // Display stored data
   const displayNameElement = document.getElementById("display-name");
@@ -68,3 +68,5 @@ document.addEventListener("DOMContentLoaded", function () {
 //         .closest(".user-container")
 //         .classList.add("active");
 // }
+
+

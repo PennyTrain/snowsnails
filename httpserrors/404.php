@@ -11,7 +11,7 @@ include "../header.php";
     </p>
 
     <div class="error-image-wrapper">
-        <img src="/assets/images/404.png" alt="Page not found" class="error-image">
+        <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/q_auto/f_auto/v1776178502/404_ipnapb.png" alt="Page not found" class="error-image">
     </div>
 
     <a href="/index.php" class="error-button">Go Home</a>

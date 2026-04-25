@@ -4,7 +4,7 @@ session_start();
 // If already logged in, don’t show login again
 
 if (isset($_SESSION["email"])) {
-    header("Location: update_form.php");
+    header("Location: user.php");
     exit();
 }
 
@@ -21,7 +21,7 @@ include "../header.php";
         <?php unset($_SESSION["login_error"]); ?>
     <?php endif; ?>
 
-    <form action="login_register.php" method="post" class="form-container">
+    <form action="user_control.php" method="post" class="form-container">
 
         <label for="login_email" class="form-label">Email</label>
         <input type="email" id="login_email" name="email" class="form-control" required>
@@ -29,7 +29,7 @@ include "../header.php";
         <label for="login_password" class="form-label">Password</label>
         <input type="password" id="login_password" name="password" class="form-control" required>
 
-        <button type="submit" name="login" class="button link">Login</button>
+        <button type="submit" name="login" class="btn btn-secondary">Login</button>
 
         <p class="text-center">
             Don’t have an account?

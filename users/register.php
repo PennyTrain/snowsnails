@@ -15,7 +15,7 @@ include "../header.php";
         <?php unset($_SESSION["register_error"]); ?>
     <?php endif; ?>
 
-    <form action="login_register.php" method="post" class="form-container">
+    <form action="user_control.php" method="post" class="form-container">
 
         <label>First Name</label>
         <input type="text" name="first_name" class="form-control" required>
@@ -45,9 +45,14 @@ include "../header.php";
             </select>
         <?php endif; ?>
 
-        <button type="submit" name="register" class="button link">
+        <button type="submit" name="register" class="btn btn-secondary">
             <?= $isAdmin ? "Create User" : "Register" ?>
         </button>
+
+                <p class="text-center">
+            Already Have an Account? 
+            <a href="login.php">Login</a>
+        </p>
 
     </form>
 </section>

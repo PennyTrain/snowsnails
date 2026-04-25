@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../db.php";
+require_once "../config/db.php";
 // Get current user data
 $isLoggedIn = isset($_SESSION["email"]);
 
@@ -15,6 +15,15 @@ if ($isLoggedIn) {
     $stmt->execute([$_SESSION["email"]]);
     $user = $stmt->fetch();
 }
+
+$stmt = $conn->prepare("
+    SELECT s.service_id, s.name, s.price, c.name AS category
+    FROM services s
+    JOIN categories c ON s.category_id = c.category_id
+    ORDER BY c.name, s.name
+");
+$stmt->execute();
+$services = $stmt->fetchAll();
 include "../header.php";
 ?>
 
@@ -24,7 +33,10 @@ include "../header.php";
         <div class="row service-container">
             <h1 class="heading">Book with us!</h1>
             <p class="form-desc display-none">
-                <span>Experience the Ultimate in Beauty and Relaxation!</span>
+                <span>Experience the Ultimate in Beauty and Relaxation!</span><br>
+                <?php if (!$isLoggedIn): ?>
+<span>Create an account and create a booking all in one below!</span>
+<?php endif; ?>
                 <!-- <span>At Beauty Bliss Therapies, we offer a wide range of luxurious treatments designed to enhance your
                     natural beauty and rejuvenate your spirit. Whether you're looking for a stunning manicure,
                     soothing facial, or relaxing massage, we have the perfect service to meet your needs. Book your
@@ -75,24 +87,76 @@ include "../header.php";
 >
 
 
-                <label for="appointment_type" class="form-label">Appointment Type:</label>
-                <select id="appointment_type" name="appointment_type" class="form-control" aria-label="Appointment Type"
-                    required>
-                    <option value="" disabled selected>Select an option</option>
-                    <option value="Lashes">Lashes</option>
-                    <option value="Nails">Nails</option>
-                    <option value="Treatment">Body-treatment</option>
-                </select>
 
-                <label for="appointment_date" class="form-label">Appointment Date:</label>
-                <input type="date" id="appointment_date" name="appointment_date" class="form-control"
-                    aria-label="Appointment Date" required>
 
-                <label for="appointment_time" class="form-label">Appointment Time:</label>
-                <input type="time" id="appointment_time" name="appointment_time" class="form-control"
-                    aria-label="Appointment Time" required>
+<?php if (!$isLoggedIn): ?>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" class="form-control" required minlength="8">
 
-                <button type="submit" class="button link" formaction="submit.html">Submit</button>
+    <label for="confirm_password">Confirm Password</label>
+    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="8">
+<?php endif; ?>
+
+<div class="services-accordion">
+
+<label class="form-label">Select Services:</label>
+
+
+<?php
+$currentCategory = "";
+$index = 0;
+
+foreach ($services as $service):
+
+    if ($currentCategory !== $service["category"]):
+        if ($currentCategory !== "") {
+            echo '</div></div></div>'; // close previous category
+        }
+
+        $currentCategory = $service["category"];
+        $index++;
+?>
+
+    <div class="accordion-item">
+        <p class="accordion-header" id="heading<?= $index ?>">
+            <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse<?= $index ?>">
+                <?= htmlspecialchars($currentCategory) ?>
+            </button>
+        </p>
+
+        <div id="collapse<?= $index ?>" class="accordion-collapse collapse">
+            <div class="accordion-body">
+
+<?php endif; ?>
+
+                <div class="form-check">
+                    <input 
+                        type="checkbox"
+                        name="name[]"
+                        value="<?= $service["service_id"] ?>"
+                        id="service<?= $service["service_id"] ?>"
+                        class="form-check-input"
+                    >
+
+                    <label for="service<?= $service["service_id"] ?>" class="form-check-label">
+                        <?= htmlspecialchars($service["name"]) ?> 
+                        (£<?= number_format($service["price"], 2) ?>)
+                    </label>
+                </div>
+
+<?php endforeach; ?>
+
+    </div></div></div> <!-- close last category -->
+
+</div>
+
+
+                        <label for="scheduled_at" class="form-label">Appointment date and time:</label>
+<input id="scheduled_at" class="form-control" type="datetime-local" name="scheduled_at" value="">
+
+                <button type="submit" class="btn btn-secondary" name="booking" formaction="submit.html">Submit</button>
             </form>
             <!-- GOOGLE MAP -->
             <!-- <div class="col-lg-6 map-container">
@@ -106,6 +170,7 @@ include "../header.php";
                 We reserve the right to refuse to rebook your appointment if you fail to comply with our policy. </p>
         </div>
     </main>
+
 
 <?php include "../footer.php"; ?>
 

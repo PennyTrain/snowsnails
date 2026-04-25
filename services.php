@@ -46,7 +46,10 @@ $services = $stmt->fetchAll();
         <div class="col-lg-6 service-info">
             <h1 class="heading"><?= htmlspecialchars($title) ?></h1>
             <p class="text"><?= htmlspecialchars($description) ?></p>
-            <a href="/bookings/booking.php" class="btn offer-button link">Book Now</a>
+                        <a href="/bookings/booking.php" class="btn offer-btn btn-secondary">Book Now</a>
+            <?php if ($category == 1): ?>
+            <img src="./assets/images/lady-nails.jpg" class="service-img no-image" alt="A ladys nails">
+            <?php endif; ?>
         </div>
 
         <div class="col-lg-6 service-table">

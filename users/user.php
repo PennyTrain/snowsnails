@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once "../db.php";
+require_once "../config/db.php";
+require_once "../helpers/auth.php";
 
 if (!isset($_SESSION["email"])) {
     header("Location: login.php");
@@ -8,9 +9,7 @@ if (!isset($_SESSION["email"])) {
 }
 
 // Get current user data
-$stmt = $conn->prepare("SELECT first_name, last_name, email, phone, img_url FROM users WHERE email = ?");
-$stmt->execute([$_SESSION["email"]]);
-$user = $stmt->fetch();
+$user = getCurrentUserData($conn);
 
 include "../header.php";
 ?>
@@ -21,6 +20,7 @@ include "../header.php";
     <?php endif; ?>
     <h2 class="heading"><?= htmlspecialchars($user["first_name"]) ?>'s Profile</h2>
     </div>
+    <div class="profile-content">
         <ul>
             <li>
                 <?= htmlspecialchars($user["first_name"]) ?> <?= htmlspecialchars($user["last_name"]) ?>
@@ -32,8 +32,9 @@ include "../header.php";
                 <?= htmlspecialchars($user["phone"]) ?>
             </li>
         </ul>
-            <button onclick="window.location.href='logout.php'">Logout</button>
-                        <button onclick="window.location.href='update_form.php'">Update Info!</button>
+                                <button onclick="window.location.href='user_update.php'" class="btn btn-secondary">Update Info!</button>
+            <button onclick="window.location.href='logout.php'" class="btn btn-secondary">Logout</button>
+    </div>
 </section>
 
  <?php // Include the footer file

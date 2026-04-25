@@ -14,11 +14,8 @@ include "header.php"; ?>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <picture>
-                    <source media="(max-width: 800px)" srcset="./assets/images/resized-images/calm-left800.png">
-                    <source media="(max-width: 465px)" srcset="./assets/images/resized-images/calm-left465.png">
-                    <source media="(max-width: 300px)" srcset="./assets/images/resized-images/calm-left300.png">
-                    <img src="./assets/images/calm-left.jpg" class="d-block w-100"
-                        alt="Default image, Calming and aesthetically pleasing photo of shampoo bottles">
+                        <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/q_auto/f_auto/v1776150413/IMG_2483_tafp34.jpg" class="d-block w-100"
+                        alt="Calming and aesthetically pleasing photo of shampoo bottles - calm light">
                 </picture>
                 <div class="carousel-caption d-none d-md-block">
                     <p class="carousel-title"></p>
@@ -26,10 +23,7 @@ include "header.php"; ?>
             </div>
             <div class="carousel-item">
                 <picture>
-                    <source media="(max-width: 800px)" srcset="./assets/images/resized-images/calm-right800.png">
-                    <source media="(max-width: 465px)" srcset="./assets/images/resized-images/calm-right465.png">
-                    <source media="(max-width: 300px)" srcset="./assets/images/resized-images/calm-right300.png">
-                    <img src="./assets/images/calm-right.jpg" class="d-block w-100"
+                    <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/q_auto/f_auto/v1776150413/IMG_2486_ghbqn3.jpg" class="d-block w-100"
                         alt="Calming and aesthetically pleasing photo of shampoo bottles - calm right">
                 </picture>
                 <div class="carousel-caption d-none d-md-block">
@@ -38,11 +32,8 @@ include "header.php"; ?>
             </div>
             <div class="carousel-item">
                 <picture>
-                    <source media="(max-width: 800px)" srcset="./assets/images/resized-images/calm-light800.png">
-                    <source media="(max-width: 465px)" srcset="./assets/images/resized-images/calm-light465.png">
-                    <source media="(max-width: 300px)" srcset="./assets/images/resized-images/calm-light300.png">
-                    <img src="./assets/images/calm-light.jpg" class="d-block w-100"
-                        alt="Calming and aesthetically pleasing photo of shampoo bottles - calm light">
+                    <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776150413/IMG_2481_rorfbg.jpg" class="d-block w-100"
+                        alt="Default image, Calming and aesthetically pleasing photo of shampoo bottles">
                 </picture>
                 <div class="carousel-caption d-none d-md-block">
                     <p class="carousel-title"></p>
@@ -69,6 +60,18 @@ include "header.php"; ?>
             <h1 class="home-heading">Our Services</h1>
             <!-- CARDS -->
             <div class="row all-cards">
+                                <!-- NAILS -->
+                <div class="card col-lg-4 col-md-3 col-sm-12 cards">
+                    <img src="./assets/images/lady-nails.jpg" class="card-img-top card-image"
+                        alt="A lady doing someones nails">
+                    <div class="card-body">
+                        <h2 class="card-title">Nails</h2>
+                        <p class="card-text">Get the perfect manicure with our wide range of nail services. From classic
+                            to
+                            trendy designs!</p>
+                        <a href="/services.php?category_id=1" class="btn btn btn-secondary">Take a look!</a>
+                    </div>
+                </div>
                 <!-- LASHES -->
                 <div class="card col-lg-4 col-md-3 col-sm-12 cards">
                     <img src="./assets/images/lashes.jpg" class="card-img-top card-image"
@@ -78,19 +81,19 @@ include "header.php"; ?>
                         <p class="card-text">Enhance your natural beauty with our professional lash extensions. Perfect
                             for
                             any occasion!</p>
-                        <a href="./lashes.html" class="btn button link">Take a look!</a>
+                        <a href="/services.php?category_id=2" class="btn btn btn-secondary">Take a look!</a>
                     </div>
                 </div>
-                <!-- NAILS -->
+
+                <!-- WAXING -->
                 <div class="card col-lg-4 col-md-3 col-sm-12 cards">
-                    <img src="./assets/images/lady-nails.jpg" class="card-img-top card-image"
-                        alt="A lady doing someones nails">
+                    <img src="./assets/images/stone-massage.jpg" class="card-img-top card-image"
+                        alt="A lady getting a spa treatment with stones on her back">
                     <div class="card-body">
-                        <h2 class="card-title">Nails</h2>
-                        <p class="card-text">Get the perfect manicure with our wide range of nail services. From classic
-                            to
-                            trendy designs!</p>
-                        <a href="./nails.html" class="btn button link">Take a look!</a>
+                        <h2 class="card-title">Treatments</h2>
+                        <p class="card-text">Indulge in our luxurious treatments designed to rejuvenate and refresh your
+                            skin. Feel pampered!</p>
+                        <a href="/services.php?category_id=3" class="btn btn btn-secondary">Take a look!</a>
                     </div>
                 </div>
                 <!-- TREATMENTS -->
@@ -101,49 +104,94 @@ include "header.php"; ?>
                         <h2 class="card-title">Treatments</h2>
                         <p class="card-text">Indulge in our luxurious treatments designed to rejuvenate and refresh your
                             skin. Feel pampered!</p>
-                        <a href="./treatments.html" class="btn button link">Take a look!</a>
+                        <a href="/services.php?category_id=4" class="btn btn btn-secondary">Take a look!</a>
                     </div>
                 </div>
             </div>
         </section>
         <!-- OFFERS -->
-        <section class="offers-container">
-            <h1 class="home-heading">Special Offers <i class="bi bi-0-square custom-icon"></i></h1>
-            <div class="accordion">
-                <div class="accordion-item">
-                    <button class="accordion-button">20% Off Facials</button>
-                    <div class="accordion-content">
-                        <p>Pamper yourself with our luxurious facials and enjoy 20% off your first booking. Perfect for
-                            rejuvenating your skin!</p>
-                        <div class="guten">
-                            <a href="./form.html" class="btn offer-button link">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-button">Buy One Get One Free
-                        Manicure</button>
-                    <div class="accordion-content">
-                        <p>Treat yourself and a friend to a stunning manicure. Book one and get the second one free.
-                            Limited time offer!</p>
-                        <div class="guten">
-                            <a href="./form.html" class="btn offer-button link">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-button">Free Lash Tint with Lash
-                        Extensions</button>
-                    <div class="accordion-content">
-                        <p>Enhance your lashes with our professional extensions and receive a free lash tint. Achieve
-                            the perfect look!</p>
-                        <div class="guten">
-                            <a href="./form.html" class="btn offer-button link">Book Now</a>
-                        </div>
+<section class="offers-container">
+    <h1 class="home-heading">
+        Special Offers <i class="bi bi-0-square custom-icon"></i>
+    </h1>
+
+    <div class="accordion offers-accordion" id="offersAccordion">
+
+        <!-- ITEM 1 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="offerHeadingOne">
+                <button class="accordion-button" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#offerCollapseOne"
+                        aria-expanded="true">
+                    20% Off Facials
+                </button>
+            </h2>
+
+            <div id="offerCollapseOne" class="accordion-collapse collapse show"
+                 data-bs-parent="#offersAccordion">
+                <div class="accordion-body">
+                    <p>
+                        Pamper yourself with our luxurious facials and enjoy 20% off your first booking.
+                        Perfect for rejuvenating your skin!
+                    </p>
+                    <div class="guten">
+                        <a href="./bookings/booking.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <!-- ITEM 2 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="offerHeadingTwo">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#offerCollapseTwo">
+                    Buy One Get One Free Manicure
+                </button>
+            </h2>
+
+            <div id="offerCollapseTwo" class="accordion-collapse collapse"
+                 data-bs-parent="#offersAccordion">
+                <div class="accordion-body">
+                    <p>
+                        Treat yourself and a friend to a stunning manicure. Book one and get the second one free.
+                        Limited time offer!
+                    </p>
+                    <div class="guten">
+                        <a href="./bookings/booking.php" class="btn offer-btn btn-secondary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ITEM 3 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="offerHeadingThree">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#offerCollapseThree">
+                    Free Lash Tint with Lash Extensions
+                </button>
+            </h2>
+
+            <div id="offerCollapseThree" class="accordion-collapse collapse"
+                 data-bs-parent="#offersAccordion">
+                <div class="accordion-body">
+                    <p>
+                        Enhance your lashes with our professional extensions and receive a free lash tint.
+                        Achieve the perfect look!
+                    </p>
+                    <div class="guten">
+                        <a href="./bookings/booking.php" class="btn offer-btn btn-secondary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
         <!-- TESTIMONIALS -->
         <section class="testimonials display-none">
             <h1 class="home-heading">What Our Clients Say</h1>
