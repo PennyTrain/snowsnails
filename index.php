@@ -1,6 +1,7 @@
  <?php // Include the header file
 // Include the header file
-include "header.php"; ?>
+// Include the header file
+ include "header.php"; ?>
     <!-- CAROUSEL -->
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">

@@ -1,6 +1,6 @@
 <?php
 include "header.php";
-require_once "db.php";
+require_once "./config/db.php";
 
 $allowed_categories = ["1", "2", "3", "4"];
 $category = $_GET["category_id"] ?? "";
@@ -64,8 +64,13 @@ $services = $stmt->fetchAll();
                     <?php if (!empty($services)): ?>
                         <?php foreach ($services as $service): ?>
                             <tr>
-                                <td><?= htmlspecialchars($service["name"]) ?></td>
-                                <td>£<?= number_format($service["price"], 2) ?></td>
+                                <td><?= htmlspecialchars(
+                                    $service["name"],
+                                ) ?></td>
+                                <td>£<?= number_format(
+                                    $service["price"],
+                                    2,
+                                ) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>

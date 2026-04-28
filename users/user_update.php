@@ -22,13 +22,21 @@ include "../header.php";
                 <h2 class="heading">Update Profile</h2>
         </div>
              <label for="login_password" class="form-label">First Name</label>
-    <input type="text" class="form-control" name="first_name" value="<?= htmlspecialchars($user["first_name"]) ?>" required>
+    <input type="text" class="form-control" name="first_name" value="<?= htmlspecialchars(
+        $user["first_name"],
+    ) ?>" required>
                  <label for="login_password" class="form-label">Last Name</label>
-    <input type="text" class="form-control" name="last_name" value="<?= htmlspecialchars($user["last_name"]) ?>" required>
+    <input type="text" class="form-control" name="last_name" value="<?= htmlspecialchars(
+        $user["last_name"],
+    ) ?>" required>
              <label for="login_password" class="form-label">Email</label>
-    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($user["email"]) ?>" required>
+    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars(
+        $user["email"],
+    ) ?>" required>
                  <label for="login_password" class="form-label">Phone</label>
-    <input type="text" class="form-control" name="phone" value="<?= htmlspecialchars($user["phone"]) ?>" required>
+    <input type="text" class="form-control" name="phone" value="<?= htmlspecialchars(
+        $user["phone"],
+    ) ?>" required>
 
     <!-- Profile Picture -->
     <label>Profile Picture</label>

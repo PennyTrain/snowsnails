@@ -18,12 +18,16 @@ include "../header.php";
     <?php if (!empty($user["img_url"])): ?>
         <img src="<?= $user["img_url"] ?>" class="profile-img">
     <?php endif; ?>
-    <h2 class="heading"><?= htmlspecialchars($user["first_name"]) ?>'s Profile</h2>
+    <h2 class="heading"><?= htmlspecialchars(
+        $user["first_name"],
+    ) ?>'s Profile</h2>
     </div>
     <div class="profile-content">
         <ul>
             <li>
-                <?= htmlspecialchars($user["first_name"]) ?> <?= htmlspecialchars($user["last_name"]) ?>
+                <?= htmlspecialchars(
+                    $user["first_name"],
+                ) ?> <?= htmlspecialchars($user["last_name"]) ?>
             </li>
             <li>
                 <?= htmlspecialchars($user["email"]) ?>
@@ -38,5 +42,6 @@ include "../header.php";
 </section>
 
  <?php // Include the footer file
+
 include "../footer.php";
 ?>

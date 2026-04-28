@@ -11,7 +11,9 @@ include "../header.php";
     </h1>
 
     <?php if (!empty($_SESSION["register_error"])): ?>
-        <p class="error-message"><?= htmlspecialchars($_SESSION["register_error"]) ?></p>
+        <p class="error-message"><?= htmlspecialchars(
+            $_SESSION["register_error"],
+        ) ?></p>
         <?php unset($_SESSION["register_error"]); ?>
     <?php endif; ?>
 

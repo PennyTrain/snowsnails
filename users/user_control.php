@@ -4,12 +4,12 @@ session_start();
 require_once "../config/db.php";
 require_once "../helpers/validation.php";
 require_once "../helpers/auth.php";
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . "/../vendor/autoload.php";
 
 use Cloudinary\Cloudinary;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 if (isset($_POST["register"])) {
@@ -32,7 +32,12 @@ function handleRegister(PDO $conn)
     $password = $_POST["password"] ?? "";
     $confirm_password = $_POST["confirm_password"] ?? "";
 
-    if ($first_name === "" || $last_name === "" || $email === "" || $password === "") {
+    if (
+        $first_name === "" ||
+        $last_name === "" ||
+        $email === "" ||
+        $password === ""
+    ) {
         $_SESSION["register_error"] = "Please fill in all required fields.";
         header("Location: register.php");
         exit();
@@ -61,7 +66,13 @@ function handleRegister(PDO $conn)
             VALUES (?, ?, ?, ?, ?, 'customer')
         ");
 
-        $insert->execute([$first_name, $last_name, $email, $phone, $hashed_password]);
+        $insert->execute([
+            $first_name,
+            $last_name,
+            $email,
+            $phone,
+            $hashed_password,
+        ]);
 
         $_SESSION["name"] = $first_name;
         $_SESSION["email"] = $email;
@@ -69,7 +80,6 @@ function handleRegister(PDO $conn)
 
         header("Location: user.php");
         exit();
-
     } catch (PDOException $e) {
         $_SESSION["register_error"] = "Database error.";
         header("Location: register.php");
@@ -93,7 +103,9 @@ function handleLogin(PDO $conn)
     }
 
     try {
-        $stmt = $conn->prepare("SELECT first_name, email, password, role FROM users WHERE email = ?");
+        $stmt = $conn->prepare(
+            "SELECT first_name, email, password, role FROM users WHERE email = ?",
+        );
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -109,7 +121,6 @@ function handleLogin(PDO $conn)
 
         header("Location: user.php");
         exit();
-
     } catch (PDOException $e) {
         die("Login DB error");
     }
@@ -120,12 +131,12 @@ function handleProfileUpdate(PDO $conn)
     $user = getCurrentUser($conn);
 
     $cloudinary = new Cloudinary([
-        'cloud' => [
-            'cloud_name' => $_ENV['CLOUDINARY_CLOUD_NAME'],
-            'api_key'    => $_ENV['CLOUDINARY_API_KEY'],
-            'api_secret' => $_ENV['CLOUDINARY_API_SECRET']
+        "cloud" => [
+            "cloud_name" => $_ENV["CLOUDINARY_CLOUD_NAME"],
+            "api_key" => $_ENV["CLOUDINARY_API_KEY"],
+            "api_secret" => $_ENV["CLOUDINARY_API_SECRET"],
         ],
-        'url' => ['secure' => true]
+        "url" => ["secure" => true],
     ]);
 
     $first_name = trim($_POST["first_name"] ?? "");
@@ -138,13 +149,18 @@ function handleProfileUpdate(PDO $conn)
     $img_url = $user["img_url"];
 
     if (!empty($_FILES["profile_image"]["tmp_name"])) {
-        $upload = $cloudinary->uploadApi()->upload($_FILES["profile_image"]["tmp_name"]);
-        $img_url = $upload['secure_url'];
+        $upload = $cloudinary
+            ->uploadApi()
+            ->upload($_FILES["profile_image"]["tmp_name"]);
+        $img_url = $upload["secure_url"];
     }
 
     try {
         if ($new_password !== "") {
-            $hashed_password = hashValidatedPassword($new_password, $confirm_password);
+            $hashed_password = hashValidatedPassword(
+                $new_password,
+                $confirm_password,
+            );
         } else {
             $hashed_password = $user["password"];
         }
@@ -165,7 +181,7 @@ function handleProfileUpdate(PDO $conn)
         $phone,
         $hashed_password,
         $img_url,
-        $_SESSION["email"]
+        $_SESSION["email"],
     ]);
 
     $_SESSION["name"] = $first_name;
@@ -175,9 +191,7 @@ function handleProfileUpdate(PDO $conn)
     exit();
 }
 
-function handleLogout(PDO $conn) {
-
-}
+function handleLogout(PDO $conn) {}
 
 // <!-- https://stackoverflow.com/questions/60174/how-can-i-prevent-sql-injection-in-php
 // https://www.geeksforgeeks.org/php/how-to-validate-and-sanitize-user-input-with-php/

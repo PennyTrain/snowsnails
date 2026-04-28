@@ -49,9 +49,9 @@ include "../header.php";
     id="bookfirstname" 
     name="firstname" 
     class="form-control"
-    value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"]) : '' ?>"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"]) : "" ?>"
     aria-label="First Name"
-    <?= $isLoggedIn ? 'required' : '' ?>
+    <?= $isLoggedIn ? "required" : "" ?>
 >
                 <label for="booklastname" class="form-label">Last Name:</label>
 <input 
@@ -59,9 +59,9 @@ include "../header.php";
     id="booklastname" 
     name="lastname" 
     class="form-control"
-    value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"]) : '' ?>"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"]) : "" ?>"
     aria-label="Last Name"
-    <?= $isLoggedIn ? 'required' : '' ?>
+    <?= $isLoggedIn ? "required" : "" ?>
 >
                 <label for="bookemail" class="form-label">Email:</label>
 <input 
@@ -69,9 +69,9 @@ include "../header.php";
     id="bookemail" 
     name="email" 
     class="form-control"
-    value="<?= $isLoggedIn ? htmlspecialchars($user["email"]) : '' ?>"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["email"]) : "" ?>"
     aria-label="Email"
-    <?= $isLoggedIn ? 'required' : '' ?>
+    <?= $isLoggedIn ? "required" : "" ?>
 >
 
 
@@ -81,21 +81,21 @@ include "../header.php";
     id="bookphone" 
     name="phone" 
     class="form-control"
-    value="<?= $isLoggedIn ? htmlspecialchars($user["phone"]) : '' ?>"
+    value="<?= $isLoggedIn ? htmlspecialchars($user["phone"]) : "" ?>"
     aria-label="Phone"
-    <?= $isLoggedIn ? 'required' : '' ?>
+    <?= $isLoggedIn ? "required" : "" ?>
 >
 
 
 
 
-<?php if (!$isLoggedIn): ?>
+<!-- <?php if (!$isLoggedIn): ?>
     <label for="password">Password</label>
     <input type="password" id="password" name="password" class="form-control" required minlength="8">
 
     <label for="confirm_password">Confirm Password</label>
     <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="8">
-<?php endif; ?>
+<?php endif; ?> -->
 
 <div class="services-accordion">
 
@@ -107,15 +107,15 @@ $currentCategory = "";
 $index = 0;
 
 foreach ($services as $service):
-
     if ($currentCategory !== $service["category"]):
+
         if ($currentCategory !== "") {
-            echo '</div></div></div>'; // close previous category
+            echo "</div></div></div>"; // close previous category
         }
 
         $currentCategory = $service["category"];
         $index++;
-?>
+        ?>
 
     <div class="accordion-item">
         <p class="accordion-header" id="heading<?= $index ?>">
@@ -129,7 +129,8 @@ foreach ($services as $service):
         <div id="collapse<?= $index ?>" class="accordion-collapse collapse">
             <div class="accordion-body">
 
-<?php endif; ?>
+<?php
+    endif; ?>
 
                 <div class="form-check">
                     <input 
@@ -140,13 +141,17 @@ foreach ($services as $service):
                         class="form-check-input"
                     >
 
-                    <label for="service<?= $service["service_id"] ?>" class="form-check-label">
+                    <label for="service<?= $service[
+                        "service_id"
+                    ] ?>" class="form-check-label">
                         <?= htmlspecialchars($service["name"]) ?> 
                         (£<?= number_format($service["price"], 2) ?>)
                     </label>
                 </div>
 
-<?php endforeach; ?>
+<?php
+endforeach;
+?>
 
     </div></div></div> <!-- close last category -->
 

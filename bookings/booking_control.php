@@ -3,22 +3,22 @@ session_start();
 require_once "../config/db.php";
 require_once "./auth_helpers.php";
 
-if(isset($_POST["booking"])) {
+if (isset($_POST["booking"])) {
     $first_name = trim($_POST["first_name"] ?? "");
     $last_name = trim($_POST["last_name"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $phone = trim($_POST["phone"] ?? "");
-    $names = array_map('trim', $names);
-    $names = array_map('intval', $services);
+    $names = array_map("trim", $names);
+    $names = array_map("intval", $services);
     $schedued_at = trim($_POST["scheduled_at"] ?? "");
 
     if (
         $first_name === "" ||
         $last_name === "" ||
         $email === "" ||
-        $phone === "" || 
+        $phone === "" ||
         $names === "" ||
-        $scheduled_at === ""        
+        $scheduled_at === ""
     ) {
         $_SESSION["booking_error"] = "Please fill in all required fields.";
         header("Location: booking.php");
@@ -37,10 +37,10 @@ if(isset($_POST["booking"])) {
 
         $hashed_password = hashValidatedPassword($password, $confirm_password);
 
-        $role = 'customer';
+        $role = "customer";
 
         if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin") {
-            $role = $_POST["role"] ?? 'customer';
+            $role = $_POST["role"] ?? "customer";
         }
 
         $insert = $conn->prepare("
@@ -54,7 +54,7 @@ if(isset($_POST["booking"])) {
             $email,
             $phone,
             $hashed_password,
-            $role
+            $role,
         ]);
 
         $_SESSION["name"] = $first_name;
@@ -69,7 +69,8 @@ if(isset($_POST["booking"])) {
             header("Location: register.php");
             exit();
         }
-        $_SESSION["register_error"] = "Database error (register): " . $e->getMessage();
+        $_SESSION["register_error"] =
+            "Database error (register): " . $e->getMessage();
         header("Location: register.php");
         exit();
     } catch (Exception $e) {
