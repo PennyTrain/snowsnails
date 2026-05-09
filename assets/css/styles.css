@@ -598,6 +598,8 @@ nav,
   margin-right: 5rem;
 }
 
+
+
 .form-container {
   padding: 20px;
   font-size: 16px;
@@ -656,6 +658,23 @@ form input[type="submit"]:hover {
   color: #111;
 }
 
+.mailing-list {
+  display: inline-block;
+  padding: 10px;
+  background-color: var(--accent);
+  color: #1b1b1b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 50%;
+}
+
+.mailing-list:hover {
+  background-color: var(--accent-dark);
+  color: #111;
+}
+
 /* AFTER SUBSCRIPTION */
 
 .final-message {
@@ -687,6 +706,10 @@ footer {
 
 footer h3 {
   color: var(--primary-light);
+}
+
+.exclusive {
+  text-align: center;
 }
 
 /* FOOTER TABLE */

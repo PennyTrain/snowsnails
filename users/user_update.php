@@ -11,13 +11,13 @@ if (!isset($_SESSION["email"])) {
 // Get current user data
 $user = getCurrentUserData($conn);
 
-include "../header.php";
+include_once "../header.php";
 ?>
 <section class="user-container">
 <form action="user_control.php" method="POST" enctype="multipart/form-data">
     <div class="profile-header">
         <?php if (!empty($user["img_url"])): ?>
-        <img src="<?= $user["img_url"] ?>" class="profile-img">
+        <img src="<?= $user["img_url"] ?>" class="profile-img" alt="User account">
     <?php endif; ?>
                 <h2 class="heading">Update Profile</h2>
         </div>
@@ -39,7 +39,7 @@ include "../header.php";
     ) ?>" required>
 
     <!-- Profile Picture -->
-    <label>Profile Picture</label>
+    <p>Profile Picture</p>
     <input type="file" name="profile_image" class="btn btn-secondary" accept="image/*">
 
 
@@ -59,5 +59,5 @@ include "../header.php";
 
  <?php // Include the footer file
 
-include "../footer.php";
+include_once "../footer.php";
 ?>

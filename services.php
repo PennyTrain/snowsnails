@@ -1,14 +1,18 @@
 <?php
-include "header.php";
+include_once "header.php";
 require_once "./config/db.php";
 
 $allowed_categories = ["1", "2", "3", "4"];
 $category = $_GET["category_id"] ?? "";
 
+// https://www.php.org/result/what-is-the-difference-between-using-118526
 if (!in_array($category, $allowed_categories)) {
-    $category = "1"; // default fallback
+    $category = "1";
 }
 
+// A prepared statement is a safe way to run SQL queries with user input
+// instead of
+// $conn->query("SELECT * FROM categories WHERE category_id = $category");
 $stmt = $conn->prepare("
     SELECT name, description
     FROM categories
@@ -17,8 +21,9 @@ $stmt = $conn->prepare("
 $stmt->execute(["category" => $category]);
 $categoryData = $stmt->fetch();
 
+// fallback category is the nails service page, so that the user is not left
+//looking at a 404 error
 if (!$categoryData) {
-    // fallback to category 1
     $stmt = $conn->prepare("
         SELECT name, description
         FROM categories
@@ -28,9 +33,11 @@ if (!$categoryData) {
     $categoryData = $stmt->fetch();
 }
 
+// all stored vals from database so that i can dynamically update ui!
 $title = $categoryData["name"];
 $description = $categoryData["description"];
 
+// now i need to get the services that are within each category
 $stmt = $conn->prepare("
     SELECT name, price, description
     FROM services
@@ -44,6 +51,7 @@ $services = $stmt->fetchAll();
 <main>
     <section class="row service-container">
         <div class="col-lg-6 service-info">
+            <!-- text interpolation here -->
             <h1 class="heading"><?= htmlspecialchars($title) ?></h1>
             <p class="text"><?= htmlspecialchars($description) ?></p>
                         <a href="/bookings/booking.php" class="btn offer-btn btn-secondary">Book Now</a>
@@ -84,4 +92,4 @@ $services = $stmt->fetchAll();
     </section>
 </main>
 
-<?php include "footer.php"; ?>
+<?php include_once "footer.php"; ?>

@@ -11,12 +11,12 @@ if (!isset($_SESSION["email"])) {
 // Get current user data
 $user = getCurrentUserData($conn);
 
-include "../header.php";
+include_once "../header.php";
 ?>
 <section class="user-container">
 <div class="profile-header">
     <?php if (!empty($user["img_url"])): ?>
-        <img src="<?= $user["img_url"] ?>" class="profile-img">
+        <img src="<?= $user["img_url"] ?>" class="profile-img" alt="User account">
     <?php endif; ?>
     <h2 class="heading"><?= htmlspecialchars(
         $user["first_name"],
@@ -43,5 +43,5 @@ include "../header.php";
 
  <?php // Include the footer file
 
-include "../footer.php";
+include_once "../footer.php";
 ?>

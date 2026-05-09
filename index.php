@@ -1,7 +1,5 @@
  <?php // Include the header file
-// Include the header file
-// Include the header file
- include "header.php"; ?>
+ include_once "header.php"; ?>
     <!-- CAROUSEL -->
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -16,7 +14,7 @@
             <div class="carousel-item active">
                 <picture>
                         <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/q_auto/f_auto/v1776150413/IMG_2483_tafp34.jpg" class="d-block w-100"
-                        alt="Calming and aesthetically pleasing photo of shampoo bottles - calm light">
+                        alt="Capture of the salon">
                 </picture>
                 <div class="carousel-caption d-none d-md-block">
                     <p class="carousel-title"></p>
@@ -25,7 +23,7 @@
             <div class="carousel-item">
                 <picture>
                     <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/q_auto/f_auto/v1776150413/IMG_2486_ghbqn3.jpg" class="d-block w-100"
-                        alt="Calming and aesthetically pleasing photo of shampoo bottles - calm right">
+                        alt="Capture of the salon">
                 </picture>
                 <div class="carousel-caption d-none d-md-block">
                     <p class="carousel-title"></p>
@@ -34,7 +32,7 @@
             <div class="carousel-item">
                 <picture>
                     <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776150413/IMG_2481_rorfbg.jpg" class="d-block w-100"
-                        alt="Default image, Calming and aesthetically pleasing photo of shampoo bottles">
+                        alt="Capture of the salon">
                 </picture>
                 <div class="carousel-caption d-none d-md-block">
                     <p class="carousel-title"></p>
@@ -238,5 +236,5 @@
     </main>
  <?php // Include the footer file
 
-include "footer.php";
+include_once "footer.php";
 ?>

@@ -1,7 +1,5 @@
- <?php // Include the header file
-// Include the header file
-// Include the header file
- include "header.php"; ?>
+ <?php
+ include_once "header.php"; ?>
     <!-- CONTENT  -->
     <main class="container">
         <div class="row booked-message">
@@ -27,7 +25,7 @@
                 <div class="carousel-item active">
                     <picture>
                         <source media="(max-width: 800px)" srcset="./assets/images/resized-images/nails800.png">
-                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/nails465.png">      
+                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/nails465.png">
                         <source media="(max-width: 300px)" srcset="./assets/images/resized-images/nails300.png">
                         <img src="./assets/images/nails.jpg" class="d-block w-100" alt="Stylish nail art">
                     </picture>
@@ -37,7 +35,7 @@
                 <div class="carousel-item">
                     <picture>
                         <source media="(max-width: 800px)" srcset="./assets/images/resized-images/face-massage800.png">
-                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/face-massage465.png">      
+                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/face-massage465.png">
                         <source media="(max-width: 300px)" srcset="./assets/images/resized-images/face-massage300.png">
                         <img src="./assets/images/face-massage.jpg" class="d-block w-100" alt="Relaxing face massage scene">
                     </picture>
@@ -47,7 +45,7 @@
                 <div class="carousel-item">
                     <picture>
                         <source media="(max-width: 800px)" srcset="./assets/images/resized-images/girls-lashes800.png">
-                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/girls-lashes465.png">      
+                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/girls-lashes465.png">
                         <source media="(max-width: 300px)" srcset="./assets/images/resized-images/girls-lashes300.png">
                         <img src="./assets/images/girls-lashes.jpg" class="d-block w-100" alt="Girl with styled eyelashes">
                     </picture>
@@ -111,5 +109,5 @@
     </main>
  <?php // Include the footer file
 
-include "footer.php";
+include_once "footer.php";
 ?>

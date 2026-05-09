@@ -2,31 +2,32 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-if (isset($_SESSION["LAST_ACTIVITY"])) {
-    if (time() - $_SESSION["LAST_ACTIVITY"] > 1800) {
-        // 1800 = 30 mins
-        session_unset();
-        session_destroy();
-        header("Location: /users/login.php?timeout=1");
-        exit();
-    }
+// starts the session^^
+// then i check to make sure the user is active, if they are not active I automatically log
+// them out after 30 mins to ensure security
+// to let the user know they are logged out i send them back to the login page
+if (isset($_SESSION["LAST_ACTIVITY"]) && (time() - $_SESSION["LAST_ACTIVITY"] > 1800)) {
+    // 1800 = 30 mins
+    session_unset();
+    session_destroy();
+    header("Location: /users/login.php?timeout=1");
+    exit();
 }
 
 $_SESSION["LAST_ACTIVITY"] = time();
 ?>
 
-<!-- to avoid this error at the top 
-timezone_openNotice: session_start(): Ignoring session_start() 
+<!-- to avoid this error at the top
+timezone_openNotice: session_start(): Ignoring session_start()
 because a session is already active in C:\Users\trapen\OneDrive
 - Watlow\Documents\Chi Uni\Year 2\Semester 2\DAB502\snowsnails\
 header.php on line 2 -->
 
 <!-- https://ihaveapc.com/2025/09/why-logging-out-is-safer-than-just-closing-your-browser/
 
-A user session refers to the time span during which a user interacts with a website, 
-maintained through mechanisms that identify and authenticate the user across various requests. 
-Think of it like a continuous chat thread—once established, it keeps the conversation going 
+A user session refers to the time span during which a user interacts with a website,
+maintained through mechanisms that identify and authenticate the user across various requests.
+Think of it like a continuous chat thread—once established, it keeps the conversation going
 unless explicitly ended or interrupted. -->
 
 <!DOCTYPE html>
@@ -82,11 +83,14 @@ unless explicitly ended or interrupted. -->
                                 <li><a class="dropdown-item link" href="/services.php?category_id=4">Body Treatments</a></li>
                             </ul>
                         </li>
+                        <!-- here if user is logged in I show them that by including something from their update_profile
+                        inside the navigation bar... THIS is a different way to do it.. I could
+                        ALSO use the isLoggedIn function I have made -->
 <?php if (isset($_SESSION["email"])): ?>
 
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle link" href="#" id="dropdown05"
-           data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle link" href="#"
+           data-bs-toggle="dropdown" aria-expanded="false" aria-label="Profile options">
             <?= htmlspecialchars($_SESSION["name"] ?? "User") ?>
         </a>
 
@@ -94,7 +98,7 @@ unless explicitly ended or interrupted. -->
 
             <li><a class="dropdown-item link" href="/users/user.php">Account</a></li>
             <li><a class="dropdown-item link" href="/bookings/booking.php">Bookings</a></li>
-
+        <!-- here i show the user if admin special pages so that they can create employees -->
             <?php if (
                 isset($_SESSION["role"]) &&
                 $_SESSION["role"] === "admin"
@@ -123,9 +127,19 @@ unless explicitly ended or interrupted. -->
 <?php endif; ?>
 </ul>
                 </div>
-                <!-- <div>
-                    <a class="dropdown-item link" href="/users/login.php"><i class="fa-regular fa-circle-user login"></i></a>
-                </div> -->
             </div>
         </nav>
     </header>
+
+
+<?php if (!empty($_SESSION["flash_messages"])): ?>
+    <div class="container mt-3">
+        <?php foreach ($_SESSION["flash_messages"] as $message): ?>
+            <div class="alert alert-<?= htmlspecialchars($message["type"]) ?> alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($message["text"]) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION["flash_messages"]); ?>
+<?php endif; ?>

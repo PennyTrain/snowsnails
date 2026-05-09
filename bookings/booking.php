@@ -1,20 +1,11 @@
 <?php
 session_start();
 require_once "../config/db.php";
+require_once "../helpers/auth.php";
 // Get current user data
 $isLoggedIn = isset($_SESSION["email"]);
 
-$user = []; // default empty array
-
-if ($isLoggedIn) {
-    $stmt = $conn->prepare("
-        SELECT first_name, last_name, email, phone, img_url 
-        FROM users 
-        WHERE email = ?
-    ");
-    $stmt->execute([$_SESSION["email"]]);
-    $user = $stmt->fetch();
-}
+$user = getCurrentUserData($conn);
 
 $stmt = $conn->prepare("
     SELECT s.service_id, s.name, s.price, c.name AS category
@@ -177,6 +168,6 @@ endforeach;
     </main>
 
 
-<?php include "../footer.php"; ?>
+<?php include_once "../footer.php"; ?>
 
 <!-- https://www.youtube.com/watch?v=LiomRvK7AM8 -->

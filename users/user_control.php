@@ -12,16 +12,35 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
+
 if (isset($_POST["register"])) {
     handleRegister($conn);
 } elseif (isset($_POST["login"])) {
     handleLogin($conn);
 } elseif (isset($_POST["update_profile"])) {
     handleProfileUpdate($conn);
+} elseif (isset($_POST["subscribe"])){
+    handleSubscribe($conn);
 } else {
     header("Location: login.php");
     exit();
 }
+
+// function handleSubscribe(PDO $conn) {
+//     $first_name = trim($_POST["first_name"] ?? "");
+//     $last_name = trim($_POST["last_name"] ?? "");
+//     $email = trim($_POST["email"] ?? "");
+
+//     if (
+//         $first_name === "" ||
+//         $last_name === "" ||
+//         $email === "" ||
+//     )   {
+//         $_SESSION["register_error"] = "Please fill in all required fields.";
+//         header("");
+//         exit();
+//     }
+// }
 
 function handleRegister(PDO $conn)
 {
@@ -38,13 +57,13 @@ function handleRegister(PDO $conn)
         $email === "" ||
         $password === ""
     ) {
-        $_SESSION["register_error"] = "Please fill in all required fields.";
+        throw_err("register", "warning", "Please fill in all required fields.");
         header("Location: register.php");
         exit();
     }
 
     if (!validateEmail($email)) {
-        $_SESSION["register_error"] = "Invalid email.";
+        throw_err("register", "danger", "Invalid email.");
         header("Location: register.php");
         exit();
     }
@@ -191,7 +210,7 @@ function handleProfileUpdate(PDO $conn)
     exit();
 }
 
-function handleLogout(PDO $conn) {}
+
 
 // <!-- https://stackoverflow.com/questions/60174/how-can-i-prevent-sql-injection-in-php
 // https://www.geeksforgeeks.org/php/how-to-validate-and-sanitize-user-input-with-php/

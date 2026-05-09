@@ -1,36 +1,61 @@
-    <?php if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    } ?>
     <!-- FOOTER -->
+     <?php
+     require_once "config/db.php";
+     require_once "helpers/auth.php";
+     $isLoggedIn = isset($_SESSION["email"]);
+     $user = getCurrentUserData($conn);
+
+     ?>
     <footer>
-        <section class="subscribe display-none">
-            <div>
-                <h2 class="heading">Join Our Mailing List!</h2>
-                <p class="text">Join our mailing list to be the first to know about new and exciting treatments,
-                    promotions
-                    and offers
-                    from Snows Nails!</p>
-            </div>
-            <div class="row subscribe-form">
-                <form id="subscribeForm" class="text">
-                    <label for="submit-firstname">First Name:</label>
-                    <input type="text" id="submit-firstname" name="firstname" required>
+<?php if ($isLoggedIn): ?>
 
-                    <label for="submit-lastname">Last Name:</label>
-                    <input type="text" id="submit-lastname" name="lastname" required>
+    <section class="subscribe">
+        <div>
+            <h2 class="heading">Join Our Mailing List!</h2>
+            <p class="text">
+                Join our mailing list to be the first to know about new and exciting treatments,
+                promotions and offers from Snows Nails!
+            </p>
+        </div>
 
-                    <label for="submit-email">Email:</label>
-                    <input type="email" id="submit-email" name="email">
+        <div class="row subscribe-form">
+            <form id="subscribe" class="text" method="post" action="users/user_control.php">
+                <label for="submit-firstname">First Name:</label>
+                <input type="text" id="submit-firstname" name="firstname" value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"]) : "" ?>" required>
 
-                    <input type="submit" value="Submit">
-                </form>
-            </div>
-            <div class="small-print text">
-                <p>By clicking on subscribe you agree to join our mailing lists to receive news and information about
-                    our
-                    products, services and promotions. You can opt out at anytime. Read our privacy policy.</p>
-            </div>
-        </section>
+                <label for="submit-lastname">Last Name:</label>
+                <input type="text" id="submit-lastname" name="lastname" value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"]) : "" ?>" required>
+
+                <label for="submit-email">Email:</label>
+                <input type="email" id="submit-email" name="email" value="<?= $isLoggedIn ? htmlspecialchars($user["email"]) : "" ?>" required>
+
+                <input type="submit" name="subscribe" value="Subscribe">
+            </form>
+        </div>
+
+        <div class="small-print text">
+            <p>
+                By clicking subscribe you agree to receive emails. You can opt out anytime.
+            </p>
+        </div>
+    </section>
+
+<?php else: ?>
+
+    <section class="exclusive">
+        <h2 class="heading">Do you want exclusive offers?</h2>
+        <p class="text">
+            Create an account to sign up to our exclusive mailing list.
+            This way you will receive the latest information about our products, services and promotions.
+        </p>
+        <button class="mailing-list" onclick="window.location.href='/users/register.php'">
+            Register
+        </button>
+    </section>
+
+<?php endif; ?>
+
+
         <div class="row footer-info">
             <div class="col-lg-4 footer-news">
                 <h3 class="sub-heading">NEWS</h3>
@@ -40,7 +65,7 @@
     <ul class="footer-social-list">
 
         <li class="footer-social-item">
-            <a class="link" 
+            <a class="link"
                href="https://www.instagram.com/snownails_bognor_regis?igsh=MXh3ZDlhbXlrM2pqMw=="
                target="_blank" aria-label="Instagram">
                 <i class="fa-brands fa-instagram footer-social-icon"></i>
@@ -48,7 +73,7 @@
         </li>
 
         <li class="footer-social-item">
-            <a class="link" 
+            <a class="link"
                href="https://www.facebook.com/share/17xjCHRv9W/?mibextid=wwXIfr"
                target="_blank" aria-label="Facebook">
                 <i class="fa-brands fa-facebook-f footer-social-icon"></i>
@@ -56,7 +81,7 @@
         </li>
 
         <li class="footer-social-item">
-            <a class="link" 
+            <a class="link"
                href="https://www.tiktok.com/@snownail?_r=1&_t=ZT-94WDSdqtvvp"
                target="_blank" aria-label="TikTok">
                 <i class="fa-brands fa-tiktok footer-social-icon"></i>
@@ -65,12 +90,7 @@
 
     </ul>
 </section>
-                    <!-- <span>CRYSTAL CLEAR</span>
-                    <span>We will be holding a launch event</span>
-                    <span>Thursday 20th March @ 5.30pm</span>
-                    <span>Tickets will be very limited so please let us know if you would like to attend this event to
-                        see and</span>
-                    <span>learn all about this amazing treatment</span> -->
+
                 </p>
             </div>
                         <div class="col-lg-4 footer-times">
@@ -96,7 +116,7 @@
                         <td>Thursday</td>
                         <td>9:30am - 6pm</td>
                     </tr>
-                    <tr>    
+                    <tr>
                         <td>Friday</td>
                         <td>9:30am - 6pm</td>
                     </tr>
@@ -127,7 +147,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <script src="/assets/js/script.js"></script>
 </body>
 
 </html>
+
