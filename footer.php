@@ -2,9 +2,12 @@
      <?php
      require_once "config/db.php";
      require_once "helpers/auth.php";
-     $isLoggedIn = isset($_SESSION["email"]);
-     $user = getCurrentUserData($conn);
+$isLoggedIn = isset($_SESSION["email"]);
+$user = [];
 
+if ($isLoggedIn) {
+    $user = getCurrentUserData($conn);
+}
      ?>
     <footer>
 <?php if ($isLoggedIn): ?>

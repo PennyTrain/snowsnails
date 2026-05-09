@@ -4,6 +4,7 @@ session_start();
 require_once "../config/db.php";
 require_once "../helpers/validation.php";
 require_once "../helpers/auth.php";
+require_once "../helpers/errors.php";
 require __DIR__ . "/../vendor/autoload.php";
 
 use Cloudinary\Cloudinary;
@@ -12,37 +13,71 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
-
 if (isset($_POST["register"])) {
     handleRegister($conn);
 } elseif (isset($_POST["login"])) {
     handleLogin($conn);
 } elseif (isset($_POST["update_profile"])) {
     handleProfileUpdate($conn);
-} elseif (isset($_POST["subscribe"])){
+} elseif (isset($_POST["subscribe"])) {
     handleSubscribe($conn);
 } else {
     header("Location: login.php");
     exit();
 }
 
-// function handleSubscribe(PDO $conn) {
-//     $first_name = trim($_POST["first_name"] ?? "");
-//     $last_name = trim($_POST["last_name"] ?? "");
-//     $email = trim($_POST["email"] ?? "");
+function handleSubscribe(PDO $conn): void
+{
+    $first_name = trim($_POST["firstname"] ?? "");
+    $last_name  = trim($_POST["lastname"] ?? "");
+    $email      = trim($_POST["email"] ?? "");
 
-//     if (
-//         $first_name === "" ||
-//         $last_name === "" ||
-//         $email === "" ||
-//     )   {
-//         $_SESSION["register_error"] = "Please fill in all required fields.";
-//         header("");
-//         exit();
-//     }
-// }
+    if ($first_name === "" || $last_name === "" || $email === "") {
+        throwErr("subscribe", "warning", "Please fill in all required fields.");
+        header("Location: ../footer.php");
+        exit();
+    }
 
-function handleRegister(PDO $conn)
+    if (!validateEmail($email)) {
+        throwErr("subscribe", "danger", "Invalid email.");
+        header("Location: ../footer.php");
+        exit();
+    }
+
+    try {
+        $check = $conn->prepare("SELECT 1 FROM users WHERE email = ?");
+        $check->execute([$email]);
+
+        if ($check->fetch()) {
+            throwErr("subscribe", "danger", "Email already exists.");
+            header("Location: ../footer.php");
+            exit();
+        }
+
+        // If you want subscribers stored in the same users table, do it here.
+        // Otherwise change this to insert into a newsletter/subscribers table.
+        $insert = $conn->prepare("
+            INSERT INTO users (first_name, last_name, email, role)
+            VALUES (?, ?, ?, 'subscriber')
+        ");
+
+        $insert->execute([$first_name, $last_name, $email]);
+
+        throwErr("subscribe", "success", "Subscribed successfully!");
+        header("Location: ../index.php");
+        exit();
+    } catch (PDOException $e) {
+        throwErr("subscribe", "danger", "Database error.");
+        header("Location: ../footer.php");
+        exit();
+    } catch (Exception $e) {
+        throwErr("subscribe", "danger", $e->getMessage());
+        header("Location: ../footer.php");
+        exit();
+    }
+}
+
+function handleRegister(PDO $conn): void
 {
     $first_name = trim($_POST["first_name"] ?? "");
     $last_name = trim($_POST["last_name"] ?? "");
@@ -57,13 +92,13 @@ function handleRegister(PDO $conn)
         $email === "" ||
         $password === ""
     ) {
-        throw_err("register", "warning", "Please fill in all required fields.");
+        throwErr("register", "warning", "Please fill in all required fields.");
         header("Location: register.php");
         exit();
     }
 
     if (!validateEmail($email)) {
-        throw_err("register", "danger", "Invalid email.");
+        throwErr("register", "danger", "Invalid email.");
         header("Location: register.php");
         exit();
     }
@@ -73,7 +108,7 @@ function handleRegister(PDO $conn)
         $check->execute([$email]);
 
         if ($check->fetch()) {
-            $_SESSION["register_error"] = "Email already exists.";
+            throwErr("register", "danger", "Email already exists.");
             header("Location: register.php");
             exit();
         }
@@ -97,39 +132,42 @@ function handleRegister(PDO $conn)
         $_SESSION["email"] = $email;
         $_SESSION["role"] = "customer";
 
+        throwErr("register", "success", "Account created successfully!");
         header("Location: user.php");
         exit();
     } catch (PDOException $e) {
-        $_SESSION["register_error"] = "Database error.";
+        throwErr("register", "danger", "Database error.");
         header("Location: register.php");
         exit();
     } catch (Exception $e) {
-        $_SESSION["register_error"] = $e->getMessage();
+        throwErr("register", "danger", $e->getMessage());
         header("Location: register.php");
         exit();
     }
 }
 
-function handleLogin(PDO $conn)
+function handleLogin(PDO $conn): void
 {
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
 
     if ($email === "" || $password === "") {
-        $_SESSION["login_error"] = "Enter email and password.";
+        throwErr("login", "warning", "Enter email and password.");
         header("Location: login.php");
         exit();
     }
 
     try {
-        $stmt = $conn->prepare(
-            "SELECT first_name, email, password, role FROM users WHERE email = ?",
-        );
+        $stmt = $conn->prepare("
+            SELECT first_name, email, password, role
+            FROM users
+            WHERE email = ?
+        ");
         $stmt->execute([$email]);
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user || !password_verify($password, $user["password"])) {
-            $_SESSION["login_error"] = "Incorrect login.";
+            throwErr("login", "danger", "Incorrect login.");
             header("Location: login.php");
             exit();
         }
@@ -138,16 +176,25 @@ function handleLogin(PDO $conn)
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
 
+        throwErr("login", "success", "Logged in successfully!");
         header("Location: user.php");
         exit();
     } catch (PDOException $e) {
-        die("Login DB error");
+        throwErr("login", "danger", "Login database error.");
+        header("Location: login.php");
+        exit();
     }
 }
 
-function handleProfileUpdate(PDO $conn)
+function handleProfileUpdate(PDO $conn): void
 {
     $user = getCurrentUser($conn);
+
+    if (!$user) {
+        throwErr("update", "danger", "User not found.");
+        header("Location: login.php");
+        exit();
+    }
 
     $cloudinary = new Cloudinary([
         "cloud" => [
@@ -178,39 +225,46 @@ function handleProfileUpdate(PDO $conn)
         if ($new_password !== "") {
             $hashed_password = hashValidatedPassword(
                 $new_password,
-                $confirm_password,
+                $confirm_password
             );
         } else {
             $hashed_password = $user["password"];
         }
     } catch (Exception $e) {
-        die($e->getMessage());
+        throwErr("update", "danger", $e->getMessage());
+        header("Location: user_update.php");
+        exit();
     }
 
-    $update = $conn->prepare("
-        UPDATE users
-        SET first_name=?, last_name=?, email=?, phone=?, password=?, img_url=?
-        WHERE email=?
-    ");
+    try {
+        $update = $conn->prepare("
+            UPDATE users
+            SET first_name=?, last_name=?, email=?, phone=?, password=?, img_url=?
+            WHERE email=?
+        ");
 
-    $update->execute([
-        $first_name,
-        $last_name,
-        $email,
-        $phone,
-        $hashed_password,
-        $img_url,
-        $_SESSION["email"],
-    ]);
+        $update->execute([
+            $first_name,
+            $last_name,
+            $email,
+            $phone,
+            $hashed_password,
+            $img_url,
+            $_SESSION["email"],
+        ]);
 
-    $_SESSION["name"] = $first_name;
-    $_SESSION["email"] = $email;
+        $_SESSION["name"] = $first_name;
+        $_SESSION["email"] = $email;
 
-    header("Location: user.php");
-    exit();
+        throwErr("update", "success", "Profile updated successfully!");
+        header("Location: user.php");
+        exit();
+    } catch (PDOException $e) {
+        throwErr("update", "danger", "Database error.");
+        header("Location: user_update.php");
+        exit();
+    }
 }
-
-
 
 // <!-- https://stackoverflow.com/questions/60174/how-can-i-prevent-sql-injection-in-php
 // https://www.geeksforgeeks.org/php/how-to-validate-and-sanitize-user-input-with-php/

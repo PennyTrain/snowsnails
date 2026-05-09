@@ -1,5 +1,5 @@
 <?php
-
+require_once "../helpers/errors.php";
 session_start();
 if (!isset($_SESSION["email"])) {
     http_response_code(403);
@@ -11,6 +11,7 @@ if (!isset($_SESSION["email"])) {
 if (isset($_POST["confirm_logout"])) {
     session_unset();
     session_destroy();
+     throwErr("logout", "success", "You have been logged out successfully.");
     header("Location: login.php");
     exit();
 }
