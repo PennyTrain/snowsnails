@@ -45,6 +45,24 @@ include "../header.php";
                 <option value="employee">Employee</option>
                 <option value="admin">Admin</option>
             </select>
+
+            <label>Salary</label>
+                        <input type="number" id="currencyInput" min="0.1" max="5000000.0" value="99.9" class="form-control" />
+            <label for="when_hired" class="form-label mt-3">
+                When Hired
+            </label>
+
+
+            <input
+                id="when_hired"
+                class="form-control"
+                type="datetime-local"
+                name="when_hired"
+            >
+
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" required>
+
         <?php endif; ?>
 
         <button type="submit" name="register" class="btn btn-secondary">
