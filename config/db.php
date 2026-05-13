@@ -1,7 +1,6 @@
 <?php
 
 if (getenv('JAWSDB_URL')) {
-    // Running on Heroku (JawsDB MySQL)
     $url = parse_url(getenv('JAWSDB_URL'));
 
     $host = $url['host'];
@@ -9,7 +8,6 @@ if (getenv('JAWSDB_URL')) {
     $username = $url['user'];
     $password = $url['pass'];
 } else {
-    // Local development (your current setup)
     $host = "localhost";
     $dbname = "snowsnails";
     $username = "root";
@@ -25,7 +23,6 @@ try {
 
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }

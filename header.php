@@ -1,3 +1,4 @@
+
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -7,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // them out after 30 mins to ensure security
 // to let the user know they are logged out i send them back to the login page
 if (isset($_SESSION["LAST_ACTIVITY"]) && (time() - $_SESSION["LAST_ACTIVITY"] > 1800)) {
-    // 1800 = 30 mins
+        // 1800 = 30 mins
     session_unset();
     session_destroy();
     header("Location: /users/login.php?timeout=1");
@@ -15,6 +16,16 @@ if (isset($_SESSION["LAST_ACTIVITY"]) && (time() - $_SESSION["LAST_ACTIVITY"] > 
 }
 
 $_SESSION["LAST_ACTIVITY"] = time();
+
+require_once __DIR__ . "/config/db.php";
+require_once __DIR__ . "/helpers/auth.php";
+
+$isLoggedIn = isset($_SESSION["email"]);
+$user = [];
+
+if ($isLoggedIn) {
+    $user = getCurrentUserData($conn);
+}
 ?>
 
 <!-- to avoid this error at the top
