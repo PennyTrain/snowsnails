@@ -23,7 +23,7 @@ function getCurrentUser(PDO $conn): array
 function getCurrentUserData(PDO $conn): array
 {
     $stmt = $conn->prepare(
-        "SELECT first_name, last_name, email, phone, img_url FROM users WHERE email = ?",
+        "SELECT first_name, last_name, user_id, email, phone, img_url FROM users WHERE email = ?",
     );
     $stmt->execute([$_SESSION["email"]]);
     $user = $stmt->fetch();

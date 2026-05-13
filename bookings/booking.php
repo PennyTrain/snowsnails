@@ -36,7 +36,7 @@ include "../header.php";
             <?php endif; ?>
         </p>
 
-        <form class="form-container" method="post" action="submit_booking.php">
+<form class="form-container" method="post" action="booking_control.php">
 
             <!-- USER DETAILS -->
             <label for="bookfirstname" class="form-label">First Name:</label>
@@ -46,7 +46,7 @@ include "../header.php";
                 name="firstname"
                 class="form-control"
                 value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"] ?? "") : "" ?>"
-                <?= $isLoggedIn ? "required" : "" ?>
+                required
             >
 
             <label for="booklastname" class="form-label">Last Name:</label>
@@ -56,7 +56,7 @@ include "../header.php";
                 name="lastname"
                 class="form-control"
                 value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"] ?? "") : "" ?>"
-                <?= $isLoggedIn ? "required" : "" ?>
+                required
             >
 
             <label for="bookemail" class="form-label">Email:</label>
@@ -66,7 +66,7 @@ include "../header.php";
                 name="email"
                 class="form-control"
                 value="<?= $isLoggedIn ? htmlspecialchars($user["email"] ?? "") : "" ?>"
-                <?= $isLoggedIn ? "required" : "" ?>
+                required
             >
 
             <label for="bookphone" class="form-label">Phone Number:</label>
@@ -76,7 +76,7 @@ include "../header.php";
                 name="phone"
                 class="form-control"
                 value="<?= $isLoggedIn ? htmlspecialchars($user["phone"] ?? "") : "" ?>"
-                <?= $isLoggedIn ? "required" : "" ?>
+                required
             >
 
             <!-- SERVICES -->
@@ -149,6 +149,7 @@ include "../header.php";
                 class="form-control"
                 type="datetime-local"
                 name="scheduled_at"
+                required
             >
 
             <!-- SUBMIT -->

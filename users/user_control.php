@@ -85,13 +85,13 @@ function handleRegister(PDO $conn): void
     $phone = trim($_POST["phone"] ?? "");
     $password = $_POST["password"] ?? "";
     $confirm_password = $_POST["confirm_password"] ?? "";
+    $role = $_POST["role"] ?? "customer";
 
-    if (
-        $first_name === "" ||
-        $last_name === "" ||
-        $email === "" ||
-        $password === ""
-    ) {
+    $salary = $_POST["salary"] ?? null;
+    $when_hired = $_POST["when_hired"] ?? null;
+    $title = trim($_POST["title"] ?? "");
+
+    if ($first_name === "" || $last_name === "" || $email === "" || $password === "") {
         throwErr("register", "warning", "Please fill in all required fields.");
         header("Location: register.php");
         exit();
@@ -107,7 +107,7 @@ function handleRegister(PDO $conn): void
         $check = $conn->prepare("SELECT 1 FROM users WHERE email = ?");
         $check->execute([$email]);
 
-        if ($check->fetch()) {
+        if ($check->fetchColumn()) {
             throwErr("register", "danger", "Email already exists.");
             header("Location: register.php");
             exit();
@@ -115,32 +115,75 @@ function handleRegister(PDO $conn): void
 
         $hashed_password = hashValidatedPassword($password, $confirm_password);
 
-        $insert = $conn->prepare("
-            INSERT INTO users (first_name, last_name, email, phone, password, role)
-            VALUES (?, ?, ?, ?, ?, 'customer')
+        $conn->beginTransaction();
+
+        $insertUser = $conn->prepare("
+            INSERT INTO users (
+                first_name,
+                last_name,
+                email,
+                phone,
+                password,
+                role
+            ) VALUES (?, ?, ?, ?, ?, ?)
         ");
 
-        $insert->execute([
+        $insertUser->execute([
             $first_name,
             $last_name,
             $email,
             $phone,
             $hashed_password,
+            $role
         ]);
+
+        $user_id = (int) $conn->lastInsertId();
+
+        if ($role === "employee") {
+            if ($salary === null || $salary === "" || $title === "") {
+                throw new Exception("Salary and title are required for employees.");
+            }
+
+            $when_hired_db = null;
+            if (!empty($when_hired)) {
+                $when_hired_db = (new DateTime($when_hired))->format("Y-m-d");
+            }
+
+            $insertEmployee = $conn->prepare("
+                INSERT INTO employee (
+                    user_id,
+                    salary,
+                    when_hired,
+                    title
+                ) VALUES (?, ?, ?, ?)
+            ");
+
+            $insertEmployee->execute([
+                $user_id,
+                (float) $salary,
+                $when_hired_db,
+                $title
+            ]);
+        }
+
+        $conn->commit();
 
         $_SESSION["name"] = $first_name;
         $_SESSION["email"] = $email;
-        $_SESSION["role"] = "customer";
+        $_SESSION["role"] = $role;
 
         throwErr("register", "success", "Account created successfully!");
         header("Location: user.php");
         exit();
-    } catch (PDOException $e) {
-        throwErr("register", "danger", "Database error.");
-        header("Location: register.php");
-        exit();
-    } catch (Exception $e) {
-        throwErr("register", "danger", $e->getMessage());
+
+    } catch (Throwable $e) {
+        if ($conn->inTransaction()) {
+            $conn->rollBack();
+        }
+
+        error_log("Register error: " . $e->getMessage());
+
+        throwErr("register", "danger", "Database error." . $e->getMessage());
         header("Location: register.php");
         exit();
     }
