@@ -1,5 +1,32 @@
- <?php // Include the header file
- include_once "header.php"; ?>
+<?php
+include_once "header.php";
+require_once "./config/db.php";
+
+$limit = 4; // how many categories per page
+$page = isset($_GET["page"]) ? (int) $_GET["page"] : 1;
+$page = max($page, 1);
+$offset = ($page - 1) * $limit;
+
+// count total categories
+$countStmt = $conn->prepare("SELECT COUNT(*) FROM categories");
+$countStmt->execute();
+$totalCategories = (int) $countStmt->fetchColumn();
+
+$totalPages = (int) ceil($totalCategories / $limit);
+
+// fetch paginated categories
+$stmt = $conn->prepare("
+    SELECT category_id, name, description, img_url
+    FROM categories
+    ORDER BY category_id
+    LIMIT :limit OFFSET :offset
+");
+$stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+$stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+$stmt->execute();
+
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
     <!-- CAROUSEL -->
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -59,54 +86,25 @@
             <h1 class="home-heading">Our Services</h1>
             <!-- CARDS -->
             <div class="row all-cards">
-                                <!-- NAILS -->
-                <div class="card col-lg-4 col-md-3 col-sm-12 cards">
-                    <img src="./assets/images/lady-nails.jpg" class="card-img-top card-image"
-                        alt="A lady doing someones nails">
-                    <div class="card-body">
-                        <h2 class="card-title">Nails</h2>
-                        <p class="card-text">Get the perfect manicure with our wide range of nail services. From classic
-                            to
-                            trendy designs!</p>
-                        <a href="/services.php?category_id=1" class="btn btn btn-secondary">Take a look!</a>
-                    </div>
-                </div>
-                <!-- LASHES -->
-                <div class="card col-lg-4 col-md-3 col-sm-12 cards">
-                    <img src="./assets/images/lashes.jpg" class="card-img-top card-image"
-                        alt="Someone whos eye lashes are perfect">
-                    <div class="card-body">
-                        <h2 class="card-title">Lashes</h2>
-                        <p class="card-text">Enhance your natural beauty with our professional lash extensions. Perfect
-                            for
-                            any occasion!</p>
-                        <a href="/services.php?category_id=2" class="btn btn btn-secondary">Take a look!</a>
-                    </div>
-                </div>
 
-                <!-- WAXING -->
+    <?php foreach ($categories as $category): ?>
+
                 <div class="card col-lg-4 col-md-3 col-sm-12 cards">
-                    <img src="./assets/images/stone-massage.jpg" class="card-img-top card-image"
-                        alt="A lady getting a spa treatment with stones on her back">
+                    <img src="<?= htmlspecialchars(
+                        $category["img_url"] ?? "./assets/images/default.jpg",
+                    ) ?>" class="card-img-top card-image"
+                        alt="<?= htmlspecialchars($category["name"]) ?>">
                     <div class="card-body">
-                        <h2 class="card-title">Treatments</h2>
-                        <p class="card-text">Indulge in our luxurious treatments designed to rejuvenate and refresh your
-                            skin. Feel pampered!</p>
-                        <a href="/services.php?category_id=3" class="btn btn btn-secondary">Take a look!</a>
+                        <h2 class="card-title"><?= htmlspecialchars(
+                            $category["name"],
+                        ) ?></h2>
+                        <p class="card-text"><?= htmlspecialchars(
+                            $category["description"],
+                        ) ?></p>
+                        <a href="/services.php?category_id=1" class="btn btn btn-secondary card-btn">Take a look!</a>
                     </div>
                 </div>
-                <!-- TREATMENTS -->
-                <div class="card col-lg-4 col-md-3 col-sm-12 cards">
-                    <img src="./assets/images/stone-massage.jpg" class="card-img-top card-image"
-                        alt="A lady getting a spa treatment with stones on her back">
-                    <div class="card-body">
-                        <h2 class="card-title">Treatments</h2>
-                        <p class="card-text">Indulge in our luxurious treatments designed to rejuvenate and refresh your
-                            skin. Feel pampered!</p>
-                        <a href="/services.php?category_id=4" class="btn btn btn-secondary">Take a look!</a>
-                    </div>
-                </div>
-            </div>
+                    <?php endforeach; ?>
         </section>
         <!-- OFFERS -->
 <section class="offers-container">

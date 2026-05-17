@@ -1,5 +1,8 @@
- <?php
- include_once "../header.php"; ?>
+ <?php include_once "../header.php"; ?>
+
+ <pre>
+<?php print_r($_SESSION); ?>
+</pre>
     <!-- CONTENT  -->
     <main class="container">
         <div class="row booked-message">
@@ -12,58 +15,7 @@
                 We reserve the right to refuse to rebook your appointment if you fail to comply with our policy. </p>
         </div>
         <!-- CAROUSEL -->
-        <div id="carouselExampleCaptions" class="carousel slide display-none-sm" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-submit carousel-inner">
-                <div class="carousel-item active">
-                    <picture>
-                        <source media="(max-width: 800px)" srcset="./assets/images/resized-images/nails800.png">
-                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/nails465.png">
-                        <source media="(max-width: 300px)" srcset="./assets/images/resized-images/nails300.png">
-                        <img src="./assets/images/nails.jpg" class="d-block w-100" alt="Stylish nail art">
-                    </picture>
-                    <div class="carousel-caption d-none d-md-block">
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <picture>
-                        <source media="(max-width: 800px)" srcset="./assets/images/resized-images/face-massage800.png">
-                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/face-massage465.png">
-                        <source media="(max-width: 300px)" srcset="./assets/images/resized-images/face-massage300.png">
-                        <img src="./assets/images/face-massage.jpg" class="d-block w-100" alt="Relaxing face massage scene">
-                    </picture>
-                    <div class="carousel-caption d-none d-md-block">
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <picture>
-                        <source media="(max-width: 800px)" srcset="./assets/images/resized-images/girls-lashes800.png">
-                        <source media="(max-width: 465px)" srcset="./assets/images/resized-images/girls-lashes465.png">
-                        <source media="(max-width: 300px)" srcset="./assets/images/resized-images/girls-lashes300.png">
-                        <img src="./assets/images/girls-lashes.jpg" class="d-block w-100" alt="Girl with styled eyelashes">
-                    </picture>
-                    <div class="carousel-caption d-none d-md-block">
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="never-display">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="never-display">Next</span>
-            </button>
-        </div>
+
         <!-- TESTIMONIALS -->
         <section class="testimonials display-none">
             <h1 class="home-heading">What Our Clients Say</h1>

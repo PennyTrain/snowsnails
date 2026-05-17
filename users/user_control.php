@@ -28,51 +28,36 @@ if (isset($_POST["register"])) {
 
 function handleSubscribe(PDO $conn): void
 {
-    $first_name = trim($_POST["firstname"] ?? "");
-    $last_name  = trim($_POST["lastname"] ?? "");
-    $email      = trim($_POST["email"] ?? "");
+    $returnTo = $_POST["return_to"] ?? "/index.php";
 
-    if ($first_name === "" || $last_name === "" || $email === "") {
-        throwErr("subscribe", "warning", "Please fill in all required fields.");
-        header("Location: ../footer.php");
-        exit();
-    }
-
-    if (!validateEmail($email)) {
-        throwErr("subscribe", "danger", "Invalid email.");
-        header("Location: ../footer.php");
+    if (empty($_SESSION["email"])) {
+        throwErr("subscribe", "danger", "Please log in first.");
+        header("Location: /users/login.php");
         exit();
     }
 
     try {
-        $check = $conn->prepare("SELECT 1 FROM users WHERE email = ?");
-        $check->execute([$email]);
+        $user = getCurrentUserData($conn);
 
-        if ($check->fetch()) {
-            throwErr("subscribe", "danger", "Email already exists.");
-            header("Location: ../footer.php");
+        if (!$user) {
+            throwErr("subscribe", "danger", "User not found.");
+            header("Location: " . $returnTo);
             exit();
         }
 
-        // If you want subscribers stored in the same users table, do it here.
-        // Otherwise change this to insert into a newsletter/subscribers table.
-        $insert = $conn->prepare("
-            INSERT INTO users (first_name, last_name, email, role)
-            VALUES (?, ?, ?, 'subscriber')
+        $stmt = $conn->prepare("
+            UPDATE users
+            SET subscribed = 1, updated_at = NOW()
+            WHERE user_id = ?
         ");
+        $stmt->execute([(int) $user["user_id"]]);
 
-        $insert->execute([$first_name, $last_name, $email]);
-
-        throwErr("subscribe", "success", "Subscribed successfully!");
-        header("Location: ../index.php");
+        throwErr("subscribe", "success", "You are now subscribed!");
+        header("Location: " . $returnTo);
         exit();
     } catch (PDOException $e) {
         throwErr("subscribe", "danger", "Database error.");
-        header("Location: ../footer.php");
-        exit();
-    } catch (Exception $e) {
-        throwErr("subscribe", "danger", $e->getMessage());
-        header("Location: ../footer.php");
+        header("Location: " . $returnTo);
         exit();
     }
 }
@@ -91,7 +76,12 @@ function handleRegister(PDO $conn): void
     $when_hired = $_POST["when_hired"] ?? null;
     $title = trim($_POST["title"] ?? "");
 
-    if ($first_name === "" || $last_name === "" || $email === "" || $password === "") {
+    if (
+        $first_name === "" ||
+        $last_name === "" ||
+        $email === "" ||
+        $password === ""
+    ) {
         throwErr("register", "warning", "Please fill in all required fields.");
         header("Location: register.php");
         exit();
@@ -134,19 +124,21 @@ function handleRegister(PDO $conn): void
             $email,
             $phone,
             $hashed_password,
-            $role
+            $role,
         ]);
 
         $user_id = (int) $conn->lastInsertId();
 
         if ($role === "employee") {
             if ($salary === null || $salary === "" || $title === "") {
-                throw new Exception("Salary and title are required for employees.");
+                throw new Exception(
+                    "Salary and title are required for employees.",
+                );
             }
 
             $when_hired_db = null;
             if (!empty($when_hired)) {
-                $when_hired_db = (new DateTime($when_hired))->format("Y-m-d");
+                $when_hired_db = new DateTime($when_hired)->format("Y-m-d");
             }
 
             $insertEmployee = $conn->prepare("
@@ -162,7 +154,7 @@ function handleRegister(PDO $conn): void
                 $user_id,
                 (float) $salary,
                 $when_hired_db,
-                $title
+                $title,
             ]);
         }
 
@@ -175,7 +167,6 @@ function handleRegister(PDO $conn): void
         throwErr("register", "success", "Account created successfully!");
         header("Location: user.php");
         exit();
-
     } catch (Throwable $e) {
         if ($conn->inTransaction()) {
             $conn->rollBack();
@@ -195,6 +186,7 @@ function handleLogin(PDO $conn): void
     $password = $_POST["password"] ?? "";
 
     if ($email === "" || $password === "") {
+        $_SESSION["old_login_email"] = $email;
         throwErr("login", "warning", "Enter email and password.");
         header("Location: login.php");
         exit();
@@ -210,11 +202,11 @@ function handleLogin(PDO $conn): void
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user || !password_verify($password, $user["password"])) {
+            $_SESSION["old_login_email"] = $email;
             throwErr("login", "danger", "Incorrect login.");
             header("Location: login.php");
             exit();
         }
-
         $_SESSION["name"] = $user["first_name"];
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
@@ -268,7 +260,7 @@ function handleProfileUpdate(PDO $conn): void
         if ($new_password !== "") {
             $hashed_password = hashValidatedPassword(
                 $new_password,
-                $confirm_password
+                $confirm_password,
             );
         } else {
             $hashed_password = $user["password"];

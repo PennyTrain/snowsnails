@@ -17,7 +17,9 @@ include_once "../header.php";
 <form action="user_control.php" method="POST" enctype="multipart/form-data">
     <div class="profile-header">
         <?php if (!empty($user["img_url"])): ?>
-        <img src="<?= $user["img_url"] ?>" class="profile-img" alt="User account">
+        <img src="<?= $user[
+            "img_url"
+        ] ?>" class="profile-img" alt="User account">
     <?php endif; ?>
                 <h2 class="heading">Update Profile</h2>
         </div>

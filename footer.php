@@ -1,14 +1,14 @@
     <!-- FOOTER -->
      <?php
-$isLoggedIn = isset($_SESSION["email"]);
-$user = [];
+     $isLoggedIn = isset($_SESSION["email"]);
+     $user = [];
 
-if ($isLoggedIn) {
-    $user = getCurrentUserData($conn);
-}
+     if ($isLoggedIn) {
+         $user = getCurrentUserData($conn);
+     }
      ?>
     <footer>
-<?php if ($isLoggedIn): ?>
+<?php if ($isLoggedIn && empty($user["subscribed"])): ?>
 
     <section class="subscribe">
         <div>
@@ -20,18 +20,29 @@ if ($isLoggedIn) {
         </div>
 
         <div class="row subscribe-form">
-            <form id="subscribe" class="text" method="post" action="users/user_control.php">
-                <label for="submit-firstname">First Name:</label>
-                <input type="text" id="submit-firstname" name="firstname" value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"]) : "" ?>" required>
+<form id="subscribe" class="text" method="post" action="/users/user_control.php">
+    <!-- this is a hidden redirect feild so that after the form is submitted it returns the user to the same page -->
+    <input type="hidden" name="return_to" value="<?= htmlspecialchars(
+        $_SERVER["REQUEST_URI"],
+    ) ?>">
 
-                <label for="submit-lastname">Last Name:</label>
-                <input type="text" id="submit-lastname" name="lastname" value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"]) : "" ?>" required>
+    <label for="submit-firstname">First Name:</label>
+    <input type="text" id="submit-firstname" name="firstname" value="<?= htmlspecialchars(
+        $user["first_name"] ?? "",
+    ) ?>" required>
 
-                <label for="submit-email">Email:</label>
-                <input type="email" id="submit-email" name="email" value="<?= $isLoggedIn ? htmlspecialchars($user["email"]) : "" ?>" required>
+    <label for="submit-lastname">Last Name:</label>
+    <input type="text" id="submit-lastname" name="lastname" value="<?= htmlspecialchars(
+        $user["last_name"] ?? "",
+    ) ?>" required>
 
-                <input type="submit" name="subscribe" value="Subscribe">
-            </form>
+    <label for="submit-email">Email:</label>
+    <input type="email" id="submit-email" name="email" value="<?= htmlspecialchars(
+        $user["email"] ?? "",
+    ) ?>" required>
+
+    <input type="submit" name="subscribe" value="Subscribe">
+</form>
         </div>
 
         <div class="small-print text">
@@ -41,7 +52,7 @@ if ($isLoggedIn) {
         </div>
     </section>
 
-<?php else: ?>
+<?php elseif (!$isLoggedIn): ?>
 
     <section class="exclusive">
         <h2 class="heading">Do you want exclusive offers?</h2>

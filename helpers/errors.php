@@ -9,7 +9,7 @@ function throwErr($name, $type, $text)
     $_SESSION["flash_messages"][] = [
         "name" => $name,
         "type" => $type,
-        "text" => $text
+        "text" => $text,
     ];
 }
 
@@ -21,9 +21,11 @@ function displayErrors()
 
     if (!empty($_SESSION["flash_messages"])) {
         foreach ($_SESSION["flash_messages"] as $message) {
-            echo '<div class="alert alert-' . htmlspecialchars($message["type"]) . '" role="alert">';
+            echo '<div class="alert alert-' .
+                htmlspecialchars($message["type"]) .
+                '" role="alert">';
             echo htmlspecialchars($message["text"]);
-            echo '</div>';
+            echo "</div>";
         }
 
         // clear messages after showing (important!)

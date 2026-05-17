@@ -45,7 +45,9 @@ include "../header.php";
                 id="bookfirstname"
                 name="firstname"
                 class="form-control"
-                value="<?= $isLoggedIn ? htmlspecialchars($user["first_name"] ?? "") : "" ?>"
+                value="<?= $isLoggedIn
+                    ? htmlspecialchars($user["first_name"] ?? "")
+                    : "" ?>"
                 required
             >
 
@@ -55,7 +57,9 @@ include "../header.php";
                 id="booklastname"
                 name="lastname"
                 class="form-control"
-                value="<?= $isLoggedIn ? htmlspecialchars($user["last_name"] ?? "") : "" ?>"
+                value="<?= $isLoggedIn
+                    ? htmlspecialchars($user["last_name"] ?? "")
+                    : "" ?>"
                 required
             >
 
@@ -65,7 +69,9 @@ include "../header.php";
                 id="bookemail"
                 name="email"
                 class="form-control"
-                value="<?= $isLoggedIn ? htmlspecialchars($user["email"] ?? "") : "" ?>"
+                value="<?= $isLoggedIn
+                    ? htmlspecialchars($user["email"] ?? "")
+                    : "" ?>"
                 required
             >
 
@@ -75,7 +81,9 @@ include "../header.php";
                 id="bookphone"
                 name="phone"
                 class="form-control"
-                value="<?= $isLoggedIn ? htmlspecialchars($user["phone"] ?? "") : "" ?>"
+                value="<?= $isLoggedIn
+                    ? htmlspecialchars($user["phone"] ?? "")
+                    : "" ?>"
                 required
             >
 
@@ -88,16 +96,15 @@ include "../header.php";
                 $index = 0;
 
                 foreach ($services as $service):
-
                     if ($currentCategory !== $service["category"]):
 
                         if ($currentCategory !== null) {
-                            echo '</div></div></div>';
+                            echo "</div></div></div>";
                         }
 
                         $currentCategory = $service["category"];
                         $index++;
-                ?>
+                        ?>
 
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading<?= $index ?>">
@@ -114,7 +121,8 @@ include "../header.php";
                             <div id="collapse<?= $index ?>" class="accordion-collapse collapse">
                                 <div class="accordion-body">
 
-                    <?php endif; ?>
+                    <?php
+                    endif; ?>
 
                     <div class="form-check">
                         <input
@@ -134,7 +142,9 @@ include "../header.php";
                         </label>
                     </div>
 
-                <?php endforeach; ?>
+                <?php
+                endforeach;
+                ?>
 
                 </div></div></div>
             </div>

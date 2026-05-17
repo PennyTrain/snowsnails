@@ -7,8 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
 // then i check to make sure the user is active, if they are not active I automatically log
 // them out after 30 mins to ensure security
 // to let the user know they are logged out i send them back to the login page
-if (isset($_SESSION["LAST_ACTIVITY"]) && (time() - $_SESSION["LAST_ACTIVITY"] > 1800)) {
-        // 1800 = 30 mins
+if (
+    isset($_SESSION["LAST_ACTIVITY"]) &&
+    time() - $_SESSION["LAST_ACTIVITY"] > 1800
+) {
+    // 1800 = 30 mins
     session_unset();
     session_destroy();
     header("Location: /users/login.php?timeout=1");
@@ -146,7 +149,9 @@ unless explicitly ended or interrupted. -->
 <?php if (!empty($_SESSION["flash_messages"])): ?>
     <div class="container mt-3">
         <?php foreach ($_SESSION["flash_messages"] as $message): ?>
-            <div class="alert alert-<?= htmlspecialchars($message["type"]) ?> alert-dismissible fade show" role="alert">
+            <div class="alert alert-<?= htmlspecialchars(
+                $message["type"],
+            ) ?> alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($message["text"]) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

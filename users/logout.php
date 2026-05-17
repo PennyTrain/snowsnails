@@ -11,7 +11,7 @@ if (!isset($_SESSION["email"])) {
 if (isset($_POST["confirm_logout"])) {
     session_unset();
     session_destroy();
-     throwErr("logout", "success", "You have been logged out successfully.");
+    throwErr("logout", "success", "You have been logged out successfully.");
     header("Location: login.php");
     exit();
 }

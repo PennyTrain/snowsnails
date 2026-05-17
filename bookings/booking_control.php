@@ -31,7 +31,11 @@ function handleBooking(PDO $conn): void
         !is_array($services) ||
         empty($services)
     ) {
-        throwErr("booking", "warning", "Please fill in all required fields and select at least one service.");
+        throwErr(
+            "booking",
+            "warning",
+            "Please fill in all required fields and select at least one service.",
+        );
         header("Location: booking.php");
         exit();
     }
@@ -76,7 +80,7 @@ function handleBooking(PDO $conn): void
             $email,
             $phone,
             $scheduled_start_db,
-            "confirmed"
+            "confirmed",
         ]);
 
         $booking_id = (int) $conn->lastInsertId();
@@ -112,18 +116,24 @@ function handleBooking(PDO $conn): void
                 (int) $service["service_id"],
                 $currentStart->format("Y-m-d H:i:s"),
                 (int) $service["duration"],
-                null
+                null,
             ]);
 
-            $currentStart->modify("+" . (int) $service["duration"] . " minutes");
+            $currentStart->modify(
+                "+" . (int) $service["duration"] . " minutes",
+            );
         }
 
         $conn->commit();
 
-        throwErr("booking", "success", "Booking created successfully. Ref: {$booking_ref}, {$user_id}");
+        throwErr("booking", "success", "Booking created successfully.");
+        $conn->commit();
+
+        $_SESSION["booking_ref"] = $booking_ref;
+        $_SESSION["booking_user_id"] = $user_id;
+
         header("Location: submit_booking.php");
         exit();
-
     } catch (Throwable $e) {
         if ($conn->inTransaction()) {
             $conn->rollBack();

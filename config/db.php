@@ -1,12 +1,12 @@
 <?php
 
-if (getenv('JAWSDB_URL')) {
-    $url = parse_url(getenv('JAWSDB_URL'));
+if (getenv("JAWSDB_URL")) {
+    $url = parse_url(getenv("JAWSDB_URL"));
 
-    $host = $url['host'];
-    $dbname = ltrim($url['path'], '/');
-    $username = $url['user'];
-    $password = $url['pass'];
+    $host = $url["host"];
+    $dbname = ltrim($url["path"], "/");
+    $username = $url["user"];
+    $password = $url["pass"];
 } else {
     $host = "localhost";
     $dbname = "snowsnails";
@@ -18,7 +18,7 @@ try {
     $conn = new PDO(
         "mysql:host=$host;dbname=$dbname;charset=utf8",
         $username,
-        $password
+        $password,
     );
 
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

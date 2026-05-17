@@ -24,10 +24,23 @@ include "../header.php";
     <form action="user_control.php" method="post" class="form-container">
 
         <label for="login_email" class="form-label">Email</label>
-        <input type="email" id="login_email" name="email" class="form-control" required>
+        <input
+            type="email"
+            id="login_email"
+            name="email"
+            class="form-control"
+            value="<?= htmlspecialchars($_SESSION["old_login_email"] ?? "") ?>"
+            required
+        >
 
         <label for="login_password" class="form-label">Password</label>
-        <input type="password" id="login_password" name="password" class="form-control" required>
+        <input
+            type="password"
+            id="login_password"
+            name="password"
+            class="form-control"
+            required
+        >
 
         <button type="submit" name="login" class="btn btn-secondary">Login</button>
 
@@ -39,6 +52,7 @@ include "../header.php";
     </form>
 </section>
 
+<?php unset($_SESSION["old_login_email"]); ?>
 <?php include "../footer.php"; ?>
 
 <!-- https://www.youtube.com/watch?v=LiomRvK7AM8 -->
