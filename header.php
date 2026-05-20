@@ -85,7 +85,7 @@ unless explicitly ended or interrupted. -->
                             <a class="nav-link active link" aria-current="page" href="/index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link" href="/bookings/booking.php">Contact Us</a>
+                            <a class="nav-link link" href="/bookings/booking_create.php">Contact Us</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle link" href="#" id="dropdown05" data-bs-toggle="dropdown"
@@ -111,7 +111,7 @@ unless explicitly ended or interrupted. -->
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
 
             <li><a class="dropdown-item link" href="/users/user.php">Account</a></li>
-            <li><a class="dropdown-item link" href="/bookings/booking.php">Bookings</a></li>
+            <li><a class="dropdown-item link" href="/bookings/booking_create.php">Bookings</a></li>
         <!-- here i show the user if admin special pages so that they can create employees -->
             <?php if (
                 isset($_SESSION["role"]) &&

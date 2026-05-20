@@ -153,6 +153,7 @@
             </div>
         </div>
     </footer>
+    <script src="/assets/js/script.js"></script>
     <!-- The Link for all The Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/f302dda9d1.js" crossorigin="anonymous"></script>
     <!-- Bootstrap Bundle -->

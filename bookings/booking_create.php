@@ -32,7 +32,7 @@ include "../header.php";
             <span>Experience the Ultimate in Beauty and Relaxation!</span><br>
 
             <?php if (!$isLoggedIn): ?>
-                <span>Create an account and create a booking all in one below!</span>
+                <span>Create an account and create a booking_create all in one below!</span>
             <?php endif; ?>
         </p>
 
@@ -163,7 +163,7 @@ include "../header.php";
             >
 
             <!-- SUBMIT -->
-            <button type="submit" class="btn btn-secondary mt-3" name="booking">
+            <button type="submit" class="btn btn-secondary mt-3" name="booking_create">
                 Submit
             </button>
 

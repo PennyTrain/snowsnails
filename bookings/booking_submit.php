@@ -1,19 +1,30 @@
- <?php include_once "../header.php"; ?>
+<?php
+session_start();
+include_once "../header.php";
 
- <pre>
-<?php print_r($_SESSION); ?>
-</pre>
+$booking_ref = $_SESSION["booking_ref"] ?? null;
+$booking_user_id = $_SESSION["booking_user_id"] ?? null;
+?>
+
     <!-- CONTENT  -->
     <main class="container">
         <div class="row booked-message">
+                    <?php if ($booking_ref): ?>
             <!-- <h1>
                 We will see you soon <span id="display-name"></span>!
                 We have you down for <span id="display-appointment"></span>!
             </h1> -->
+            <h1 class="heading">Your Reference Number is: </h1>
+            <h1 class="heading"><strong><?= htmlspecialchars(
+                $booking_ref,
+            ) ?></strong></h1>
             <p class="small-print">Can we politely remind everyone, we do require at least 24 hours notice to cancel or
                 change your appointment. Failure to do so will result in 50% of your treatment value fee being charged.
                 We reserve the right to refuse to rebook your appointment if you fail to comply with our policy. </p>
+                <?php endif; ?>
+
         </div>
+
         <!-- CAROUSEL -->
 
         <!-- TESTIMONIALS -->

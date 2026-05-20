@@ -2,17 +2,19 @@
 
 function throwErr($name, $type, $text)
 {
+    // ensure there is a session before usin g $_session
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-
+    // add message to the session
     $_SESSION["flash_messages"][] = [
-        "name" => $name,
-        "type" => $type,
-        "text" => $text,
+        "name" => $name, // identifier, what form? login/booking_create/register
+        "type" => $type, // boostrap alert type, success/danger/warning
+        "text" => $text, // message to display
     ];
 }
 
+//funct to dispay all flash msgs
 function displayErrors()
 {
     if (session_status() === PHP_SESSION_NONE) {
@@ -28,7 +30,7 @@ function displayErrors()
             echo "</div>";
         }
 
-        // clear messages after showing (important!)
+        // clear messages after showing on refresh
         unset($_SESSION["flash_messages"]);
     }
 }

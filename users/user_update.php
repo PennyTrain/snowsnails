@@ -55,6 +55,7 @@ include_once "../header.php";
     <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control" minlength="8">
 
     <button type="submit" name="update_profile" class="btn btn-secondary">Update Profile</button>
+        <button type="submit" name="delete" class="btn btn-danger">Delete Profile</button>
 
 </form>
 </section>

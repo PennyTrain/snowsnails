@@ -21,7 +21,49 @@ if (isset($_POST["register"])) {
     handleProfileUpdate($conn);
 } elseif (isset($_POST["subscribe"])) {
     handleSubscribe($conn);
+} elseif (isset($_POST["confirm_logout"])) {
+    handleLogout();
+} elseif (isset($_POST["delete"])) {
+    handleDelete($conn);
 } else {
+    header("Location: login.php");
+    exit();
+}
+
+function handleDelete(PDO $conn): void {
+    $returnTo = $_POST["return_to"] ?? "/index.php";
+
+    try {
+        $user = getCurrentUserData($conn);
+
+        if (!$user) {
+            throwErr("delete", "danger", "User not found.");
+            header("Location: " . $returnTo);
+            exit();
+        }
+
+        $stmt = $conn->prepare("
+            UPDATE users
+            SET deleted_at = CURRENT_TIMESTAMP
+            WHERE user_id = ?
+        ");
+        $stmt->execute([(int) $user["user_id"]]);
+
+        throwErr("delete", "success", "Account deleted successfully!");
+        header("Location: " . $returnTo);
+        exit();
+    } catch (PDOException $e) {
+        throwErr("delete", "danger", "Database error.");
+        header("Location: " . $returnTo);
+        exit();
+    }
+}
+
+function handleLogout(): void
+{
+    session_unset();
+    session_destroy();
+    throwErr("logout", "success", "You have been logged out successfully.");
     header("Location: login.php");
     exit();
 }
@@ -94,7 +136,12 @@ function handleRegister(PDO $conn): void
     }
 
     try {
-        $check = $conn->prepare("SELECT 1 FROM users WHERE email = ?");
+        $check = $conn->prepare("
+    SELECT 1
+    FROM users
+    WHERE email = ?
+    AND deleted_at IS NULL
+");
         $check->execute([$email]);
 
         if ($check->fetchColumn()) {
@@ -138,7 +185,8 @@ function handleRegister(PDO $conn): void
 
             $when_hired_db = null;
             if (!empty($when_hired)) {
-                $when_hired_db = new DateTime($when_hired)->format("Y-m-d");
+                $dt = new DateTime($when_hired);
+                $when_hired_db = $dt->format("Y-m-d");
             }
 
             $insertEmployee = $conn->prepare("
@@ -194,10 +242,11 @@ function handleLogin(PDO $conn): void
 
     try {
         $stmt = $conn->prepare("
-            SELECT first_name, email, password, role
-            FROM users
-            WHERE email = ?
-        ");
+    SELECT first_name, email, password, role
+    FROM users
+    WHERE email = ?
+    AND deleted_at IS NULL
+");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -215,7 +264,7 @@ function handleLogin(PDO $conn): void
         header("Location: user.php");
         exit();
     } catch (PDOException $e) {
-        throwErr("login", "danger", "Login database error.");
+        throwErr("login", "danger", "Login unsuccessful, database error.");
         header("Location: login.php");
         exit();
     }

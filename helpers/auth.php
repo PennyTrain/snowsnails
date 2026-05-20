@@ -7,7 +7,13 @@ function getCurrentUser(PDO $conn): array
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM users 
+        WHERE email = ?
+        AND deleted_at IS NULL
+    ");
+
     $stmt->execute([$_SESSION["email"]]);
     $user = $stmt->fetch();
 
@@ -22,11 +28,35 @@ function getCurrentUser(PDO $conn): array
 
 function getCurrentUserData(PDO $conn): array
 {
-    $stmt = $conn->prepare(
-        "SELECT first_name, last_name, user_id, email, phone, img_url, subscribed FROM users WHERE email = ?",
-    );
+    if (empty($_SESSION["email"])) {
+        header("Location: /login.php");
+        exit();
+    }
+
+    $stmt = $conn->prepare("
+        SELECT 
+            first_name,
+            last_name,
+            user_id,
+            email,
+            phone,
+            img_url,
+            role,
+            subscribed
+        FROM users
+        WHERE email = ?
+        AND deleted_at IS NULL
+    ");
+
     $stmt->execute([$_SESSION["email"]]);
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        session_unset();
+        session_destroy();
+        header("Location: /login.php");
+        exit();
+    }
 
     return $user;
 }
@@ -38,4 +68,14 @@ function protectedPage(PDO $conn): array
         include "../httpserrors/403.php";
         exit();
     }
+
+    $user = getCurrentUserData($conn);
+
+    if (!$user || $user["role"] !== "admin") {
+        http_response_code(403);
+        include "../httpserrors/403.php";
+        exit();
+    }
+
+    return $user;
 }
