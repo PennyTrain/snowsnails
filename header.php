@@ -91,10 +91,10 @@ unless explicitly ended or interrupted. -->
                             <a class="nav-link dropdown-toggle link" href="#" id="dropdown05" data-bs-toggle="dropdown"
                                 aria-expanded="false">What We Offer</a>
                             <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
-                                <li><a class="dropdown-item link" href="/services.php?category_id=1">Nails</a></li>
-                                <li><a class="dropdown-item link" href="/services.php?category_id=2">Lashes</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=1">Lashes</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=2">Nails</a></li>
                                 <li><a class="dropdown-item link" href="/services.php?category_id=3">Waxing</a></li>
-                                <li><a class="dropdown-item link" href="/services.php?category_id=4">Body Treatments</a></li>
+                                <li><a class="dropdown-item link" href="/services.php?category_id=4">Massages</a></li>
                             </ul>
                         </li>
                         <!-- here if user is logged in I show them that by including something from their update_profile

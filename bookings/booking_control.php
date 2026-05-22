@@ -4,7 +4,6 @@ require_once "../helpers/validation.php";
 require_once "../helpers/auth.php";
 require_once "../helpers/errors.php";
 
-
 if (isset($_POST["booking_create"])) {
     handleBooking($conn);
 } else {
@@ -63,26 +62,36 @@ function handleBooking(PDO $conn): void
             "confirmed",
         ]);
         $booking_id = (int) $conn->lastInsertId();
-        $serviceLookupStmt = $conn->prepare(
-            " SELECT service_id, duration FROM services WHERE service_id = ? ",
-        );
-        $bookingServiceStmt = $conn->prepare(
-            " INSERT INTO booking_services ( booking_id, service_id, scheduled_at, duration, notes ) VALUES (?, ?, ?, ?, ?) ",
-        );
+        $serviceLookupStmt = $conn->prepare("
+    SELECT service_id, duration, price
+    FROM services
+    WHERE service_id = ?
+");
+
+        $bookingServiceStmt = $conn->prepare("
+    INSERT INTO booking_services
+        (booking_id, service_id, scheduled_at, price, duration, notes)
+    VALUES
+        (?, ?, ?, ?, ?, ?)
+");
         $currentStart = new DateTime($scheduled_start_db);
         foreach ($services as $service_id) {
             $serviceLookupStmt->execute([$service_id]);
             $service = $serviceLookupStmt->fetch(PDO::FETCH_ASSOC);
+
             if (!$service) {
                 throw new Exception("Invalid service selected.");
             }
+
             $bookingServiceStmt->execute([
                 $booking_id,
                 (int) $service["service_id"],
                 $currentStart->format("Y-m-d H:i:s"),
+                (float) $service["price"],
                 (int) $service["duration"],
                 null,
             ]);
+
             $currentStart->modify(
                 "+" . (int) $service["duration"] . " minutes",
             );
@@ -104,7 +113,6 @@ function handleBooking(PDO $conn): void
     }
 }
 
-
 function getCurrentBookingUserId(PDO $conn)
 {
     if (empty($_SESSION["email"])) {
@@ -113,7 +121,6 @@ function getCurrentBookingUserId(PDO $conn)
     $user = getCurrentUserData($conn);
     return !empty($user["user_id"]) ? (int) $user["user_id"] : null;
 }
-
 
 function generateUniqueBookingReference(PDO $conn, $length = 6)
 {

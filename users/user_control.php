@@ -26,19 +26,21 @@ if (isset($_POST["register"])) {
 } elseif (isset($_POST["delete"])) {
     handleDelete($conn);
 } else {
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 
-function handleDelete(PDO $conn): void {
-    $returnTo = $_POST["return_to"] ?? "/index.php";
+function handleDelete(PDO $conn): void
+{
+    // $returnTo = $_POST["return_to"] ?? "/index.php";
 
     try {
         $user = getCurrentUserData($conn);
 
         if (!$user) {
             throwErr("delete", "danger", "User not found.");
-            header("Location: " . $returnTo);
+            //            header("Location: " . $returnTo);
+            header("Location: register.php");
             exit();
         }
 
@@ -50,11 +52,14 @@ function handleDelete(PDO $conn): void {
         $stmt->execute([(int) $user["user_id"]]);
 
         throwErr("delete", "success", "Account deleted successfully!");
-        header("Location: " . $returnTo);
+
+        //        header("Location: " . $returnTo);
+        header("Location: register.php");
         exit();
     } catch (PDOException $e) {
         throwErr("delete", "danger", "Database error.");
-        header("Location: " . $returnTo);
+        //       header("Location: " . $returnTo);
+        header("Location: register.php");
         exit();
     }
 }

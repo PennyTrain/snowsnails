@@ -55,7 +55,7 @@ $services = $stmt->fetchAll();
             <h1 class="heading"><?= htmlspecialchars($title) ?></h1>
             <p class="text"><?= htmlspecialchars($description) ?></p>
                         <a href="/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
-            <?php if ($category == 1): ?>
+            <?php if ($category == 2): ?>
             <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178500/lady-nails_qmtae4.jpg" class="service-img no-image nails-img" alt="A ladys nails">
             <?php endif; ?>
         </div>

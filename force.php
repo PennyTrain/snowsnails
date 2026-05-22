@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 // Remove all session variables
@@ -10,12 +10,12 @@ if (ini_get("session.use_cookies")) {
 
     setcookie(
         session_name(),
-        '',
+        "",
         time() - 42000,
         $params["path"],
         $params["domain"],
         $params["secure"],
-        $params["httponly"]
+        $params["httponly"],
     );
 }
 

@@ -101,12 +101,6 @@ CREATE TABLE products (
 );
 
 
-
-
-
-
-
-
 -- BOOKINGS
 
 ALTER TABLE bookings
@@ -177,3 +171,117 @@ ADD CONSTRAINT fk_capability_employee
 FOREIGN KEY (employee_id)
 REFERENCES employees(employee_id)
 ON DELETE CASCADE;
+
+
+Services
+
+manicure with polish 20
+manicure with shellac 35
+basic pedicure with polish or shellac 35
+manicure and pedicure 45
+luxury pedicure with shellac 45
+dipping powder from 30
+full set permanent white tip 30
+full set ombre 45
+infill ombre from 30
+polish colour from 15
+paint shellac only 25
+color polish for toes from 18
+full set acrylic with polish 30
+full set with shellac el 35
+biab builder poly gel full set 35
+infill gel 30
+infill acrylic with polish 25
+infill acrylic with shellac 30 
+take off and treatment 17
+take of and full set 40
+take off and full set with gel 45
+with long nails 5 extra
+free basic design
+
+luxury pedicure desc: mineral salt, foot callus, cuticle nip, sugar scrub, creamy mask, hot towel, hot stone, cool gel mask 35
+
+mens manicure desc: cut and shape nails, cuticle nip, buffer and massage standard pedicure includes mineral salt, cut and shape, cean toe nails and cuticle nip with shellac for onlu 35
+
+waxing 
+upper lip 6
+chin 5
+eyebrows 7
+
+eyelash extensions 25-60
+infill eyelash 20-40 
+
+
+  
+category table
+lashes 
+https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178503/eye-open-lashes_l1ne2l.jpg
+nails https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776179003/PHOTO-2026-04-13-13-39-20_froepn.jpg
+waxing
+https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178501/lashes_yuj9hx.jpg
+massages
+https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178503/face-massage_p7b2g7.jpg
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER update_booking_total
+AFTER INSERT ON booking_services
+FOR EACH ROW
+BEGIN
+    UPDATE bookings
+    SET total_price = (
+        SELECT SUM(price)
+        FROM booking_services
+        WHERE booking_id = NEW.booking_id
+    )
+    WHERE booking_id = NEW.booking_id;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER update_booking_duration
+AFTER INSERT ON booking_services
+FOR EACH ROW
+BEGIN
+    UPDATE bookings
+    SET total_duration = (
+        SELECT SUM(duration)
+        FROM booking_services
+        WHERE booking_id = NEW.booking_id
+    )
+    WHERE booking_id = NEW.booking_id;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE get_booking_summary(IN p_booking_id INT)
+BEGIN
+    SELECT
+        b.booking_id,
+        b.booking_ref,
+        b.first_name,
+        b.last_name,
+        b.email,
+        b.phone,
+        b.scheduled_start,
+        b.status,
+        b.total_price,
+        b.total_duration,
+        bs.service_id,
+        s.name AS service_name,
+        bs.price AS service_price,
+        bs.duration AS service_duration
+    FROM bookings b
+    JOIN booking_services bs ON b.booking_id = bs.booking_id
+    JOIN services s ON bs.service_id = s.service_id
+    WHERE b.booking_id = p_booking_id;
+END$$
+
+DELIMITER ;
