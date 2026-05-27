@@ -8,25 +8,38 @@ $booking_user_id = $_SESSION["booking_user_id"] ?? null;
 
     <!-- CONTENT  -->
     <main class="container">
-        <div class="row booked-message">
-                    <?php if ($booking_ref): ?>
-            <!-- <h1>
-                We will see you soon <span id="display-name"></span>!
-                We have you down for <span id="display-appointment"></span>!
-            </h1> -->
-            <h1 class="heading">Your Reference Number is: </h1>
-            <h1 class="heading"><strong><?= htmlspecialchars(
-                $booking_ref,
-            ) ?></strong></h1>
-            <p class="small-print">Can we politely remind everyone, we do require at least 24 hours notice to cancel or
-                change your appointment. Failure to do so will result in 50% of your treatment value fee being charged.
-                We reserve the right to refuse to rebook your appointment if you fail to comply with our policy. </p>
-                <?php endif; ?>
-
-        </div>
-
+    <div class="row booked-message">
+        <?php if (!empty($booking_ref)): ?>
+            <h1 class="heading">Your Reference Number is:</h1>
+            <h1 class="heading">
+                <strong><?= htmlspecialchars($booking_ref) ?></strong>
+            </h1>
+            <a href="booking_users.php" class="btn btn-secondary">
+                View All Bookings
+            </a>
+            <p class="small-print">
+                Can we politely remind everyone, we do require at least
+                24 hours notice to cancel or change your appointment.
+                Failure to do so will result in 50% of your treatment
+                value fee being charged. We reserve the right to refuse
+                to rebook your appointment if you fail to comply with
+                our policy.
+            </p>
+        <?php else: ?>
+            <div class="text-center">
+                <h1 class="heading">
+                    It appears you haven't made a booking yet.
+                </h1>
+                <p class="mb-4">
+                    Ready to treat yourself?
+                </p>
+                <a href="booking_create.php" class="btn btn-secondary">
+                    Make a Booking
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
         <!-- CAROUSEL -->
-
         <!-- TESTIMONIALS -->
         <section class="testimonials display-none">
             <h1 class="home-heading">What Our Clients Say</h1>

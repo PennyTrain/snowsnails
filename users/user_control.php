@@ -25,6 +25,9 @@ if (isset($_POST["register"])) {
     handleLogout();
 } elseif (isset($_POST["delete"])) {
     handleDelete($conn);
+} elseif (isset($_POST["cancel_logout"])) {
+    header("Location: ../index.php");
+    exit();
 } else {
     header("Location: index.php");
     exit();
@@ -194,8 +197,8 @@ function handleRegister(PDO $conn): void
                 $when_hired_db = $dt->format("Y-m-d");
             }
 
-            $insertEmployee = $conn->prepare("
-                INSERT INTO employee (
+            $insertEmployees = $conn->prepare("
+                INSERT INTO employees (
                     user_id,
                     salary,
                     when_hired,
@@ -203,7 +206,7 @@ function handleRegister(PDO $conn): void
                 ) VALUES (?, ?, ?, ?)
             ");
 
-            $insertEmployee->execute([
+            $insertEmployees->execute([
                 $user_id,
                 (float) $salary,
                 $when_hired_db,
@@ -285,6 +288,34 @@ function handleProfileUpdate(PDO $conn): void
         exit();
     }
 
+    $first_name = trim($_POST["first_name"] ?? "");
+    $last_name = trim($_POST["last_name"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $phone = trim($_POST["phone"] ?? "");
+    $new_password = $_POST["new_password"] ?? "";
+    $confirm_password = $_POST["confirm_password"] ?? "";
+
+    $name_changed =
+        $first_name !== $user["first_name"] ||
+        $last_name !== $user["last_name"];
+
+    $email_changed = $email !== $user["email"];
+    $phone_changed = $phone !== ($user["phone"] ?? "");
+    $password_changed = $new_password !== "";
+    $image_changed = !empty($_FILES["profile_image"]["tmp_name"]);
+
+    if (
+        !$name_changed &&
+        !$email_changed &&
+        !$phone_changed &&
+        !$password_changed &&
+        !$image_changed
+    ) {
+        throwErr("update", "warning", "No changes were made.");
+        header("Location: user_update.php");
+        exit();
+    }
+
     $cloudinary = new Cloudinary([
         "cloud" => [
             "cloud_name" => $_ENV["CLOUDINARY_CLOUD_NAME"],
@@ -294,16 +325,9 @@ function handleProfileUpdate(PDO $conn): void
         "url" => ["secure" => true],
     ]);
 
-    $first_name = trim($_POST["first_name"] ?? "");
-    $last_name = trim($_POST["last_name"] ?? "");
-    $email = trim($_POST["email"] ?? "");
-    $phone = trim($_POST["phone"] ?? "");
-    $new_password = $_POST["new_password"] ?? "";
-    $confirm_password = $_POST["confirm_password"] ?? "";
-
     $img_url = $user["img_url"];
 
-    if (!empty($_FILES["profile_image"]["tmp_name"])) {
+    if ($image_changed) {
         $upload = $cloudinary
             ->uploadApi()
             ->upload($_FILES["profile_image"]["tmp_name"]);
@@ -311,11 +335,8 @@ function handleProfileUpdate(PDO $conn): void
     }
 
     try {
-        if ($new_password !== "") {
-            $hashed_password = hashValidatedPassword(
-                $new_password,
-                $confirm_password,
-            );
+        if ($password_changed) {
+            $hashed_password = hashValidatedPassword($new_password, $confirm_password);
         } else {
             $hashed_password = $user["password"];
         }
@@ -328,8 +349,8 @@ function handleProfileUpdate(PDO $conn): void
     try {
         $update = $conn->prepare("
             UPDATE users
-            SET first_name=?, last_name=?, email=?, phone=?, password=?, img_url=?
-            WHERE email=?
+            SET first_name = ?, last_name = ?, email = ?, phone = ?, password = ?, img_url = ?
+            WHERE email = ?
         ");
 
         $update->execute([

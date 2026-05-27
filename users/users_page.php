@@ -1,6 +1,11 @@
 <?php
 require_once "../helpers/auth.php";
 require_once "../config/db.php";
+
+if (isset($_SESSION["role"]) && $_SESSION["role"] !== "admin") {
+    header("Location: .../httpserrors/403.php");
+    exit();
+}
 $limit = 8; // how many i wanna show at a time
 $page = isset($_GET["page"]) ? (int) $_GET["page"] : 1; //skip some users then start grabbing,
 $page = max($page, 1);

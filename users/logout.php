@@ -7,10 +7,6 @@ if (!isset($_SESSION["email"])) {
     exit();
 }
 
-if (isset($_POST["cancel_logout"])) {
-    header("Location: user_update.php");
-    exit();
-}
 include "../header.php";
 ?>
 
@@ -23,7 +19,7 @@ include "../header.php";
         </button>
 
         <button type="submit" name="cancel_logout" class="btn btn-secondary">
-            No, Take Me Back
+            No, Take Me To Home
         </button>
     </form>
 </div>

@@ -110,8 +110,8 @@ unless explicitly ended or interrupted. -->
 
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
 
-            <li><a class="dropdown-item link" href="/users/user.php">Account</a></li>
-            <li><a class="dropdown-item link" href="/bookings/booking_create.php">Bookings</a></li>
+            <li><a class="dropdown-item link" href="/users/user.php">My Account</a></li>
+            <li><a class="dropdown-item link" href="/bookings/booking_users.php">My Bookings</a></li>
         <!-- here i show the user if admin special pages so that they can create employees -->
             <?php if (
                 isset($_SESSION["role"]) &&
@@ -120,6 +120,8 @@ unless explicitly ended or interrupted. -->
                 <li><hr class="dropdown-divider"></li>
 
                 <li><a class="dropdown-item link" href="/users/register.php">Create User</a></li>
+                <li><a class="dropdown-item link" href="/users/users_page.php">All Users</a></li>
+                <li><a class="dropdown-item link" href="/bookings/booking_admin.php">Manage All Bookings</a></li>
             <?php endif; ?>
 
             <li><hr class="dropdown-divider"></li>

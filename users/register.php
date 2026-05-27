@@ -47,8 +47,8 @@ include "../header.php";
             </select>
 
             <label>Salary</label>
-                        <input type="number" id="currencyInput" min="0.1" max="5000000.0" value="99.9" class="form-control" />
-            <label for="when_hired" class="form-label mt-3">
+                        <input type="number" name="salary" id="currencyInput" min="0.1" max="5000000.0" value="0" class="form-control" />
+            <label for="when_hired" name="when_hired" class="form-label mt-3">
                 When Hired
             </label>
 
@@ -60,8 +60,14 @@ include "../header.php";
                 name="when_hired"
             >
 
-        <label>Title</label>
-        <input type="text" name="title" class="form-control" required>
+<label>Title</label>
+<select name="title" class="form-control">
+    <option value="nail_tech">Nail Tech</option>
+    <option value="massage_therapist">Massage Therapist</option>
+    <option value="esthetician">Esthetician</option>
+    <option value="specialist">Specialist</option>
+    <option value="manager">Manager</option>
+</select>
 
         <?php endif; ?>
 
