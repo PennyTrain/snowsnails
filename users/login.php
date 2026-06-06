@@ -46,7 +46,7 @@ include "../header.php";
 
         <p class="text-center">
             Don’t have an account?
-            <a href="register.php">Register</a>
+            <a href="user_create.php">Register</a>
         </p>
 
     </form>

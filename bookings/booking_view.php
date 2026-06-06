@@ -208,7 +208,7 @@ include_once "../header.php";
             </div>
             </div>
             <div>
-                <a href="" class="btn btn-secondary"> ober here</a>
+                <a href="booking_update.php" class="btn btn-secondary">Update</a>
             </div>
 
         </div>

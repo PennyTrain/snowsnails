@@ -95,6 +95,8 @@ unless explicitly ended or interrupted. -->
                                 <li><a class="dropdown-item link" href="/services.php?category_id=2">Nails</a></li>
                                 <li><a class="dropdown-item link" href="/services.php?category_id=3">Waxing</a></li>
                                 <li><a class="dropdown-item link" href="/services.php?category_id=4">Massages</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item link" href="/products.php">Products</a></li>
                             </ul>
                         </li>
                         <!-- here if user is logged in I show them that by including something from their update_profile
@@ -119,7 +121,7 @@ unless explicitly ended or interrupted. -->
             ): ?>
                 <li><hr class="dropdown-divider"></li>
 
-                <li><a class="dropdown-item link" href="/users/register.php">Create User</a></li>
+                <li><a class="dropdown-item link" href="/users/user_create.php">Create User</a></li>
                 <li><a class="dropdown-item link" href="/users/users_page.php">All Users</a></li>
                 <li><a class="dropdown-item link" href="/bookings/booking_admin.php">Manage All Bookings</a></li>
             <?php endif; ?>
@@ -137,7 +139,7 @@ unless explicitly ended or interrupted. -->
     </li>
 
     <li class="nav-item">
-        <a class="nav-link link" href="/users/register.php">Register</a>
+        <a class="nav-link link" href="/users/user_create.php">Register</a>
     </li>
 
 <?php endif; ?>

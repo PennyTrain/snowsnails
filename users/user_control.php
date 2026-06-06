@@ -43,7 +43,7 @@ function handleDelete(PDO $conn): void
         if (!$user) {
             throwErr("delete", "danger", "User not found.");
             //            header("Location: " . $returnTo);
-            header("Location: register.php");
+            header("Location: user_create.php");
             exit();
         }
 
@@ -57,12 +57,12 @@ function handleDelete(PDO $conn): void
         throwErr("delete", "success", "Account deleted successfully!");
 
         //        header("Location: " . $returnTo);
-        header("Location: register.php");
+        header("Location: user_create.php");
         exit();
     } catch (PDOException $e) {
         throwErr("delete", "danger", "Database error.");
         //       header("Location: " . $returnTo);
-        header("Location: register.php");
+        header("Location: user_create.php");
         exit();
     }
 }
@@ -78,30 +78,40 @@ function handleLogout(): void
 
 function handleSubscribe(PDO $conn): void
 {
+    // gets the page the user was already on so that they can be 
+    // rediracted back
     $returnTo = $_POST["return_to"] ?? "/index.php";
-
+// I check that the user is logged in using the the email
+// stored in the session
     if (empty($_SESSION["email"])) {
+        // display error msg if the user is not logged in
         throwErr("subscribe", "danger", "Please log in first.");
+        // and I redirect the user to log in
         header("Location: /users/login.php");
         exit();
     }
 
     try {
+        // get the current logged in users data
         $user = getCurrentUserData($conn);
-
+// check if the user exists 
         if (!$user) {
             throwErr("subscribe", "danger", "User not found.");
             header("Location: " . $returnTo);
             exit();
         }
-
+        // prepared statement to safely update the users subscription status
         $stmt = $conn->prepare("
             UPDATE users
             SET subscribed = 1, updated_at = NOW()
             WHERE user_id = ?
         ");
-        $stmt->execute([(int) $user["user_id"]]);
+        // NOW() updates the updated_at column with the exact time
+        // that the user has subscribed
 
+        // executes the query using the users id
+        $stmt->execute([(int) $user["user_id"]]);
+        // if successful let the user know via throwErr function
         throwErr("subscribe", "success", "You are now subscribed!");
         header("Location: " . $returnTo);
         exit();
@@ -133,13 +143,19 @@ function handleRegister(PDO $conn): void
         $password === ""
     ) {
         throwErr("register", "warning", "Please fill in all required fields.");
-        header("Location: register.php");
+        header("Location: user_create.php");
         exit();
     }
-
+    if (!validateName($first_name) || !validateName($last_name)) {
+         $_SESSION["old_register"] = $_POST;
+        throwErr("update", "danger", "First name and last name must contain letters only.");
+        header("Location: user_create.php");
+        exit();
+    }
     if (!validateEmail($email)) {
+         $_SESSION["old_register"] = $_POST;
         throwErr("register", "danger", "Invalid email.");
-        header("Location: register.php");
+        header("Location: user_create.php");
         exit();
     }
 
@@ -154,7 +170,7 @@ function handleRegister(PDO $conn): void
 
         if ($check->fetchColumn()) {
             throwErr("register", "danger", "Email already exists.");
-            header("Location: register.php");
+            header("Location: user_create.php");
             exit();
         }
 
@@ -231,7 +247,7 @@ function handleRegister(PDO $conn): void
         error_log("Register error: " . $e->getMessage());
 
         throwErr("register", "danger", "Database error." . $e->getMessage());
-        header("Location: register.php");
+        header("Location: user_create.php");
         exit();
     }
 }
@@ -345,6 +361,11 @@ function handleProfileUpdate(PDO $conn): void
         header("Location: user_update.php");
         exit();
     }
+    if (!validateName($first_name) || !validateName($last_name)) {
+    throwErr("update", "danger", "First name and last name must contain letters only.");
+    header("Location: user_update.php");
+    exit();
+}
 
     try {
         $update = $conn->prepare("

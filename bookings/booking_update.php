@@ -62,6 +62,11 @@ include "../header.php";
                     : "" ?>"
                 required
             >
+            <input
+    type="hidden"
+    name="booking_id"
+    value="<?= (int) $booking["booking_id"] ?>"
+>
 
             <label for="bookemail" class="form-label">Email:</label>
             <input
@@ -163,10 +168,13 @@ include "../header.php";
             >
 
             <!-- SUBMIT -->
-            <button type="submit" class="btn btn-secondary mt-3" name="booking_create">
-                Submit
-            </button>
-
+<button
+    type="submit"
+    name="booking_update"
+    class="btn btn-secondary"
+>
+    Update Booking
+</button>
         </form>
 
         <p class="small-print mt-4">

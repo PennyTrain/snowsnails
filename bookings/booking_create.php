@@ -17,6 +17,9 @@ $stmt = $conn->prepare("
     JOIN categories c ON s.category_id = c.category_id
     ORDER BY c.name, s.name
 ");
+// SQL joins are used to combine data from services and categories
+// this allows services to be grouped by category
+// ORDER BY sorts the services alphabetically which improves readibility
 $stmt->execute();
 $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

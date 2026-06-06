@@ -60,7 +60,7 @@
             Create an account to sign up to our exclusive mailing list.
             This way you will receive the latest information about our products, services and promotions.
         </p>
-        <button class="mailing-list" onclick="window.location.href='/users/register.php'">
+        <button class="mailing-list" onclick="window.location.href='/users/user_create.php'">
             Register
         </button>
     </section>

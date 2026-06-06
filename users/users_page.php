@@ -15,7 +15,9 @@ $offset = ($page - 1) * $limit; // so if page 2, skip limit amount of users and 
 // $offset = (2 - 1) * 6 = 6
 
 $countUsers = $conn->query("SELECT COUNT(*) FROM users");
-// I have to count and not use the user id as a user id is not continuous
+// COUNT, counts how many users are in the table
+// I have to count and not use the user id 
+// as a user id is not continuous, this is for pagination
 $totalUsers = (int) $countUsers->fetchColumn(); // total amound of users
 $totalPages = (int) ceil($totalUsers / $limit);
 // ceil() round up to the nearest whole number,
@@ -55,6 +57,10 @@ include_once "../header.php";
                             <h6 class="card-title">
                                 <?= htmlspecialchars($user["email"]) ?>
                             </h6>
+                                    <a href="user_view.php?user_id=<?= urlencode($user["user_id"]) ?>"
+                                       class="btn btn-secondary">
+                                        View
+                                    </a>
                         </div>
                 </div>
 

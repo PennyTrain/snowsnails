@@ -191,6 +191,22 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </div>
 </section>
+
+        <!-- MAP -->
+        <section class="testimonials display-none">
+            <h1 class="home-heading">Where We Are</h1>
+            <div class="row map-container">
+                <iframe
+                    title="map"
+                    loading="lazy"
+                    style="width: 100%; height: 450px; border: 0;"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCuBfkrmtyc3Rd8u2uYxb0xa2ozAvCz7fY&q=5+Lyon+Street+West,Bognor+Regis,United+Kingdom"
+                >
+                </iframe>
+            </div>
+        </section>
         <!-- TESTIMONIALS -->
         <section class="testimonials display-none">
             <h1 class="home-heading">What Our Clients Say</h1>

@@ -69,6 +69,7 @@ $services = $stmt->fetchAll();
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- loop and display each service -->
                     <?php if (!empty($services)): ?>
                         <?php foreach ($services as $service): ?>
                             <tr>

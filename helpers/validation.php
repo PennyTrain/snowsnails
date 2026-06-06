@@ -28,3 +28,8 @@ function hashValidatedPassword(
 
     return password_hash($password, PASSWORD_DEFAULT);
 }
+
+function validateName(string $name): bool
+{
+    return preg_match('/^[\p{L}]+(?:\s[\p{L}]+)*$/u', $name) === 1;
+}
