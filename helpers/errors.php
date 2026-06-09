@@ -1,4 +1,6 @@
 <?php
+require_once "auth.php";
+// noAccess();
 
 function throwErr($name, $type, $text)
 {

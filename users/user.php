@@ -2,12 +2,7 @@
 session_start();
 require_once "../config/db.php";
 require_once "../helpers/auth.php";
-
-if (!isset($_SESSION["email"])) {
-    header("Location: login.php");
-    exit();
-}
-
+protectedUserPage($conn);
 // Get current user data
 $user = getCurrentUserData($conn);
 
@@ -27,6 +22,7 @@ include_once "../header.php";
     <div class="profile-content">
         <ul>
             <li>
+                <!-- text interpolation to display value from database -->
                 <?= htmlspecialchars(
                     $user["first_name"],
                 ) ?> <?= htmlspecialchars($user["last_name"]) ?>
@@ -38,7 +34,7 @@ include_once "../header.php";
                 <?= htmlspecialchars($user["phone"]) ?>
             </li>
         </ul>
-                                <button onclick="window.location.href='user_update.php'" class="btn btn-secondary">Update Info!</button>
+            <button onclick="window.location.href='user_update.php'" class="btn btn-secondary">Update Info!</button>
             <button onclick="window.location.href='logout.php'" class="btn btn-secondary">Logout</button>
     </div>
 </section>

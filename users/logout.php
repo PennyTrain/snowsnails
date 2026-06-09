@@ -1,11 +1,11 @@
 <?php
-require_once "../helpers/errors.php";
 session_start();
-if (!isset($_SESSION["email"])) {
-    http_response_code(403);
-    include "../httpserrors/403.php"; // adjust path if needed
-    exit();
-}
+
+require_once "../config/db.php";
+require_once "../helpers/errors.php";
+require_once "../helpers/auth.php";
+
+protectedUserPage($conn);
 
 include "../header.php";
 ?>

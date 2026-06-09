@@ -1,31 +1,6 @@
 <?php
-
-function getCurrentUser(PDO $conn): array
-{
-    if (empty($_SESSION["email"])) {
-        header("Location: /login.php");
-        exit();
-    }
-
-    $stmt = $conn->prepare("
-        SELECT * 
-        FROM users 
-        WHERE email = ?
-        AND deleted_at IS NULL
-    ");
-
-    $stmt->execute([$_SESSION["email"]]);
-    $user = $stmt->fetch();
-
-    if (!$user) {
-        session_destroy();
-        header("Location: /login.php");
-        exit();
-    }
-
-    return $user;
-}
-
+// Here I get all the user data in the same file
+// and import the function whereever I need it
 function getCurrentUserData(PDO $conn): array
 {
     if (empty($_SESSION["email"])) {
@@ -78,4 +53,24 @@ function protectedPage(PDO $conn): array
     }
 
     return $user;
+}
+
+function protectedUserPage(PDO $conn): array
+{
+    if (!isset($_SESSION["email"])) {
+        http_response_code(403);
+        include "../httpserrors/403.php";
+        exit();
+    }
+
+    $user = getCurrentUserData($conn);
+
+    return $user;
+}
+
+function noAccess(): void
+{
+    http_response_code(403);
+    include __DIR__ . "/../httpserrors/403.php";
+    exit();
 }

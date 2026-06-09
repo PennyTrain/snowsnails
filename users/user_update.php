@@ -3,11 +3,7 @@ session_start();
 require_once "../config/db.php";
 require_once "../helpers/auth.php";
 
-if (!isset($_SESSION["email"])) {
-    header("Location: login.php");
-    exit();
-}
-
+protectedUserPage($conn);
 // Get current user data
 $user = getCurrentUserData($conn);
 
@@ -55,7 +51,7 @@ include_once "../header.php";
     <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control" minlength="8">
 
     <button type="submit" name="update_profile" class="btn btn-secondary">Update Profile</button>
-        <button type="submit" name="delete" class="btn btn-danger">Delete Profile</button>
+    <a href="delete.php" class="btn btn-danger">Delete</a>
 
 </form>
 </section>

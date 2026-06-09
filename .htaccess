@@ -1,1 +1,4 @@
 ErrorDocument 404 /httpserrors/404.php
+ErrorDocument 403 /httpserrors/403.php
+ErrorDocument 500 /httpserrors/500.php
+

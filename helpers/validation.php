@@ -1,4 +1,6 @@
 <?php
+require_once "auth.php";
+// noAccess();
 
 function validateEmail(string $email): bool
 {
@@ -29,6 +31,10 @@ function hashValidatedPassword(
     return password_hash($password, PASSWORD_DEFAULT);
 }
 
+
+// Having general validators in the same file to ensure reusability
+// and no code duplication, here I check that name feils only
+// contain characters and no text
 function validateName(string $name): bool
 {
     return preg_match('/^[\p{L}]+(?:\s[\p{L}]+)*$/u', $name) === 1;

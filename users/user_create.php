@@ -16,8 +16,8 @@ function selected_value(array $old, string $key, string $value): string
 
 include "../header.php";
 ?>
-
-<section class="user-container">
+<main class="container">
+<div class="row service-container">
     <h1 class="heading">
         <?= $isAdmin ? "Create User" : "Create an Account" ?>
     </h1>
@@ -135,7 +135,8 @@ include "../header.php";
             <a href="login.php">Login</a>
         </p>
     </form>
-</section>
+</div>
+</main>
 
 <?php
 unset($_SESSION["old_register"]);

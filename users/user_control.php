@@ -33,17 +33,17 @@ if (isset($_POST["register"])) {
     exit();
 }
 
+// this function inserts the current timestamp to the
+// deleted_at feild in the database so that users
+// can be soft deleted
 function handleDelete(PDO $conn): void
 {
-    // $returnTo = $_POST["return_to"] ?? "/index.php";
-
     try {
         $user = getCurrentUserData($conn);
 
         if (!$user) {
             throwErr("delete", "danger", "User not found.");
-            //            header("Location: " . $returnTo);
-            header("Location: user_create.php");
+            header("Location: ../index.php");
             exit();
         }
 
@@ -54,19 +54,20 @@ function handleDelete(PDO $conn): void
         ");
         $stmt->execute([(int) $user["user_id"]]);
 
-        throwErr("delete", "success", "Account deleted successfully!");
+        session_unset();
+        session_destroy();
 
-        //        header("Location: " . $returnTo);
-        header("Location: user_create.php");
+        throwErr("delete", "success", "Account deleted successfully!");
+        header("Location: ../index.php");
         exit();
     } catch (PDOException $e) {
         throwErr("delete", "danger", "Database error.");
-        //       header("Location: " . $returnTo);
-        header("Location: user_create.php");
+        header("Location: ../index.php");
         exit();
     }
 }
 
+// this function logs out the user by destroying the session
 function handleLogout(): void
 {
     session_unset();
@@ -124,6 +125,8 @@ function handleSubscribe(PDO $conn): void
 
 function handleRegister(PDO $conn): void
 {
+// collects all the fomr values and uses trim to remove extra
+// spaces from the text feilds
     $first_name = trim($_POST["first_name"] ?? "");
     $last_name = trim($_POST["last_name"] ?? "");
     $email = trim($_POST["email"] ?? "");
@@ -136,6 +139,7 @@ function handleRegister(PDO $conn): void
     $when_hired = $_POST["when_hired"] ?? null;
     $title = trim($_POST["title"] ?? "");
 
+    // checks all important feilds are there
     if (
         $first_name === "" ||
         $last_name === "" ||
@@ -146,12 +150,14 @@ function handleRegister(PDO $conn): void
         header("Location: user_create.php");
         exit();
     }
+    // ensures names contain only letters
     if (!validateName($first_name) || !validateName($last_name)) {
          $_SESSION["old_register"] = $_POST;
         throwErr("update", "danger", "First name and last name must contain letters only.");
         header("Location: user_create.php");
         exit();
     }
+    // correct email
     if (!validateEmail($email)) {
          $_SESSION["old_register"] = $_POST;
         throwErr("register", "danger", "Invalid email.");
@@ -296,7 +302,7 @@ function handleLogin(PDO $conn): void
 
 function handleProfileUpdate(PDO $conn): void
 {
-    $user = getCurrentUser($conn);
+    $user = getCurrentUserData($conn);
 
     if (!$user) {
         throwErr("update", "danger", "User not found.");
