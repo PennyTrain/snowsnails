@@ -10,8 +10,8 @@ if (isset($_SESSION["email"])) {
 
 include "../header.php";
 ?>
-
-<section class="user-container">
+<main class="container">
+<section class="row service-container">
     <h1 class="heading">Welcome Back</h1>
 
     <?php if (!empty($_SESSION["login_error"])): ?>
@@ -51,6 +51,7 @@ include "../header.php";
 
     </form>
 </section>
+        </main>
 
 <?php unset($_SESSION["old_login_email"]); ?>
 <?php include "../footer.php"; ?>

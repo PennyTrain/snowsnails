@@ -14,7 +14,7 @@ if (!in_array($category, $allowed_categories)) {
 // instead of
 // $conn->query("SELECT * FROM categories WHERE category_id = $category");
 $stmt = $conn->prepare("
-    SELECT name, description
+    SELECT name, description, img_url
     FROM categories
     WHERE category_id = :category
 ");
@@ -36,6 +36,7 @@ if (!$categoryData) {
 // all stored vals from database so that i can dynamically update ui!
 $title = $categoryData["name"];
 $description = $categoryData["description"];
+$image = $categoryData["img_url"] ?? "";
 
 // now i need to get the services that are within each category
 $stmt = $conn->prepare("
@@ -55,9 +56,13 @@ $services = $stmt->fetchAll();
             <h1 class="heading"><?= htmlspecialchars($title) ?></h1>
             <p class="text"><?= htmlspecialchars($description) ?></p>
                         <a href="/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
-            <?php if ($category == 2): ?>
-            <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178500/lady-nails_qmtae4.jpg" class="service-img no-image nails-img" alt="A ladys nails">
-            <?php endif; ?>
+<?php if (!empty($image)): ?>
+    <img
+        src="<?= htmlspecialchars($image) ?>"
+        class="nails-img no-image"
+        alt="<?= htmlspecialchars($title) ?>"
+    >
+<?php endif; ?>
         </div>
 
         <div class="col-lg-6 service-table">

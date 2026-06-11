@@ -17,7 +17,8 @@ function getCurrentUserData(PDO $conn): array
             phone,
             img_url,
             role,
-            subscribed
+            subscribed,
+            gender
         FROM users
         WHERE email = ?
         AND deleted_at IS NULL

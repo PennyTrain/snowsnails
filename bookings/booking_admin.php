@@ -27,8 +27,8 @@ $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC); // uses column names as key
 include_once "../header.php";
 ?>
-
-<div class="service-container">
+<main class="container">
+<div class="row service-container">
 
     <h2 class="heading text-center">Bookings</h2>
 
@@ -82,9 +82,9 @@ $statusClass = match ($status) {
                 <div class="d-flex gap-2">
                     <form>
                     
-                        <button type="submit" class="btn btn-danger">
+                        <!-- <button type="submit" class="btn btn-danger">
                             Cancel
-                        </button>
+                        </button> -->
 
 <a
     href="booking_view.php?booking_id=<?= urlencode($booking["booking_id"]) ?>"
@@ -127,7 +127,7 @@ $statusClass = match ($status) {
     </div>
 
 </div>
-
+            </main>
 
 
 

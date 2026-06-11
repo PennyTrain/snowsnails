@@ -21,7 +21,8 @@ if (!$viewedUser) {
 }
 include_once "../header.php";
 ?>
-<div class="service-container">
+<main class="container">
+<div class="row service-container">
     <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9">
@@ -97,7 +98,11 @@ include_once "../header.php";
                 </div>
             </div>
         </div>
-                                                            <a href="users_page.php" class="btn btn-secondary">Back</a>
     </div>
+<a href="delete.php?user_id=<?= (int) $viewedUser["user_id"] ?>" class="btn btn-danger" style="margin: 2rem 0 2rem 0">
+    Permanently Delete
+</a>
+            <a href="users_page.php" class="btn btn-secondary">Back</a>
 </div>
+                                </main>
 <?php include_once "../footer.php"; ?>

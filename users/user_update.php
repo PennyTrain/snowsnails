@@ -9,7 +9,8 @@ $user = getCurrentUserData($conn);
 
 include_once "../header.php";
 ?>
-<section class="user-container">
+<main class="container">
+<section class="row service-container">
 <form action="user_control.php" method="POST" enctype="multipart/form-data">
     <div class="profile-header">
         <?php if (!empty($user["img_url"])): ?>
@@ -49,12 +50,26 @@ include_once "../header.php";
         <!-- Change Password -->
              <label for="login_password" class="form-label">Confirm New Password</label>
     <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control" minlength="8">
+<div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    <button
+        type="submit"
+        name="update_profile"
+        class="btn btn-outline-secondary"
+    >
+        Update Profile
+    </button>
 
-    <button type="submit" name="update_profile" class="btn btn-secondary">Update Profile</button>
-    <a href="delete.php" class="btn btn-danger">Delete</a>
+    <a href="softdelete.php" class="btn btn-danger">
+        Delete
+    </a>
 
+    <a href="user.php" class="btn btn-secondary">
+        Back
+    </a>
+</div>
 </form>
 </section>
+    </main>
 
  <?php // Include the footer file
 

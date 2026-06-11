@@ -47,11 +47,10 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 include_once "../header.php";
 ?>
-
-<div class="service-container">
+<main class="container">
+<div class="row service-container">
 
     <h2 class="heading text-center">Bookings</h2>
-
 <div class="container testimonials">
     <div class="row justify-content-center">
         <?php if (empty($bookings)): ?>
@@ -59,7 +58,7 @@ include_once "../header.php";
                 <p class="text-center text-muted">
                     You do not have any bookings yet.
                 </p>
-                <p class="text-center">                    <a href="booking_create.php" class="btn btn-secondary">Create a Booking</a></p>
+                <p class="text-center">                    <a href="booking_create.php" style="margin-top: 2rem" class="btn btn-secondary">Create a Booking</a></p>
             </div>
         <?php else: ?>
             <?php foreach ($bookings as $booking): ?>
@@ -99,9 +98,9 @@ include_once "../header.php";
 
                             <div class="d-flex gap-2">
                                 <form>
-                                    <button type="submit" class="btn btn-danger">
+                                    <!-- <button type="submit" class="btn btn-danger">
                                         Cancel
-                                    </button>
+                                    </button> -->
 
                                     <a href="booking_view.php?booking_id=<?= urlencode($booking["booking_id"]) ?>"
                                        class="btn btn-secondary">
@@ -116,10 +115,9 @@ include_once "../header.php";
         <?php endif; ?>
     </div>
 </div>
-
+<a href="booking_create.php" style="margin: 2rem 0 2rem 0" class="btn btn-secondary">Create a Booking</a></p>
 </div>
-
-
+                            </main>
 
 
 

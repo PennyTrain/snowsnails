@@ -34,8 +34,8 @@ $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC); // uses column names as key
 include_once "../header.php";
 ?>
-
-<div class="service-container">
+<main class="container">
+<div class="row service-container">
 
     <h2 class="heading text-center">Users</h2>
 
@@ -91,5 +91,6 @@ include_once "../header.php";
     </div>
 
 </div>
+            </main>
 <?php include_once "../footer.php"; ?>
 

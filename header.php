@@ -72,7 +72,7 @@ unless explicitly ended or interrupted. -->
             <div class="container-fluid moving-nav">
                 <a class="navbar-brand link logo" href="/index.php">
                     <span class="never-display">Logo that goes to home page</span>
-<img src="/assets/images/logo.png" alt="Snows Nails Logo" class="logo-img">
+<img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178501/logo_gg6jyn.png" alt="Snows Nails Logo" class="logo-img">
 </a>
                 <button class="navbar-toggler border link hamburger" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false"
@@ -120,10 +120,12 @@ unless explicitly ended or interrupted. -->
                 $_SESSION["role"] === "admin"
             ): ?>
                 <li><hr class="dropdown-divider"></li>
-
+                <li><a class="dropdown-item link" href="/dashboard.php">Admin Dashboard</a></li>
+                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item link" href="/users/users_page.php">All Users</a></li>
                 <li><a class="dropdown-item link" href="/users/user_create.php">Create User</a></li>
-                <li><a class="dropdown-item link" href="/users/users_page.php">All Users</a></li>
-                <li><a class="dropdown-item link" href="/bookings/booking_admin.php">Manage All Bookings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item link" href="/bookings/booking_admin.php">All Bookings</a></li>
             <?php endif; ?>
 
             <li><hr class="dropdown-divider"></li>

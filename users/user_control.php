@@ -28,9 +28,47 @@ if (isset($_POST["register"])) {
 } elseif (isset($_POST["cancel_logout"])) {
     header("Location: ../index.php");
     exit();
+}elseif (isset($_POST["permanent_delete"])) {
+    handlePermanentDelete($conn);
 } else {
     header("Location: index.php");
     exit();
+}
+
+function handlePermanentDelete(PDO $conn): void
+{
+    protectedPage($conn);
+    $user_id = (int) ($_POST["user_id"] ?? 0);
+    if ($user_id <= 0) {
+        throwErr("delete", "danger", "Invalid user.");
+        header("Location: users_page.php");
+        exit();
+    }
+    try {
+        $stmt = $conn->prepare("
+            DELETE FROM users
+            WHERE user_id = ?
+        ");
+        $stmt->execute([$user_id]);
+
+        throwErr(
+            "delete",
+            "success",
+            "User permanently deleted."
+        );
+        header("Location: users_page.php");
+        exit();
+    } catch (PDOException $e) {
+        throwErr(
+            "delete",
+            "danger",
+            "Unable to delete user."
+        );
+        header(
+            "Location: users_page.php"
+        );
+        exit();
+    }
 }
 
 // this function inserts the current timestamp to the
@@ -125,8 +163,7 @@ function handleSubscribe(PDO $conn): void
 
 function handleRegister(PDO $conn): void
 {
-// collects all the fomr values and uses trim to remove extra
-// spaces from the text feilds
+    // collects all the form values and trims extra spaces
     $first_name = trim($_POST["first_name"] ?? "");
     $last_name = trim($_POST["last_name"] ?? "");
     $email = trim($_POST["email"] ?? "");
@@ -139,27 +176,34 @@ function handleRegister(PDO $conn): void
     $when_hired = $_POST["when_hired"] ?? null;
     $title = trim($_POST["title"] ?? "");
 
-    // checks all important feilds are there
+    // checks all important fields are there
     if (
         $first_name === "" ||
         $last_name === "" ||
         $email === "" ||
         $password === ""
     ) {
+        $_SESSION["old_register"] = $_POST;
         throwErr("register", "warning", "Please fill in all required fields.");
         header("Location: user_create.php");
         exit();
     }
+
     // ensures names contain only letters
     if (!validateName($first_name) || !validateName($last_name)) {
-         $_SESSION["old_register"] = $_POST;
-        throwErr("update", "danger", "First name and last name must contain letters only.");
+        $_SESSION["old_register"] = $_POST;
+        throwErr(
+            "register",
+            "danger",
+            "First name and last name must contain letters only."
+        );
         header("Location: user_create.php");
         exit();
     }
-    // correct email
+
+    // checks correct email format
     if (!validateEmail($email)) {
-         $_SESSION["old_register"] = $_POST;
+        $_SESSION["old_register"] = $_POST;
         throwErr("register", "danger", "Invalid email.");
         header("Location: user_create.php");
         exit();
@@ -167,15 +211,27 @@ function handleRegister(PDO $conn): void
 
     try {
         $check = $conn->prepare("
-    SELECT 1
-    FROM users
-    WHERE email = ?
-    AND deleted_at IS NULL
-");
+            SELECT deleted_at
+            FROM users
+            WHERE email = ?
+        ");
         $check->execute([$email]);
 
-        if ($check->fetchColumn()) {
-            throwErr("register", "danger", "Email already exists.");
+        $existingUser = $check->fetch(PDO::FETCH_ASSOC);
+
+        if ($existingUser) {
+            $_SESSION["old_register"] = $_POST;
+
+            if (!empty($existingUser["deleted_at"])) {
+                throwErr(
+                    "register",
+                    "danger",
+                    "This account has been removed. Please contact the salon for assistance."
+                );
+            } else {
+                throwErr("register", "danger", "Email already exists.");
+            }
+
             header("Location: user_create.php");
             exit();
         }
@@ -209,7 +265,7 @@ function handleRegister(PDO $conn): void
         if ($role === "employee") {
             if ($salary === null || $salary === "" || $title === "") {
                 throw new Exception(
-                    "Salary and title are required for employees.",
+                    "Salary and title are required for employees."
                 );
             }
 
@@ -252,7 +308,7 @@ function handleRegister(PDO $conn): void
 
         error_log("Register error: " . $e->getMessage());
 
-        throwErr("register", "danger", "Database error." . $e->getMessage());
+        throwErr("register", "danger", "Database error.");
         header("Location: user_create.php");
         exit();
     }
@@ -265,41 +321,88 @@ function handleLogin(PDO $conn): void
 
     if ($email === "" || $password === "") {
         $_SESSION["old_login_email"] = $email;
-        throwErr("login", "warning", "Enter email and password.");
+
+        throwErr(
+            "login",
+            "warning",
+            "Enter email and password."
+        );
+
         header("Location: login.php");
         exit();
     }
 
     try {
         $stmt = $conn->prepare("
-    SELECT first_name, email, password, role
-    FROM users
-    WHERE email = ?
-    AND deleted_at IS NULL
-");
+            SELECT
+                first_name,
+                email,
+                password,
+                role,
+                deleted_at
+            FROM users
+            WHERE email = ?
+        ");
+
         $stmt->execute([$email]);
+
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$user || !password_verify($password, $user["password"])) {
+        // account exists but has been deleted
+        if ($user && !empty($user["deleted_at"])) {
+
             $_SESSION["old_login_email"] = $email;
-            throwErr("login", "danger", "Incorrect login.");
+
+            throwErr(
+                "login",
+                "danger",
+                "This account has been removed. Please contact the salon for assistance."
+            );
+
             header("Location: login.php");
             exit();
         }
+
+        // incorrect login details
+        if (!$user || !password_verify($password, $user["password"])) {
+
+            $_SESSION["old_login_email"] = $email;
+
+            throwErr(
+                "login",
+                "danger",
+                "Incorrect login."
+            );
+
+            header("Location: login.php");
+            exit();
+        }
+
         $_SESSION["name"] = $user["first_name"];
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
 
-        throwErr("login", "success", "Logged in successfully!");
+        throwErr(
+            "login",
+            "success",
+            "Logged in successfully!"
+        );
+
         header("Location: user.php");
         exit();
+
     } catch (PDOException $e) {
-        throwErr("login", "danger", "Login unsuccessful, database error.");
+
+        throwErr(
+            "login",
+            "danger",
+            "Login unsuccessful, database error."
+        );
+
         header("Location: login.php");
         exit();
     }
 }
-
 function handleProfileUpdate(PDO $conn): void
 {
     $user = getCurrentUserData($conn);

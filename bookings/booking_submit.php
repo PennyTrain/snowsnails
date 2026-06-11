@@ -8,7 +8,7 @@ $booking_user_id = $_SESSION["booking_user_id"] ?? null;
 
     <!-- CONTENT  -->
     <main class="container">
-    <div class="row booked-message">
+    <div class="row service-container">
         <?php if (!empty($booking_ref)): ?>
             <h1 class="heading">Your Reference Number is:</h1>
             <h1 class="heading">

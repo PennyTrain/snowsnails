@@ -2,30 +2,71 @@
 session_start();
 
 require_once "../config/db.php";
-require_once "../helpers/errors.php";
 require_once "../helpers/auth.php";
+require_once "../helpers/errors.php";
 
-protectedUserPage($conn);
-if (isset($_POST["cancel_logout"])) {
-    header("Location: user_update.php");
+protectedPage($conn);
+
+$user_id = isset($_GET["user_id"]) ? (int) $_GET["user_id"] : 0;
+
+if ($user_id <= 0) {
+    header("Location: users.php");
     exit();
 }
+
+$stmt = $conn->prepare("
+    SELECT user_id, first_name, last_name, email, role, img_url
+    FROM users
+    WHERE user_id = ?
+");
+$stmt->execute([$user_id]);
+$viewedUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$viewedUser) {
+    header("Location: users.php");
+    exit();
+}
+
 include "../header.php";
 ?>
 
-<div class="user-container">
-    <h1 class="heading">Are you sure you want to delete your account?</h1>
-    <form method="post" action="user_control.php">
-        <button type="submit" name="delete" class="btn btn-danger">
-            Yes, Delete Account
-        </button>
+<main class="container">
+    <div class="row service-container">
+        <div class="col-12">
+            <h1 class="heading">Delete User</h1>
+<div class="profile-header">
 
-        <button type="submit" name="cancel_logout" class="btn btn-secondary">
-            No, Take Me Back
-        </button>
-    </form>
+    <?php if (!empty($viewedUser["img_url"])): ?>
+        <img
+            src="<?= htmlspecialchars($viewedUser["img_url"]) ?>"
+            class="profile-img"
+            alt="User account"
+        >
+    <?php endif; ?>
+
+
 </div>
+            <p class="heading">
+                Are you sure you want to permanently delete
+                <?= htmlspecialchars($viewedUser["first_name"] . " " . $viewedUser["last_name"]) ?>?
+            </p>
+
+            <form
+                action="user_control.php"
+                method="post"
+            >
+                <input type="hidden" name="user_id" value="<?= (int) $viewedUser["user_id"] ?>">
+
+                <button type="submit" name="permanent_delete" class="btn btn-danger">
+                    Permanently Delete
+                </button>
+
+                <a href="user_view.php?user_id=<?= (int) $viewedUser["user_id"] ?>" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</main>
+
 <?php include "../footer.php"; ?>
-
-
-<!-- https://www.youtube.com/watch?v=LiomRvK7AM8 -->

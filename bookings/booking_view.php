@@ -62,8 +62,8 @@ $statusClass = match ($status) {
 
 include_once "../header.php";
 ?>
-
-<div class="service-container">
+<main class="container">
+<div class="row service-container">
 
 <div class="container py-4">
 
@@ -208,13 +208,14 @@ include_once "../header.php";
             </div>
             </div>
             <div>
-                <a href="booking_update.php" class="btn btn-secondary">Update</a>
+
             </div>
 
         </div>
 
     </div>
-
+                <a href="booking_admin.php" class="btn btn-secondary">Back</a>
 </div>
+                                                </main>
 
 <?php include_once "../footer.php"; ?>
