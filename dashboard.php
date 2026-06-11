@@ -6,7 +6,7 @@ require_once "helpers/auth.php";
 
 protectedPage($conn);
 
-// Total active users
+// all users that are acyive
 $totalStmt = $conn->prepare("
     SELECT COUNT(*) AS total
     FROM users
@@ -15,7 +15,7 @@ $totalStmt = $conn->prepare("
 $totalStmt->execute();
 $totalUsers = (int) $totalStmt->fetchColumn();
 
-// Subscription counts
+// subscribed vs not subscribed
 $subStmt = $conn->prepare("
     SELECT
         SUM(CASE WHEN subscribed = 1 THEN 1 ELSE 0 END) AS subscribed_count,
@@ -29,7 +29,7 @@ $subData = $subStmt->fetch(PDO::FETCH_ASSOC);
 $subscribedCount = (int) ($subData["subscribed_count"] ?? 0);
 $unsubscribedCount = (int) ($subData["unsubscribed_count"] ?? 0);
 
-// Role counts
+// how many users we have of each roles
 $roleStmt = $conn->prepare("
     SELECT role, COUNT(*) AS total
     FROM users
@@ -61,7 +61,7 @@ foreach ($roleRows as $row) {
     }
 }
 
-// Gender counts
+// how many women vs men
 $genderStmt = $conn->prepare("
     SELECT gender, COUNT(*) AS total
     FROM users
@@ -89,7 +89,7 @@ foreach ($genderRows as $row) {
     }
 }
 
-// New users this month
+// new users this month
 $newUsersStmt = $conn->prepare("
     SELECT COUNT(*) AS total
     FROM users
@@ -191,7 +191,9 @@ include_once "header.php";
         </div>
     </div>
 </main>
-
+<!-- here i load js charts and then create 3 charts
+ subscription, role, gender each chart uses the php data inside the javascript -->
+ <!-- https://www.chartjs.org/docs/latest/ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {

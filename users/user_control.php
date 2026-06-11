@@ -28,7 +28,7 @@ if (isset($_POST["register"])) {
 } elseif (isset($_POST["cancel_logout"])) {
     header("Location: ../index.php");
     exit();
-}elseif (isset($_POST["permanent_delete"])) {
+} elseif (isset($_POST["permanent_delete"])) {
     handlePermanentDelete($conn);
 } else {
     header("Location: index.php");
@@ -51,22 +51,12 @@ function handlePermanentDelete(PDO $conn): void
         ");
         $stmt->execute([$user_id]);
 
-        throwErr(
-            "delete",
-            "success",
-            "User permanently deleted."
-        );
+        throwErr("delete", "success", "User permanently deleted.");
         header("Location: users_page.php");
         exit();
     } catch (PDOException $e) {
-        throwErr(
-            "delete",
-            "danger",
-            "Unable to delete user."
-        );
-        header(
-            "Location: users_page.php"
-        );
+        throwErr("delete", "danger", "Unable to delete user.");
+        header("Location: users_page.php");
         exit();
     }
 }
@@ -117,11 +107,11 @@ function handleLogout(): void
 
 function handleSubscribe(PDO $conn): void
 {
-    // gets the page the user was already on so that they can be 
+    // gets the page the user was already on so that they can be
     // rediracted back
     $returnTo = $_POST["return_to"] ?? "/index.php";
-// I check that the user is logged in using the the email
-// stored in the session
+    // I check that the user is logged in using the the email
+    // stored in the session
     if (empty($_SESSION["email"])) {
         // display error msg if the user is not logged in
         throwErr("subscribe", "danger", "Please log in first.");
@@ -133,7 +123,7 @@ function handleSubscribe(PDO $conn): void
     try {
         // get the current logged in users data
         $user = getCurrentUserData($conn);
-// check if the user exists 
+        // check if the user exists
         if (!$user) {
             throwErr("subscribe", "danger", "User not found.");
             header("Location: " . $returnTo);
@@ -195,7 +185,7 @@ function handleRegister(PDO $conn): void
         throwErr(
             "register",
             "danger",
-            "First name and last name must contain letters only."
+            "First name and last name must contain letters only.",
         );
         header("Location: user_create.php");
         exit();
@@ -226,7 +216,7 @@ function handleRegister(PDO $conn): void
                 throwErr(
                     "register",
                     "danger",
-                    "This account has been removed. Please contact the salon for assistance."
+                    "This account has been removed. Please contact the salon for assistance.",
                 );
             } else {
                 throwErr("register", "danger", "Email already exists.");
@@ -265,7 +255,7 @@ function handleRegister(PDO $conn): void
         if ($role === "employee") {
             if ($salary === null || $salary === "" || $title === "") {
                 throw new Exception(
-                    "Salary and title are required for employees."
+                    "Salary and title are required for employees.",
                 );
             }
 
@@ -322,11 +312,7 @@ function handleLogin(PDO $conn): void
     if ($email === "" || $password === "") {
         $_SESSION["old_login_email"] = $email;
 
-        throwErr(
-            "login",
-            "warning",
-            "Enter email and password."
-        );
+        throwErr("login", "warning", "Enter email and password.");
 
         header("Location: login.php");
         exit();
@@ -350,13 +336,12 @@ function handleLogin(PDO $conn): void
 
         // account exists but has been deleted
         if ($user && !empty($user["deleted_at"])) {
-
             $_SESSION["old_login_email"] = $email;
 
             throwErr(
                 "login",
                 "danger",
-                "This account has been removed. Please contact the salon for assistance."
+                "This account has been removed. Please contact the salon for assistance.",
             );
 
             header("Location: login.php");
@@ -365,14 +350,9 @@ function handleLogin(PDO $conn): void
 
         // incorrect login details
         if (!$user || !password_verify($password, $user["password"])) {
-
             $_SESSION["old_login_email"] = $email;
 
-            throwErr(
-                "login",
-                "danger",
-                "Incorrect login."
-            );
+            throwErr("login", "danger", "Incorrect login.");
 
             header("Location: login.php");
             exit();
@@ -382,22 +362,12 @@ function handleLogin(PDO $conn): void
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
 
-        throwErr(
-            "login",
-            "success",
-            "Logged in successfully!"
-        );
+        throwErr("login", "success", "Logged in successfully!");
 
         header("Location: user.php");
         exit();
-
     } catch (PDOException $e) {
-
-        throwErr(
-            "login",
-            "danger",
-            "Login unsuccessful, database error."
-        );
+        throwErr("login", "danger", "Login unsuccessful, database error.");
 
         header("Location: login.php");
         exit();
@@ -461,7 +431,10 @@ function handleProfileUpdate(PDO $conn): void
 
     try {
         if ($password_changed) {
-            $hashed_password = hashValidatedPassword($new_password, $confirm_password);
+            $hashed_password = hashValidatedPassword(
+                $new_password,
+                $confirm_password,
+            );
         } else {
             $hashed_password = $user["password"];
         }
@@ -471,10 +444,14 @@ function handleProfileUpdate(PDO $conn): void
         exit();
     }
     if (!validateName($first_name) || !validateName($last_name)) {
-    throwErr("update", "danger", "First name and last name must contain letters only.");
-    header("Location: user_update.php");
-    exit();
-}
+        throwErr(
+            "update",
+            "danger",
+            "First name and last name must contain letters only.",
+        );
+        header("Location: user_update.php");
+        exit();
+    }
 
     try {
         $update = $conn->prepare("

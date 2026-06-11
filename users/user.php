@@ -25,14 +25,22 @@ include_once "../header.php";
                         <?php endif; ?>
 
                         <h2 class="heading mb-0">
-                            <?= htmlspecialchars($user["first_name"]) ?>'s Profile
+                            <?= htmlspecialchars(
+                                $user["first_name"],
+                            ) ?>'s Profile
                         </h2>
                     </div>
 
                     <div class="profile-content mt-4">
-                        <p><strong>Name:</strong> <?= htmlspecialchars($user["first_name"]) ?> <?= htmlspecialchars($user["last_name"]) ?></p>
-                        <p><strong>Email:</strong> <?= htmlspecialchars($user["email"]) ?></p>
-                        <p><strong>Phone:</strong> <?= htmlspecialchars($user["phone"]) ?></p>
+                        <p><strong>Name:</strong> <?= htmlspecialchars(
+                            $user["first_name"],
+                        ) ?> <?= htmlspecialchars($user["last_name"]) ?></p>
+                        <p><strong>Email:</strong> <?= htmlspecialchars(
+                            $user["email"],
+                        ) ?></p>
+                        <p><strong>Phone:</strong> <?= htmlspecialchars(
+                            $user["phone"],
+                        ) ?></p>
                     </div>
 
                     <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
@@ -51,7 +59,5 @@ include_once "../header.php";
     </section>
 </main>
 
- <?php // Include the footer file
-
-include_once "../footer.php";
+ <?php include_once "../footer.php";
 ?>

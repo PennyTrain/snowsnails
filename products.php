@@ -10,7 +10,7 @@ $offset = ($page - 1) * $limit;
 $search = trim($_GET["search"] ?? "");
 $searchTerm = "%" . $search . "%";
 $noResults = false;
-// counts how many prods matched the search 
+// counts how many prods matched the search
 // and what is needed for the pagination
 $countStmt = $conn->prepare("
     SELECT COUNT(*)
@@ -25,7 +25,7 @@ $countStmt->execute([
 ]);
 $totalProducts = (int) $countStmt->fetchColumn();
 // this retreievs the products for the current page
-// sorts them alphabetically and uses LIMIT and OFFSET for the 
+// sorts them alphabetically and uses LIMIT and OFFSET for the
 // pagination
 $stmt = $conn->prepare("
     SELECT
@@ -76,7 +76,7 @@ if (empty($products) && $search !== "") {
     ");
     $totalProducts = (int) $countProducts->fetchColumn();
 }
-// calcs how many pages are needed for pagination 
+// calcs how many pages are needed for pagination
 $totalPages = (int) ceil($totalProducts / $limit);
 
 // creates page urls like ?page=3 if there is enough products for
@@ -182,7 +182,8 @@ function pageUrl(int $page, string $search): string
                         </h5>
 <p class="card-text text-muted flex-grow-1">
     <?= htmlspecialchars(
-        ($product["category_id"] == 1 ? "Nail polish: " : "") . $product["description"]
+        ($product["category_id"] == 1 ? "Nail polish: " : "") .
+            $product["description"],
     ) ?>
 </p>
                         <?php if (
@@ -192,7 +193,9 @@ function pageUrl(int $page, string $search): string
                             <small class="text-muted">
                                 Color:
                                 <?= htmlspecialchars(
-                                    ucfirst($product["color_name"] ?? "Unknown"),
+                                    ucfirst(
+                                        $product["color_name"] ?? "Unknown",
+                                    ),
                                 ) ?>
                             </small>
                         <?php endif; ?>
@@ -218,9 +221,7 @@ function pageUrl(int $page, string $search): string
                 </li>
                 <!-- PAGE NUMBERS -->
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <li class="page-item <?= $i === $page
-                        ? "active"
-                        : "" ?>">
+                    <li class="page-item <?= $i === $page ? "active" : "" ?>">
                         <a
                             class="page-link"
                             href="<?= htmlspecialchars(pageUrl($i, $search)) ?>"

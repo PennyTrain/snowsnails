@@ -4,7 +4,6 @@ require_once "../config/db.php";
 require_once "../helpers/auth.php";
 
 protectedUserPage($conn);
-// Get current user data
 $user = getCurrentUserData($conn);
 
 include_once "../header.php";
@@ -71,7 +70,5 @@ include_once "../header.php";
 </section>
     </main>
 
- <?php // Include the footer file
-
-include_once "../footer.php";
+ <?php include_once "../footer.php";
 ?>

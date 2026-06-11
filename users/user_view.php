@@ -36,26 +36,32 @@ include_once "../header.php";
                                 <h3 class="card-title mb-3">
                                     <?= htmlspecialchars(
                                         ($viewedUser["first_name"] ?? "") .
-                                        " " .
-                                        ($viewedUser["last_name"] ?? "")
+                                            " " .
+                                            ($viewedUser["last_name"] ?? ""),
                                     ) ?>
                                 </h3>
                                 <p class="mb-1">
                                     <strong>User ID:</strong>
-                                    <?= htmlspecialchars($viewedUser["user_id"] ?? "") ?>
+                                    <?= htmlspecialchars(
+                                        $viewedUser["user_id"] ?? "",
+                                    ) ?>
                                 </p>
                                 <p class="mb-1">
                                     <strong>Email:</strong>
-                                    <?= htmlspecialchars($viewedUser["email"] ?? "") ?>
+                                    <?= htmlspecialchars(
+                                        $viewedUser["email"] ?? "",
+                                    ) ?>
                                 </p>
                                 <p class="mb-1">
                                     <strong>Phone:</strong>
-                                    <?= htmlspecialchars($viewedUser["phone"] ?? "") ?>
+                                    <?= htmlspecialchars(
+                                        $viewedUser["phone"] ?? "",
+                                    ) ?>
                                 </p>
                                 <p class="mb-1">
                                     <strong>Role:</strong>
                                     <?= htmlspecialchars(
-                                        ucfirst($viewedUser["role"] ?? "")
+                                        ucfirst($viewedUser["role"] ?? ""),
                                     ) ?>
                                 </p>
                                 <p class="mb-1">
@@ -67,26 +73,29 @@ include_once "../header.php";
                                 <p class="mb-1">
                                     <strong>Created:</strong>
                                     <?= htmlspecialchars(
-                                        $viewedUser["created_at"] ?? "N/A"
+                                        $viewedUser["created_at"] ?? "N/A",
                                     ) ?>
                                 </p>
                                 <p class="mb-1">
                                     <strong>Updated:</strong>
                                     <?= htmlspecialchars(
-                                        $viewedUser["updated_at"] ?? "N/A"
+                                        $viewedUser["updated_at"] ?? "N/A",
                                     ) ?>
                                 </p>
                                 <p class="mb-1">
                                     <strong>Deleted At:</strong>
                                     <?= htmlspecialchars(
-                                        $viewedUser["deleted_at"] ?? "Not Deleted"
+                                        $viewedUser["deleted_at"] ??
+                                            "Not Deleted",
                                     ) ?>
                                 </p>
                             </div>
                             <div>
                                 <?php if (!empty($viewedUser["img_url"])): ?>
                                     <img
-                                        src="<?= htmlspecialchars($viewedUser["img_url"]) ?>"
+                                        src="<?= htmlspecialchars(
+                                            $viewedUser["img_url"],
+                                        ) ?>"
                                         alt="Profile Image"
                                         class="img-fluid rounded"
                                         style="width: 200px; height: 200px; object-fit: cover;"
@@ -99,10 +108,22 @@ include_once "../header.php";
             </div>
         </div>
     </div>
-<a href="delete.php?user_id=<?= (int) $viewedUser["user_id"] ?>" class="btn btn-danger" style="margin: 2rem 0 2rem 0">
-    Permanently Delete
-</a>
-            <a href="users_page.php" class="btn btn-secondary">Back</a>
+<div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+
+    <a
+        href="delete.php?user_id=<?= (int) $viewedUser["user_id"] ?>"
+        class="btn btn-danger"
+    >
+        Permanently Delete
+    </a>
+
+    <a
+        href="users_page.php"
+        class="btn btn-secondary"
+    >
+        Back
+    </a>
+
 </div>
                                 </main>
 <?php include_once "../footer.php"; ?>

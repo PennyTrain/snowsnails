@@ -67,13 +67,21 @@ include_once "../header.php";
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                             <div>
                                 <h5 class="card-title mb-1">
-                                    Booking #<?= htmlspecialchars($booking["booking_ref"]) ?>
+                                    Booking #<?= htmlspecialchars(
+                                        $booking["booking_ref"],
+                                    ) ?>
                                 </h5>
                                 <p class="mb-1 text-muted">
-                                    <?= htmlspecialchars($booking["first_name"] . " " . $booking["last_name"]) ?>
+                                    <?= htmlspecialchars(
+                                        $booking["first_name"] .
+                                            " " .
+                                            $booking["last_name"],
+                                    ) ?>
                                 </p>
                                 <p class="mb-1">
-                                    <strong>Date:</strong> <?= htmlspecialchars($booking["scheduled_start"]) ?>
+                                    <strong>Date:</strong> <?= htmlspecialchars(
+                                        $booking["scheduled_start"],
+                                    ) ?>
                                 </p>
 
                                 <?php
@@ -91,7 +99,15 @@ include_once "../header.php";
                                 <p class="mb-1">
                                     <strong>Status:</strong>
                                     <span class="badge <?= $statusClass ?>">
-                                        <?= htmlspecialchars(ucwords(str_replace("_", " ", $booking["status"]))) ?>
+                                        <?= htmlspecialchars(
+                                            ucwords(
+                                                str_replace(
+                                                    "_",
+                                                    " ",
+                                                    $booking["status"],
+                                                ),
+                                            ),
+                                        ) ?>
                                     </span>
                                 </p>
                             </div>
@@ -102,7 +118,9 @@ include_once "../header.php";
                                         Cancel
                                     </button> -->
 
-                                    <a href="booking_view.php?booking_id=<?= urlencode($booking["booking_id"]) ?>"
+                                    <a href="booking_view.php?booking_id=<?= urlencode(
+                                        $booking["booking_id"],
+                                    ) ?>"
                                        class="btn btn-secondary">
                                         View
                                     </a>

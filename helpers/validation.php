@@ -31,7 +31,6 @@ function hashValidatedPassword(
     return password_hash($password, PASSWORD_DEFAULT);
 }
 
-
 // Having general validators in the same file to ensure reusability
 // and no code duplication, here I check that name feils only
 // contain characters and no text

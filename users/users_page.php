@@ -13,7 +13,7 @@ $offset = ($page - 1) * $limit; // so if page 2, skip limit amount of users and 
 
 $countUsers = $conn->query("SELECT COUNT(*) FROM users");
 // COUNT, counts how many users are in the table
-// I have to count and not use the user id 
+// I have to count and not use the user id
 // as a user id is not continuous, this is for pagination
 $totalUsers = (int) $countUsers->fetchColumn(); // total amound of users
 $totalPages = (int) ceil($totalUsers / $limit);
@@ -54,7 +54,9 @@ include_once "../header.php";
                             <h6 class="card-title">
                                 <?= htmlspecialchars($user["email"]) ?>
                             </h6>
-                                    <a href="user_view.php?user_id=<?= urlencode($user["user_id"]) ?>"
+                                    <a href="user_view.php?user_id=<?= urlencode(
+                                        $user["user_id"],
+                                    ) ?>"
                                        class="btn btn-secondary">
                                         View
                                     </a>

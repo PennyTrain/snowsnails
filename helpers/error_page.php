@@ -17,9 +17,9 @@ class ErrorPage
         string $message,
         string $image,
         string $buttonText = "Go Home",
-        string $buttonLink = "../index.php"
+        string $buttonLink = "../index.php",
     ) {
-        // sae the input into the classes 
+        // sae the input into the classes
         $this->code = $code;
         $this->title = $title;
         $this->message = $message;
@@ -34,7 +34,9 @@ class ErrorPage
         include "../header.php";
         ?>
         <div class="user-container error-page">
-            <h1 class="heading error-code"><?= htmlspecialchars((string) $this->code) ?></h1>
+            <h1 class="heading error-code"><?= htmlspecialchars(
+                (string) $this->code,
+            ) ?></h1>
 
             <p class="text error-text">
                 <?= htmlspecialchars($this->message) ?>
@@ -48,11 +50,12 @@ class ErrorPage
                 >
             </div>
 
-            <a href="<?= htmlspecialchars($this->buttonLink) ?>" class="error-button">
+            <a href="<?= htmlspecialchars(
+                $this->buttonLink,
+            ) ?>" class="error-button">
                 <?= htmlspecialchars($this->buttonText) ?>
             </a>
         </div>
-        <?php
-        include "../footer.php";
+        <?php include "../footer.php";
     }
 }

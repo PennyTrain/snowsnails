@@ -2,16 +2,17 @@
 session_start();
 
 $isAdmin = isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
-$old = $_SESSION["old_register"] ?? [];
-// strict
+$old = $_SESSION["old_register"] ?? []; // getting old form values
+// this is to store the old value of what the user inputted before the
+// validation error
 function old_value(array $old, string $key, string $default = ""): string
 {
     return htmlspecialchars($old[$key] ?? $default, ENT_QUOTES, "UTF-8");
 }
-
+// this is for the drop down boxes old value
 function selected_value(array $old, string $key, string $value): string
 {
-    return (($old[$key] ?? "") === $value) ? "selected" : "";
+    return ($old[$key] ?? "") === $value ? "selected" : "";
 }
 
 include "../header.php";
@@ -24,7 +25,11 @@ include "../header.php";
 
     <?php if (!empty($_SESSION["register_error"])): ?>
         <p class="error-message">
-            <?= htmlspecialchars($_SESSION["register_error"], ENT_QUOTES, "UTF-8") ?>
+            <?= htmlspecialchars(
+                $_SESSION["register_error"],
+                ENT_QUOTES,
+                "UTF-8",
+            ) ?>
         </p>
         <?php unset($_SESSION["register_error"]); ?>
     <?php endif; ?>
@@ -92,12 +97,26 @@ include "../header.php";
 <?php if ($isAdmin): ?>
     <label for="role">User Role</label>
     <select name="role" id="role" class="form-control">
-        <option value="customer" <?= selected_value($old, "role", "customer") ?>>Customer</option>
-        <option value="employee" <?= selected_value($old, "role", "employee") ?>>Employee</option>
-        <option value="admin" <?= selected_value($old, "role", "admin") ?>>Admin</option>
+        <option value="customer" <?= selected_value(
+            $old,
+            "role",
+            "customer",
+        ) ?>>Customer</option>
+        <option value="employee" <?= selected_value(
+            $old,
+            "role",
+            "employee",
+        ) ?>>Employee</option>
+        <option value="admin" <?= selected_value(
+            $old,
+            "role",
+            "admin",
+        ) ?>>Admin</option>
     </select>
 
-    <div id="employeeFields" class="<?= (($old["role"] ?? "") === "employee") ? "" : "d-none" ?>">
+    <div id="employeeFields" class="<?= ($old["role"] ?? "") === "employee"
+        ? ""
+        : "d-none" ?>">
         <label for="salary">Salary</label>
         <input
             type="number"
@@ -118,11 +137,31 @@ include "../header.php";
 
         <label for="title">Title</label>
         <select name="title" id="title" class="form-control">
-            <option value="nail_tech" <?= selected_value($old, "title", "nail_tech") ?>>Nail Tech</option>
-            <option value="massage_therapist" <?= selected_value($old, "title", "massage_therapist") ?>>Massage Therapist</option>
-            <option value="esthetician" <?= selected_value($old, "title", "esthetician") ?>>Esthetician</option>
-            <option value="specialist" <?= selected_value($old, "title", "specialist") ?>>Specialist</option>
-            <option value="manager" <?= selected_value($old, "title", "manager") ?>>Manager</option>
+            <option value="nail_tech" <?= selected_value(
+                $old,
+                "title",
+                "nail_tech",
+            ) ?>>Nail Tech</option>
+            <option value="massage_therapist" <?= selected_value(
+                $old,
+                "title",
+                "massage_therapist",
+            ) ?>>Massage Therapist</option>
+            <option value="esthetician" <?= selected_value(
+                $old,
+                "title",
+                "esthetician",
+            ) ?>>Esthetician</option>
+            <option value="specialist" <?= selected_value(
+                $old,
+                "title",
+                "specialist",
+            ) ?>>Specialist</option>
+            <option value="manager" <?= selected_value(
+                $old,
+                "title",
+                "manager",
+            ) ?>>Manager</option>
         </select>
     </div>
 <?php endif; ?>
@@ -141,4 +180,5 @@ include "../header.php";
 <?php
 unset($_SESSION["old_register"]);
 include "../footer.php";
+
 ?>

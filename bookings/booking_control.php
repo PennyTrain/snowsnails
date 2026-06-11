@@ -118,7 +118,6 @@ function handleBooking(PDO $conn): void
 
 function handleBookingUpdate(PDO $conn): void
 {
-    
     $booking_id = (int) ($_POST["booking_id"] ?? 0);
 
     $first_name = trim($_POST["firstname"] ?? "");
@@ -141,7 +140,7 @@ function handleBookingUpdate(PDO $conn): void
         throwErr(
             "booking",
             "warning",
-            "Please fill in all required fields and select at least one service."
+            "Please fill in all required fields and select at least one service.",
         );
 
         header("Location: booking_update.php?booking_id=" . $booking_id);
@@ -159,11 +158,7 @@ function handleBookingUpdate(PDO $conn): void
         $scheduledStart = new DateTime($scheduled_start);
         $scheduled_start_db = $scheduledStart->format("Y-m-d H:i:s");
 
-        $services = array_values(
-            array_unique(
-                array_map("intval", $services)
-            )
-        );
+        $services = array_values(array_unique(array_map("intval", $services)));
 
         $conn->beginTransaction();
 
@@ -184,7 +179,7 @@ function handleBookingUpdate(PDO $conn): void
             $email,
             $phone,
             $scheduled_start_db,
-            $booking_id
+            $booking_id,
         ]);
 
         $deleteServices = $conn->prepare("
@@ -220,7 +215,6 @@ function handleBookingUpdate(PDO $conn): void
         $currentStart = new DateTime($scheduled_start_db);
 
         foreach ($services as $service_id) {
-
             $serviceLookupStmt->execute([$service_id]);
 
             $service = $serviceLookupStmt->fetch(PDO::FETCH_ASSOC);
@@ -235,46 +229,30 @@ function handleBookingUpdate(PDO $conn): void
                 $currentStart->format("Y-m-d H:i:s"),
                 (float) $service["price"],
                 (int) $service["duration"],
-                null
+                null,
             ]);
 
             $currentStart->modify(
-                "+" . (int) $service["duration"] . " minutes"
+                "+" . (int) $service["duration"] . " minutes",
             );
         }
 
         $conn->commit();
 
-        throwErr(
-            "booking",
-            "success",
-            "Booking updated successfully."
-        );
+        throwErr("booking", "success", "Booking updated successfully.");
 
-        header(
-            "Location: booking_view.php?booking_id=" . $booking_id
-        );
+        header("Location: booking_view.php?booking_id=" . $booking_id);
         exit();
-
     } catch (Throwable $e) {
-
         if ($conn->inTransaction()) {
             $conn->rollBack();
         }
 
-        error_log(
-            "Booking update error: " . $e->getMessage()
-        );
+        error_log("Booking update error: " . $e->getMessage());
 
-        throwErr(
-            "booking",
-            "danger",
-            "Unable to update booking."
-        );
+        throwErr("booking", "danger", "Unable to update booking.");
 
-        header(
-            "Location: booking_update.php?booking_id=" . $booking_id
-        );
+        header("Location: booking_update.php?booking_id=" . $booking_id);
         exit();
     }
 }

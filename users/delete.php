@@ -48,20 +48,26 @@ include "../header.php";
 </div>
             <p class="heading">
                 Are you sure you want to permanently delete
-                <?= htmlspecialchars($viewedUser["first_name"] . " " . $viewedUser["last_name"]) ?>?
+                <?= htmlspecialchars(
+                    $viewedUser["first_name"] . " " . $viewedUser["last_name"],
+                ) ?>?
             </p>
 
             <form
                 action="user_control.php"
                 method="post"
             >
-                <input type="hidden" name="user_id" value="<?= (int) $viewedUser["user_id"] ?>">
+                <input type="hidden" name="user_id" value="<?= (int) $viewedUser[
+                    "user_id"
+                ] ?>">
 
                 <button type="submit" name="permanent_delete" class="btn btn-danger">
                     Permanently Delete
                 </button>
 
-                <a href="user_view.php?user_id=<?= (int) $viewedUser["user_id"] ?>" class="btn btn-secondary">
+                <a href="user_view.php?user_id=<?= (int) $viewedUser[
+                    "user_id"
+                ] ?>" class="btn btn-secondary">
                     Cancel
                 </a>
             </form>
