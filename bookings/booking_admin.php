@@ -67,7 +67,8 @@ $statusClass = match ($status) {
     default => "bg-secondary",
 };
 ?>
-
+<!-- this is a little badge on each booking to show the status of each booking using bootstrap
+classes to update the UI -->
 <p class="mb-1">
     <strong>Status:</strong>
 

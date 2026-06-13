@@ -8,10 +8,14 @@ if (getenv("JAWSDB_URL")) {
     $username = $url["user"];
     $password = $url["pass"];
 } else {
+    // $host = "localhost";
+    // $dbname = "snowsnails";
+    // $username = "root";
+    // $password = "";
     $host = "localhost";
-    $dbname = "snowsnails";
-    $username = "root";
-    $password = "";
+    $dbname = "u2410737";
+    $username = "u2410737";
+    $password = "4B82bRQd";
 }
 
 try {
@@ -26,3 +30,6 @@ try {
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
+
+// var_dump($conn)
+// for debugging
