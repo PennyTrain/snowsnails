@@ -93,7 +93,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         logged in the form is pre-populated -->
                 <div class="card col-lg-4 col-md-3 col-sm-12 cards">
                     <img src="<?= htmlspecialchars(
-                        $category["img_url"] ?? "./assets/images/default.jpg",
+                        $category["img_url"] ?? "https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776150414/IMG_2484_ex8s9c.jpg",
                     ) ?>" class="card-img-top card-image"
                         alt="<?= htmlspecialchars($category["name"]) ?>">
                     <div class="card-body">
@@ -103,7 +103,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="card-text"><?= htmlspecialchars(
                             $category["description"],
                         ) ?></p>
-                        <a href="/services.php?category_id=1" class="btn btn btn-secondary card-btn">Take a look!</a>
+                        <a href="services.php?category_id=1" class="btn btn btn-secondary card-btn">Take a look!</a>
                     </div>
                 </div>
     <?php endforeach; ?>
@@ -135,7 +135,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Perfect for rejuvenating your skin!
                     </p>
                     <div class="guten">
-                        <a href="./bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -159,7 +159,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Limited time offer!
                     </p>
                     <div class="guten">
-                        <a href="./bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -183,7 +183,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Achieve the perfect look!
                     </p>
                     <div class="guten">
-                        <a href="./bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>

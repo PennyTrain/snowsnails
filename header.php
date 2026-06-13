@@ -52,16 +52,16 @@ unless explicitly ended or interrupted. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Snows Nails</title>
-    <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
-    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
-    <link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+    <link rel="icon" type="image/png" href="assets/images/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon/favicon.svg">
+    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="assets/images/favicon/site.webmanifest">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
@@ -70,7 +70,7 @@ unless explicitly ended or interrupted. -->
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid moving-nav">
-                <a class="navbar-brand link logo" href="/index.php">
+                <a class="navbar-brand link logo" href="index.php">
                     <span class="never-display">Logo that goes to home page</span>
 <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178501/logo_gg6jyn.png" alt="Snows Nails Logo" class="logo-img">
 </a>
@@ -82,21 +82,21 @@ unless explicitly ended or interrupted. -->
                 <div class="collapse navbar-collapse" id="navbarsExample05">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active link" aria-current="page" href="/index.php">Home</a>
+                            <a class="nav-link active link" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link" href="/bookings/booking_create.php">Contact Us</a>
+                            <a class="nav-link link" href="bookings/booking_create.php">Contact Us</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle link" href="#" id="dropdown05" data-bs-toggle="dropdown"
                                 aria-expanded="false">What We Offer</a>
                             <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
-                                <li><a class="dropdown-item link" href="/services.php?category_id=1">Lashes</a></li>
-                                <li><a class="dropdown-item link" href="/services.php?category_id=2">Nails</a></li>
-                                <li><a class="dropdown-item link" href="/services.php?category_id=3">Waxing</a></li>
-                                <li><a class="dropdown-item link" href="/services.php?category_id=4">Massages</a></li>
+                                <li><a class="dropdown-item link" href="services.php?category_id=1">Lashes</a></li>
+                                <li><a class="dropdown-item link" href="services.php?category_id=2">Nails</a></li>
+                                <li><a class="dropdown-item link" href="services.php?category_id=3">Waxing</a></li>
+                                <li><a class="dropdown-item link" href="services.php?category_id=4">Massages</a></li>
                                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item link" href="/products.php">Products</a></li>
+                                <li><a class="dropdown-item link" href="products.php">Products</a></li>
                             </ul>
                         </li>
                         <!-- here if user is logged in I show them that by including something from their update_profile
@@ -112,24 +112,24 @@ unless explicitly ended or interrupted. -->
 
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
 
-            <li><a class="dropdown-item link" href="/users/user.php">My Account</a></li>
-            <li><a class="dropdown-item link" href="/bookings/booking_users.php">My Bookings</a></li>
+            <li><a class="dropdown-item link" href="users/user.php">My Account</a></li>
+            <li><a class="dropdown-item link" href="bookings/booking_users.php">My Bookings</a></li>
         <!-- here i show the user if admin special pages so that they can create employees -->
             <?php if (
                 isset($_SESSION["role"]) &&
                 $_SESSION["role"] === "admin"
             ): ?>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item link" href="/dashboard.php">Admin Dashboard</a></li>
+                <li><a class="dropdown-item link" href="dashboard.php">Admin Dashboard</a></li>
                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item link" href="/users/users_page.php">All Users</a></li>
-                <li><a class="dropdown-item link" href="/users/user_create.php">Create User</a></li>
+                                <li><a class="dropdown-item link" href="users/users_page.php">All Users</a></li>
+                <li><a class="dropdown-item link" href="users/user_create.php">Create User</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item link" href="/bookings/booking_admin.php">All Bookings</a></li>
+                <li><a class="dropdown-item link" href="bookings/booking_admin.php">All Bookings</a></li>
             <?php endif; ?>
 
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item link" href="/users/logout.php">Logout</a></li>
+            <li><a class="dropdown-item link" href="users/logout.php">Logout</a></li>
 
         </ul>
     </li>
@@ -137,11 +137,11 @@ unless explicitly ended or interrupted. -->
 <?php else: ?>
 
     <li class="nav-item">
-        <a class="nav-link link" href="/users/login.php">Login</a>
+        <a class="nav-link link" href="users/login.php">Login</a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link link" href="/users/user_create.php">Register</a>
+        <a class="nav-link link" href="users/user_create.php">Register</a>
     </li>
 
 <?php endif; ?>

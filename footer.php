@@ -20,7 +20,7 @@
         </div>
 
         <div class="row subscribe-form">
-<form id="subscribe" class="text" method="post" action="/users/user_control.php">
+<form id="subscribe" class="text" method="post" action="users/user_control.php">
     <!-- this is a hidden redirect feild so that after the form is submitted it returns the user to the same page -->
     <input type="hidden" name="return_to" value="<?= htmlspecialchars(
         $_SERVER["REQUEST_URI"],
@@ -60,7 +60,7 @@
             Create an account to sign up to our exclusive mailing list.
             This way you will receive the latest information about our products, services and promotions.
         </p>
-        <button class="mailing-list" onclick="window.location.href='/users/user_create.php'">
+        <button class="mailing-list" onclick="window.location.href='users/user_create.php'">
             Register
         </button>
     </section>
@@ -153,7 +153,7 @@
             </div>
         </div>
     </footer>
-    <script src="/assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
     <!-- The Link for all The Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/f302dda9d1.js" crossorigin="anonymous"></script>
     <!-- Bootstrap Bundle -->
