@@ -4,7 +4,7 @@ session_start();
 // If already logged in, don’t show login again
 
 if (isset($_SESSION["email"])) {
-    header("Location: user.php");
+    header("Location: /dab502/assignment/snowsnail/users/user.php");
     exit();
 }
 

@@ -10,7 +10,7 @@ protectedPage($conn);
 $user_id = isset($_GET["user_id"]) ? (int) $_GET["user_id"] : 0;
 
 if ($user_id <= 0) {
-    header("Location: users.php");
+    header("Location: /dab502/assignment/snowsnail/users/user.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ $stmt->execute([$user_id]);
 $viewedUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$viewedUser) {
-    header("Location: users.php");
+    header("Location: /dab502/assignment/snowsnail/users/user.php");
     exit();
 }
 
@@ -65,7 +65,7 @@ include "../header.php";
                     Permanently Delete
                 </button>
 
-                <a href="user_view.php?user_id=<?= (int) $viewedUser[
+                <a href="/dab502/assignment/snowsnail/users/user_view.php?user_id=<?= (int) $viewedUser[
                     "user_id"
                 ] ?>" class="btn btn-secondary">
                     Cancel

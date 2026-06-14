@@ -1,4 +1,3 @@
-ErrorDocument 404 /httpserrors/404.php
-ErrorDocument 403 /httpserrors/403.php
-ErrorDocument 500 /httpserrors/500.php
-
+ErrorDocument 404 /dab502/assignment/snowsnail/httpserrors/404.php
+ErrorDocument 403 /dab502/assignment/snowsnail/httpserrors/403.php
+ErrorDocument 500 /dab502/assignment/snowsnail/httpserrors/500.php

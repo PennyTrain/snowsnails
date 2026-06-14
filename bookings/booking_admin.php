@@ -1,6 +1,14 @@
 <?php
 require_once "../helpers/auth.php";
 require_once "../config/db.php";
+session_start();
+protectedPage($conn);
+// $user = protectedUserPage($conn);
+
+// if (($user["role"] ?? "") !== "admin") {
+//         header("Location: /dab502/assignment/snowsnail/httpserrors/403.php");
+// }
+
 $limit = 8; // how many i wanna show at a time
 $page = isset($_GET["page"]) ? (int) $_GET["page"] : 1; //skip some users then start grabbing,
 $page = max($page, 1);
@@ -25,7 +33,7 @@ $stmt->bindValue(":limit", $limit, PDO::PARAM_INT); // forces number
 $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
 $stmt->execute();
 $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC); // uses column names as key
-include_once "../header.php";
+include "../header.php";
 ?>
 <main class="container">
 <div class="row service-container">

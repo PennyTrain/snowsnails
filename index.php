@@ -103,7 +103,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="card-text"><?= htmlspecialchars(
                             $category["description"],
                         ) ?></p>
-                        <a href="services.php?category_id=1" class="btn btn btn-secondary card-btn">Take a look!</a>
+                        <a href="/dab502/assignment/snowsnail/services.php?category_id=1" class="btn btn btn-secondary card-btn">Take a look!</a>
                     </div>
                 </div>
     <?php endforeach; ?>
@@ -135,7 +135,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Perfect for rejuvenating your skin!
                     </p>
                     <div class="guten">
-                        <a href="bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="/dab502/assignment/snowsnail/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -159,7 +159,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Limited time offer!
                     </p>
                     <div class="guten">
-                        <a href="bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="/dab502/assignment/snowsnail/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -183,7 +183,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Achieve the perfect look!
                     </p>
                     <div class="guten">
-                        <a href="bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="/dab502/assignment/snowsnail/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
                     </div>
                 </div>
             </div>

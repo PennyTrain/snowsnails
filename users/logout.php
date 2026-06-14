@@ -41,7 +41,7 @@ include "../header.php";
                     </button>
 
                     <a
-                        href="../index.php"
+                        href="/dab502/assignment/snowsnail/index.php"
                         class="btn btn-secondary"
                     >
                         No, Take Me Back

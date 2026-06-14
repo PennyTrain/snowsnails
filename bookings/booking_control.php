@@ -9,7 +9,7 @@ if (isset($_POST["booking_create"])) {
 } elseif (isset($_POST["booking_update"])) {
     handleBookingUpdate($conn);
 } else {
-    header("Location: login.php");
+    header("Location: /dab502/assignment/snowsnail/users/login.php");
     exit();
 }
 
@@ -35,12 +35,12 @@ function handleBooking(PDO $conn): void
             "warning",
             "Please fill in all required fields and select at least one service.",
         );
-        header("Location: booking_create.php");
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_create.php");
         exit();
     }
     if (!validateEmail($email)) {
         throwErr("booking", "danger", "Invalid email.");
-        header("Location: booking_create.php");
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_create.php");
         exit();
     }
     try {
@@ -103,7 +103,7 @@ function handleBooking(PDO $conn): void
         $_SESSION["booking_ref"] = $booking_ref;
         $_SESSION["booking_user_id"] = $user_id;
         throwErr("booking", "success", "Booking created successfully.");
-        header("Location: booking_submit.php");
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_submit.php");
         exit();
     } catch (Throwable $e) {
         if ($conn->inTransaction()) {
@@ -111,7 +111,7 @@ function handleBooking(PDO $conn): void
         }
         error_log("Booking error: " . $e->getMessage());
         throwErr("booking", "danger", "Unable to create booking.");
-        header("Location: booking.php");
+        header("Location: /dab502/assignment/snowsnail/bookings/booking.php");
         exit();
     }
 }
@@ -143,14 +143,14 @@ function handleBookingUpdate(PDO $conn): void
             "Please fill in all required fields and select at least one service.",
         );
 
-        header("Location: booking_update.php?booking_id=" . $booking_id);
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_update.php?booking_id=" . $booking_id);
         exit();
     }
 
     if (!validateEmail($email)) {
         throwErr("booking", "danger", "Invalid email.");
 
-        header("Location: booking_update.php?booking_id=" . $booking_id);
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_update.php?booking_id=" . $booking_id);
         exit();
     }
 
@@ -241,7 +241,7 @@ function handleBookingUpdate(PDO $conn): void
 
         throwErr("booking", "success", "Booking updated successfully.");
 
-        header("Location: booking_view.php?booking_id=" . $booking_id);
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_view.php?booking_id=" . $booking_id);
         exit();
     } catch (Throwable $e) {
         if ($conn->inTransaction()) {
@@ -252,7 +252,7 @@ function handleBookingUpdate(PDO $conn): void
 
         throwErr("booking", "danger", "Unable to update booking.");
 
-        header("Location: booking_update.php?booking_id=" . $booking_id);
+        header("Location: /dab502/assignment/snowsnail/bookings/booking_update.php?booking_id=" . $booking_id);
         exit();
     }
 }

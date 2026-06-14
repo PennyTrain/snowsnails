@@ -55,7 +55,7 @@ $services = $stmt->fetchAll();
             <!-- text interpolation here -->
             <h1 class="heading"><?= htmlspecialchars($title) ?></h1>
             <p class="text"><?= htmlspecialchars($description) ?></p>
-                        <a href="/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
+                        <a href="/dab502/assignment/snowsnail/bookings/booking_create.php" class="btn offer-btn btn-secondary">Book Now</a>
 <?php if (!empty($image)): ?>
     <img
         src="<?= htmlspecialchars($image) ?>"

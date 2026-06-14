@@ -5,7 +5,7 @@ require_once "../helpers/auth.php";
 protectedPage($conn);
 $user_id = isset($_GET["user_id"]) ? (int) $_GET["user_id"] : 0;
 if ($user_id <= 0) {
-    header("Location: users.php");
+    header("Location: /dab502/assignment/snowsnail/users/users.php");
     exit();
 }
 $stmt = $conn->prepare("
@@ -16,7 +16,7 @@ $stmt = $conn->prepare("
 $stmt->execute([$user_id]);
 $viewedUser = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$viewedUser) {
-    header("Location: users.php");
+    header("Location: /dab502/assignment/snowsnail/users/users.php");
     exit();
 }
 include_once "../header.php";
@@ -111,14 +111,14 @@ include_once "../header.php";
 <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
 
     <a
-        href="delete.php?user_id=<?= (int) $viewedUser["user_id"] ?>"
+        href="/dab502/assignment/snowsnail/users/delete.php?user_id=<?= (int) $viewedUser["user_id"] ?>"
         class="btn btn-danger"
     >
         Permanently Delete
     </a>
 
     <a
-        href="users_page.php"
+        href="/dab502/assignment/snowsnail/users/users_page.php"
         class="btn btn-secondary"
     >
         Back

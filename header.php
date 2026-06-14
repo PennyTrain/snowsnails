@@ -29,7 +29,9 @@ $user = [];
 if ($isLoggedIn) {
     $user = getCurrentUserData($conn);
 }
+
 ?>
+
 
 <!-- to avoid this error at the top
 timezone_openNotice: session_start(): Ignoring session_start()
@@ -44,6 +46,10 @@ maintained through mechanisms that identify and authenticate the user across var
 Think of it like a continuous chat thread—once established, it keeps the conversation going
 unless explicitly ended or interrupted. -->
 
+
+<!-- 
+I also use a reusable header and footer component to adhere to DRY, therefore
+each page i do not need to repeat the footer and header in every single file -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,7 +67,7 @@ unless explicitly ended or interrupted. -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="/dab502/assignment/snowsnail/assets/css/styles.css">
 </head>
 
 <body>
@@ -70,7 +76,7 @@ unless explicitly ended or interrupted. -->
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid moving-nav">
-                <a class="navbar-brand link logo" href="index.php">
+                <a class="navbar-brand link logo" href="/dab502/assignment/snowsnail/index.php">
                     <span class="never-display">Logo that goes to home page</span>
 <img src="https://res.cloudinary.com/dgz5gpe5z/image/upload/v1776178501/logo_gg6jyn.png" alt="Snows Nails Logo" class="logo-img">
 </a>
@@ -82,21 +88,21 @@ unless explicitly ended or interrupted. -->
                 <div class="collapse navbar-collapse" id="navbarsExample05">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active link" aria-current="page" href="index.php">Home</a>
+                            <a class="nav-link active link" aria-current="page" href="/dab502/assignment/snowsnail/index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link link" href="bookings/booking_create.php">Contact Us</a>
+                            <a class="nav-link link" href="/dab502/assignment/snowsnail/bookings/booking_create.php">Contact Us</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle link" href="#" id="dropdown05" data-bs-toggle="dropdown"
                                 aria-expanded="false">What We Offer</a>
                             <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
-                                <li><a class="dropdown-item link" href="services.php?category_id=1">Lashes</a></li>
-                                <li><a class="dropdown-item link" href="services.php?category_id=2">Nails</a></li>
-                                <li><a class="dropdown-item link" href="services.php?category_id=3">Waxing</a></li>
-                                <li><a class="dropdown-item link" href="services.php?category_id=4">Massages</a></li>
+                                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/services.php?category_id=1">Lashes</a></li>
+                                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/services.php?category_id=2">Nails</a></li>
+                                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/services.php?category_id=3">Waxing</a></li>
+                                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/services.php?category_id=4">Massages</a></li>
                                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item link" href="products.php">Products</a></li>
+                                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/products.php">Products</a></li>
                             </ul>
                         </li>
                         <!-- here if user is logged in I show them that by including something from their update_profile
@@ -112,24 +118,24 @@ unless explicitly ended or interrupted. -->
 
         <ul class="dropdown-menu dropdown-container" aria-labelledby="dropdown05">
 
-            <li><a class="dropdown-item link" href="users/user.php">My Account</a></li>
-            <li><a class="dropdown-item link" href="bookings/booking_users.php">My Bookings</a></li>
+            <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/users/user.php">My Account</a></li>
+            <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/bookings/booking_users.php">My Bookings</a></li>
         <!-- here i show the user if admin special pages so that they can create employees -->
             <?php if (
                 isset($_SESSION["role"]) &&
                 $_SESSION["role"] === "admin"
             ): ?>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item link" href="dashboard.php">Admin Dashboard</a></li>
+                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/dashboard.php">Admin Dashboard</a></li>
                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item link" href="users/users_page.php">All Users</a></li>
-                <li><a class="dropdown-item link" href="users/user_create.php">Create User</a></li>
+                                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/users/users_page.php">All Users</a></li>
+                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/users/user_create.php">Create User</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item link" href="bookings/booking_admin.php">All Bookings</a></li>
+                <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/bookings/booking_admin.php">All Bookings</a></li>
             <?php endif; ?>
 
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item link" href="users/logout.php">Logout</a></li>
+            <li><a class="dropdown-item link" href="/dab502/assignment/snowsnail/users/logout.php">Logout</a></li>
 
         </ul>
     </li>
@@ -137,11 +143,11 @@ unless explicitly ended or interrupted. -->
 <?php else: ?>
 
     <li class="nav-item">
-        <a class="nav-link link" href="users/login.php">Login</a>
+        <a class="nav-link link" href="/dab502/assignment/snowsnail/users/login.php">Login</a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link link" href="users/user_create.php">Register</a>
+        <a class="nav-link link" href="/dab502/assignment/snowsnail/users/user_create.php">Register</a>
     </li>
 
 <?php endif; ?>

@@ -10,7 +10,7 @@ include_once "../header.php";
 ?>
 <main class="container">
 <section class="row service-container">
-<form action="user_control.php" method="POST" enctype="multipart/form-data">
+<form action="/dab502/assignment/snowsnail/users/user_control.php" method="POST" enctype="multipart/form-data">
     <div class="profile-header">
         <?php if (!empty($user["img_url"])): ?>
         <img src="<?= $user[
@@ -58,11 +58,11 @@ include_once "../header.php";
         Update Profile
     </button>
 
-    <a href="softdelete.php" class="btn btn-danger">
+    <a href="/dab502/assignment/snowsnail/users/softdelete.php" class="btn btn-danger">
         Delete
     </a>
 
-    <a href="user.php" class="btn btn-secondary">
+    <a href="/dab502/assignment/snowsnail/users/user.php" class="btn btn-secondary">
         Back
     </a>
 </div>

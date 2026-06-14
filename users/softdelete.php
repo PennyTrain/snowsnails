@@ -7,7 +7,7 @@ require_once "../helpers/auth.php";
 
 protectedUserPage($conn);
 if (isset($_POST["cancel_logout"])) {
-    header("Location: user_update.php");
+    header("Location: /dab502/assignment/snowsnail/users/user_update.php");
     exit();
 }
 include "../header.php";
@@ -21,7 +21,7 @@ include "../header.php";
             Yes, Delete Account
         </button>
 
-    <a href="user_update.php" class="btn btn-secondary">No take me back!</a></p>
+    <a href="/dab502/assignment/snowsnail/users/user_update.php" class="btn btn-secondary">No take me back!</a></p>
     </form>
 </div>
 </main>

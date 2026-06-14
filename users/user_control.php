@@ -26,12 +26,12 @@ if (isset($_POST["register"])) {
 } elseif (isset($_POST["delete"])) {
     handleDelete($conn);
 } elseif (isset($_POST["cancel_logout"])) {
-    header("Location: ../index.php");
+    header("Location: /dab502/assignment/snowsnail/index.php");
     exit();
 } elseif (isset($_POST["permanent_delete"])) {
     handlePermanentDelete($conn);
 } else {
-    header("Location: index.php");
+    header("Location: /dab502/assignment/snowsnail/index.php");
     exit();
 }
 
@@ -41,7 +41,7 @@ function handlePermanentDelete(PDO $conn): void
     $user_id = (int) ($_POST["user_id"] ?? 0);
     if ($user_id <= 0) {
         throwErr("delete", "danger", "Invalid user.");
-        header("Location: users_page.php");
+        header("Location: /dab502/assignment/snowsnail/users/users_page.php");
         exit();
     }
     try {
@@ -52,11 +52,11 @@ function handlePermanentDelete(PDO $conn): void
         $stmt->execute([$user_id]);
 
         throwErr("delete", "success", "User permanently deleted.");
-        header("Location: users_page.php");
+        header("Location: /dab502/assignment/snowsnail/users/users_page.php");
         exit();
     } catch (PDOException $e) {
         throwErr("delete", "danger", "Unable to delete user.");
-        header("Location: users_page.php");
+        header("Location: /dab502/assignment/snowsnail/users/users_page.php");
         exit();
     }
 }
@@ -71,7 +71,7 @@ function handleDelete(PDO $conn): void
 
         if (!$user) {
             throwErr("delete", "danger", "User not found.");
-            header("Location: ../index.php");
+            header("Location: /dab502/assignment/snowsnail/index.php");
             exit();
         }
 
@@ -296,10 +296,9 @@ function handleRegister(PDO $conn): void
             $conn->rollBack();
         }
 
-        error_log("Register error: " . $e->getMessage());
-
-        throwErr("register", "danger", "Database error.");
-        header("Location: user_create.php");
+        error_log("Profile update error: " . $e->getMessage());
+        throwErr("update", "danger", "Database error.");
+        header("Location: user_update.php");
         exit();
     }
 }
@@ -389,6 +388,35 @@ function handleProfileUpdate(PDO $conn): void
     $phone = trim($_POST["phone"] ?? "");
     $new_password = $_POST["new_password"] ?? "";
     $confirm_password = $_POST["confirm_password"] ?? "";
+    $image_changed = !empty($_FILES["profile_image"]["tmp_name"]);
+    $password_changed = $new_password !== "";
+
+    if (
+        $first_name === "" ||
+        $last_name === "" ||
+        $email === "" ||
+        $phone === ""
+    ) {
+        throwErr("update", "warning", "Please fill in all required fields.");
+        header("Location: user_update.php");
+        exit();
+    }
+
+    if (!validateName($first_name) || !validateName($last_name)) {
+        throwErr(
+            "update",
+            "danger",
+            "First name and last name must contain letters only."
+        );
+        header("Location: user_update.php");
+        exit();
+    }
+
+    if (!validateEmail($email)) {
+        throwErr("update", "danger", "Invalid email.");
+        header("Location: user_update.php");
+        exit();
+    }
 
     $name_changed =
         $first_name !== $user["first_name"] ||
@@ -396,8 +424,6 @@ function handleProfileUpdate(PDO $conn): void
 
     $email_changed = $email !== $user["email"];
     $phone_changed = $phone !== ($user["phone"] ?? "");
-    $password_changed = $new_password !== "";
-    $image_changed = !empty($_FILES["profile_image"]["tmp_name"]);
 
     if (
         !$name_changed &&
@@ -411,64 +437,79 @@ function handleProfileUpdate(PDO $conn): void
         exit();
     }
 
-    $cloudinary = new Cloudinary([
-        "cloud" => [
-            "cloud_name" => $_ENV["CLOUDINARY_CLOUD_NAME"],
-            "api_key" => $_ENV["CLOUDINARY_API_KEY"],
-            "api_secret" => $_ENV["CLOUDINARY_API_SECRET"],
-        ],
-        "url" => ["secure" => true],
-    ]);
-
-    $img_url = $user["img_url"];
-
-    if ($image_changed) {
-        $upload = $cloudinary
-            ->uploadApi()
-            ->upload($_FILES["profile_image"]["tmp_name"]);
-        $img_url = $upload["secure_url"];
-    }
-
     try {
+        if ($email_changed) {
+            $emailCheck = $conn->prepare("
+                SELECT 1
+                FROM users
+                WHERE email = ?
+                AND user_id <> ?
+                AND deleted_at IS NULL
+            ");
+            $emailCheck->execute([$email, $user["user_id"]]);
+
+            if ($emailCheck->fetchColumn()) {
+                throwErr("update", "danger", "Email already exists.");
+                header("Location: user_update.php");
+                exit();
+            }
+        }
+
+        $cloudinary = new Cloudinary([
+            "cloud" => [
+                "cloud_name" => $_ENV["CLOUDINARY_CLOUD_NAME"],
+                "api_key" => $_ENV["CLOUDINARY_API_KEY"],
+                "api_secret" => $_ENV["CLOUDINARY_API_SECRET"],
+            ],
+            "url" => ["secure" => true],
+        ]);
+
+        $img_url = $user["img_url"] ?? null;
+
+        if ($image_changed) {
+            $upload = $cloudinary
+                ->uploadApi()
+                ->upload($_FILES["profile_image"]["tmp_name"]);
+            $img_url = $upload["secure_url"];
+        }
+
         if ($password_changed) {
             $hashed_password = hashValidatedPassword(
                 $new_password,
-                $confirm_password,
+                $confirm_password
             );
+
+            $update = $conn->prepare("
+                UPDATE users
+                SET first_name = ?, last_name = ?, email = ?, phone = ?, password = ?, img_url = ?
+                WHERE user_id = ?
+            ");
+
+            $update->execute([
+                $first_name,
+                $last_name,
+                $email,
+                $phone,
+                $hashed_password,
+                $img_url,
+                $user["user_id"],
+            ]);
         } else {
-            $hashed_password = $user["password"];
+            $update = $conn->prepare("
+                UPDATE users
+                SET first_name = ?, last_name = ?, email = ?, phone = ?, img_url = ?
+                WHERE user_id = ?
+            ");
+
+            $update->execute([
+                $first_name,
+                $last_name,
+                $email,
+                $phone,
+                $img_url,
+                $user["user_id"],
+            ]);
         }
-    } catch (Exception $e) {
-        throwErr("update", "danger", $e->getMessage());
-        header("Location: user_update.php");
-        exit();
-    }
-    if (!validateName($first_name) || !validateName($last_name)) {
-        throwErr(
-            "update",
-            "danger",
-            "First name and last name must contain letters only.",
-        );
-        header("Location: user_update.php");
-        exit();
-    }
-
-    try {
-        $update = $conn->prepare("
-            UPDATE users
-            SET first_name = ?, last_name = ?, email = ?, phone = ?, password = ?, img_url = ?
-            WHERE email = ?
-        ");
-
-        $update->execute([
-            $first_name,
-            $last_name,
-            $email,
-            $phone,
-            $hashed_password,
-            $img_url,
-            $_SESSION["email"],
-        ]);
 
         $_SESSION["name"] = $first_name;
         $_SESSION["email"] = $email;
@@ -476,7 +517,12 @@ function handleProfileUpdate(PDO $conn): void
         throwErr("update", "success", "Profile updated successfully!");
         header("Location: user.php");
         exit();
-    } catch (PDOException $e) {
+    } catch (Throwable $e) {
+        if (isset($conn) && $conn->inTransaction()) {
+            $conn->rollBack();
+        }
+
+        error_log("Profile update error: " . $e->getMessage());
         throwErr("update", "danger", "Database error.");
         header("Location: user_update.php");
         exit();

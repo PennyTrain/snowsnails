@@ -4,7 +4,7 @@
 function getCurrentUserData(PDO $conn): array
 {
     if (empty($_SESSION["email"])) {
-        header("Location: /login.php");
+        header("Location: /dab502/assignment/snowsnail/users/login.php");
         exit();
     }
 
@@ -30,7 +30,7 @@ function getCurrentUserData(PDO $conn): array
     if (!$user) {
         session_unset();
         session_destroy();
-        header("Location: /login.php");
+        header("Location: /dab502/assignment/snowsnail/users/login.php");
         exit();
     }
 
@@ -41,7 +41,7 @@ function protectedPage(PDO $conn): array
 {
     if (!isset($_SESSION["email"])) {
         http_response_code(403);
-        include "../httpserrors/403.php";
+        include "/dab502/assignment/snowsnail/httpserrors/403.php";
         exit();
     }
 
@@ -49,7 +49,7 @@ function protectedPage(PDO $conn): array
 
     if (!$user || $user["role"] !== "admin") {
         http_response_code(403);
-        include "../httpserrors/403.php";
+        include "/dab502/assignment/snowsnail/httpserrors/403.php";
         exit();
     }
 
@@ -60,7 +60,7 @@ function protectedUserPage(PDO $conn): array
 {
     if (!isset($_SESSION["email"])) {
         http_response_code(403);
-        include "../httpserrors/403.php";
+        include "/dab502/assignment/snowsnail/httpserrors/403.php";
         exit();
     }
 
@@ -72,6 +72,6 @@ function protectedUserPage(PDO $conn): array
 function noAccess(): void
 {
     http_response_code(403);
-    include __DIR__ . "/../httpserrors/403.php";
+    include __DIR__ . "/dab502/assignment/snowsnail/httpserrors/403.php";
     exit();
 }

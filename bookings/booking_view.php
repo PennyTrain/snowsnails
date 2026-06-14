@@ -214,7 +214,7 @@ include_once "../header.php";
         </div>
 
     </div>
-                <a href="booking_admin.php" class="btn btn-secondary">Back</a>
+                <a href="index.php" class="btn btn-secondary">Home</a>
 </div>
                                                 </main>
 
